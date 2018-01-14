@@ -3,6 +3,7 @@ package ru.divizdev.coinrate;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +100,8 @@ public class CoinRateActivity extends AppCompatActivity {
 
             CardView _cardView;
 
+            AppCompatImageView _logo;
+
             TextView _symbolCoin;
             TextView _nameCoin;
             TextView _rateCoin;
@@ -107,6 +112,7 @@ public class CoinRateActivity extends AppCompatActivity {
                 super(itemView);
                 this._cardView = itemView;
                 bind();
+                Log.d("ViewHolder", "Create ViewHolder");
             }
 
             public void setData(CoinRate coinRate) {
@@ -119,6 +125,11 @@ public class CoinRateActivity extends AppCompatActivity {
 
                 _percentChange24h.setTextColor(getColorPercent(coinRate.getPercentChange24h()));
                 _percentChange24h.setText(String.valueOf(coinRate.getPercentChange24h()));
+
+                Picasso.with(this.itemView.getContext())
+                       .load("https://files.coinmarketcap.com/static/img/coins/32x32/" + coinRate.getId() + ".png")
+                       .into(_logo);
+                Log.d("ViewHolder", "SetData");
 
             }
 
@@ -136,6 +147,7 @@ public class CoinRateActivity extends AppCompatActivity {
                 _rateCoin = (TextView) _cardView.findViewById(R.id.rate_coin);
                 _percentChange7d = (TextView) _cardView.findViewById(R.id.percent_change_7d);
                 _percentChange24h = (TextView) _cardView.findViewById(R.id.percent_change_24h);
+                _logo = (AppCompatImageView) _cardView.findViewById(R.id.img_coin);
             }
         }
     }
