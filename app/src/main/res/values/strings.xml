@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CoinRate</string>
+    <string name="separator_name_coin">|</string>
+    <string name="name_percent_change_7d">7d:</string>
+    <string name="name_percent_change_24h">24h:</string>
+    <string name="name_unit_percent_change">%</string>
+    <string name="name_unit_price">USD</string>
+</resources>
