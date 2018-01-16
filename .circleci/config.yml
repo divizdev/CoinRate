@@ -13,7 +13,7 @@ jobs:
       - run:
           name: chmod permissions
           command: chmod +x ./gradlew
-      -run:
+      - run:
           name: gradle
           command: gradle wrapper
       - run:
