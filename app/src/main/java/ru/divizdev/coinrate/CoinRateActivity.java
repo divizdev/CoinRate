@@ -44,7 +44,7 @@ public class CoinRateActivity extends AppCompatActivity {
 
         final List<CoinRate> list = new ArrayList<>();
 
-        _recyclerView = (RecyclerView) findViewById(R.id.coin_rate_list);
+        _recyclerView = findViewById(R.id.coin_rate_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         _recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -142,12 +142,12 @@ public class CoinRateActivity extends AppCompatActivity {
             }
 
             private void bind() {
-                _symbolCoin = (TextView) _cardView.findViewById(R.id.symbol_coin);
-                _nameCoin = (TextView) _cardView.findViewById(R.id.name_coin);
-                _rateCoin = (TextView) _cardView.findViewById(R.id.rate_coin);
-                _percentChange7d = (TextView) _cardView.findViewById(R.id.percent_change_7d);
-                _percentChange24h = (TextView) _cardView.findViewById(R.id.percent_change_24h);
-                _logo = (AppCompatImageView) _cardView.findViewById(R.id.img_coin);
+                _symbolCoin = _cardView.findViewById(R.id.symbol_coin);
+                _nameCoin = _cardView.findViewById(R.id.name_coin);
+                _rateCoin = _cardView.findViewById(R.id.rate_coin);
+                _percentChange7d = _cardView.findViewById(R.id.percent_change_7d);
+                _percentChange24h = _cardView.findViewById(R.id.percent_change_24h);
+                _logo = _cardView.findViewById(R.id.img_coin);
             }
         }
     }
