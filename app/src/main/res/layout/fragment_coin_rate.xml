@@ -4,7 +4,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-    android:id="@+id/fragment_container"
         tools:context="ru.divizdev.coinrate.CoinRateActivity">
+
+    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:id="@+id/coin_rate_list"/>
 
 </RelativeLayout>
