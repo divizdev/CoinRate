@@ -1,9 +1,12 @@
 package ru.divizdev.coinrate.Entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CoinRate {
+public class CoinRate implements Parcelable {
 
     //    id: "viberate",
 //    name: "Viberate",
@@ -21,6 +24,7 @@ public class CoinRate {
 //    percent_change_7d: "23.5",
 //    last_updated: "1515007154"
 
+    //region Fields
     @SerializedName("id")
     @Expose
     private String _id;
@@ -68,6 +72,7 @@ public class CoinRate {
     @SerializedName("last_updated")
     @Expose
     private int _lastUpdated;
+    //endregion
 
     public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d, double availableSupply, double totalSupply, double maxSupply, int lastUpdated) {
         _id = id;
@@ -84,6 +89,11 @@ public class CoinRate {
         _lastUpdated = lastUpdated;
     }
 
+    public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d) {
+        this(id, name, symbol, rank, price, percentChange1h, percentChange24h, percentChange7d, 0, 0, 0, 0);
+    }
+
+    //region MethodClass
     @Override
     public String toString() {
         return "CoinRate{" +
@@ -101,6 +111,8 @@ public class CoinRate {
                 ", _lastUpdated=" + _lastUpdated +
                 '}';
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -151,7 +163,10 @@ public class CoinRate {
         result = 31 * result + getLastUpdated();
         return result;
     }
+    //endregion
 
+
+    //region GetSetMethod
     public double getAvailableSupply() {
         return _availableSupply;
     }
@@ -247,4 +262,56 @@ public class CoinRate {
     public void setPercentChange7d(double percentChange7d) {
         _percentChange7d = percentChange7d;
     }
+    //endregion
+
+
+    //region Parcel
+    private CoinRate(Parcel parcel) {
+        _id = parcel.readString();
+        _name = parcel.readString();
+        _symbol = parcel.readString();
+        _rank = parcel.readInt();
+        _price = parcel.readDouble();
+        _percentChange1h = parcel.readDouble();
+        _percentChange24h = parcel.readDouble();
+        _percentChange7d = parcel.readDouble();
+        _availableSupply = parcel.readDouble();
+        _totalSupply = parcel.readDouble();
+        _maxSupply = parcel.readDouble();
+        _lastUpdated = parcel.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        parcel.writeString(_id);
+        parcel.writeString(_name);
+        parcel.writeString(_symbol);
+        parcel.writeInt(_rank);
+        parcel.writeDouble(_price);
+        parcel.writeDouble(_percentChange1h);
+        parcel.writeDouble(_percentChange24h);
+        parcel.writeDouble(_percentChange7d);
+        parcel.writeDouble(_availableSupply);
+        parcel.writeDouble(_totalSupply);
+        parcel.writeDouble(_maxSupply);
+        parcel.writeInt(_lastUpdated);
+    }
+
+    public static final Parcelable.Creator<CoinRate> CREATOR = new Creator<CoinRate>() {
+        @Override
+        public CoinRate createFromParcel(Parcel parcel) {
+            return new CoinRate(parcel);
+        }
+
+        @Override
+        public CoinRate[] newArray(int size) {
+            return new CoinRate[size];
+        }
+    };
+    //endregion
 }

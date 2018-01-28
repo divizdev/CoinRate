@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
-public class CoinRateActivity extends AppCompatActivity {
+import ru.divizdev.coinrate.Entities.CoinRate;
+
+public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.OnFragmentInteractionListener {
 
 
     @Override
@@ -26,4 +28,11 @@ public class CoinRateActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onFragmentInteraction(CoinRate coinRate) {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment detailFragment = DetailFragment.newInstance(coinRate);
+
+        fm.beginTransaction().replace(R.id.fragment_container, detailFragment).addToBackStack(null).commit();
+    }
 }

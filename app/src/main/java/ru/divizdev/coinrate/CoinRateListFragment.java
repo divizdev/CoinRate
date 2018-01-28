@@ -1,5 +1,6 @@
 package ru.divizdev.coinrate;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +34,8 @@ import ru.divizdev.coinrate.Entities.CoinRate;
 
 public class CoinRateListFragment extends Fragment {
 
+    private OnFragmentInteractionListener _listener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class CoinRateListFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         _recyclerView.setLayoutManager(linearLayoutManager);
 
-        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(list);
+        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(_listener, list);
         _recyclerView.setAdapter(coinRateAdapter);
 
 
@@ -79,9 +82,11 @@ public class CoinRateListFragment extends Fragment {
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
 
+        private OnFragmentInteractionListener _listener;
         private List<CoinRate> _list;
 
-        public CoinRateAdapter(List<CoinRate> list) {
+        public CoinRateAdapter(OnFragmentInteractionListener listener, List<CoinRate> list) {
+            _listener = listener;
             _list = list;
         }
 
@@ -89,12 +94,12 @@ public class CoinRateListFragment extends Fragment {
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coin,
                     parent, false);
-            return new ViewHolder(cardView);
+            return new ViewHolder(_listener, cardView);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-//            holder.setData(_list.get(position));
+
             holder.setData(_list.get(position));
         }
 
@@ -103,26 +108,31 @@ public class CoinRateListFragment extends Fragment {
             return _list.size();
         }
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-            CardView _cardView;
+            private OnFragmentInteractionListener _listener;
+            private CoinRate _coinRate;
 
-            AppCompatImageView _logo;
+            private CardView _cardView;
 
-            TextView _symbolCoin;
-            TextView _nameCoin;
-            TextView _rateCoin;
-            TextView _percentChange24h;
-            TextView _percentChange7d;
+            private AppCompatImageView _logo;
 
-            public ViewHolder(CardView itemView) {
+            private TextView _symbolCoin;
+            private TextView _nameCoin;
+            private TextView _rateCoin;
+            private TextView _percentChange24h;
+            private TextView _percentChange7d;
+
+            public ViewHolder(OnFragmentInteractionListener listener, CardView itemView) {
                 super(itemView);
+                _listener = listener;
                 this._cardView = itemView;
                 bind();
                 Log.d("ViewHolder", "Create ViewHolder");
             }
 
             public void setData(CoinRate coinRate) {
+                _coinRate = coinRate;
                 _symbolCoin.setText(coinRate.getSymbol());
                 _nameCoin.setText(coinRate.getName());
                 _rateCoin.setText(String.valueOf(coinRate.getPrice()));
@@ -155,8 +165,38 @@ public class CoinRateListFragment extends Fragment {
                 _percentChange7d = _cardView.findViewById(R.id.percent_change_7d);
                 _percentChange24h = _cardView.findViewById(R.id.percent_change_24h);
                 _logo = _cardView.findViewById(R.id.img_coin);
+                _cardView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+                if (_listener != null) {
+                    _listener.onFragmentInteraction(_coinRate);
+                }
             }
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            _listener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        _listener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+
+        void onFragmentInteraction(CoinRate coinRate);
     }
 
 }
