@@ -53,8 +53,23 @@ public class CoinRate {
     @Expose
     private double _percentChange7d;
 
+    @SerializedName("available_supply")
+    @Expose
+    private double _availableSupply;
 
-    public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d) {
+    @SerializedName("total_supply")
+    @Expose
+    private double _totalSupply;
+    @SerializedName("max_supply")
+    @Expose
+    private double _maxSupply;
+
+
+    @SerializedName("last_updated")
+    @Expose
+    private int _lastUpdated;
+
+    public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d, double availableSupply, double totalSupply, double maxSupply, int lastUpdated) {
         _id = id;
         _name = name;
         _symbol = symbol;
@@ -63,6 +78,10 @@ public class CoinRate {
         _percentChange1h = percentChange1h;
         _percentChange24h = percentChange24h;
         _percentChange7d = percentChange7d;
+        _availableSupply = availableSupply;
+        _totalSupply = totalSupply;
+        _maxSupply = maxSupply;
+        _lastUpdated = lastUpdated;
     }
 
     @Override
@@ -76,6 +95,10 @@ public class CoinRate {
                 ", _percentChange1h=" + _percentChange1h +
                 ", _percentChange24h=" + _percentChange24h +
                 ", _percentChange7d=" + _percentChange7d +
+                ", _availableSupply=" + _availableSupply +
+                ", _totalSupply=" + _totalSupply +
+                ", _maxSupply=" + _maxSupply +
+                ", _lastUpdated=" + _lastUpdated +
                 '}';
     }
 
@@ -89,13 +112,19 @@ public class CoinRate {
         if (getRank() != coinRate.getRank()) return false;
         if (Double.compare(coinRate.getPrice(), getPrice()) != 0) return false;
         if (Double.compare(coinRate.getPercentChange1h(), getPercentChange1h()) != 0) return false;
-        if (Double.compare(coinRate.getPercentChange24h(), getPercentChange24h()) != 0) return false;
+        if (Double.compare(coinRate.getPercentChange24h(), getPercentChange24h()) != 0)
+            return false;
         if (Double.compare(coinRate.getPercentChange7d(), getPercentChange7d()) != 0) return false;
-        if (getId() != null ? !getId().equals(coinRate.getId()) : coinRate.getId() != null) return false;
-        if (getName() != null ? !getName().equals(coinRate.getName()) : coinRate.getName() != null) return false;
+        if (Double.compare(coinRate.getAvailableSupply(), getAvailableSupply()) != 0) return false;
+        if (Double.compare(coinRate.getTotalSupply(), getTotalSupply()) != 0) return false;
+        if (Double.compare(coinRate.getMaxSupply(), getMaxSupply()) != 0) return false;
+        if (getLastUpdated() != coinRate.getLastUpdated()) return false;
+        if (getId() != null ? !getId().equals(coinRate.getId()) : coinRate.getId() != null)
+            return false;
+        if (getName() != null ? !getName().equals(coinRate.getName()) : coinRate.getName() != null)
+            return false;
         return getSymbol() != null ? getSymbol().equals(coinRate.getSymbol()) : coinRate.getSymbol() == null;
     }
-
 
     @Override
     public int hashCode() {
@@ -113,7 +142,46 @@ public class CoinRate {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(getPercentChange7d());
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getAvailableSupply());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getTotalSupply());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getMaxSupply());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + getLastUpdated();
         return result;
+    }
+
+    public double getAvailableSupply() {
+        return _availableSupply;
+    }
+
+    public void setAvailableSupply(double availableSupply) {
+        _availableSupply = availableSupply;
+    }
+
+    public double getTotalSupply() {
+        return _totalSupply;
+    }
+
+    public void setTotalSupply(double totalSupply) {
+        _totalSupply = totalSupply;
+    }
+
+    public double getMaxSupply() {
+        return _maxSupply;
+    }
+
+    public void setMaxSupply(double maxSupply) {
+        _maxSupply = maxSupply;
+    }
+
+    public int getLastUpdated() {
+        return _lastUpdated;
+    }
+
+    public void setLastUpdated(int lastUpdated) {
+        _lastUpdated = lastUpdated;
     }
 
     public String getId() {
