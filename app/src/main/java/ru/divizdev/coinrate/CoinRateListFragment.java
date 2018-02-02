@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -32,9 +34,10 @@ import ru.divizdev.coinrate.Entities.CoinRate;
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment {
+public class CoinRateListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private OnFragmentInteractionListener _listener;
+        private SwipeRefreshLayout _swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -43,6 +46,9 @@ public class CoinRateListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_coin_rate, container, false);
         GetData(view);
+        _swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        _swipeRefreshLayout.setOnRefreshListener(this);
+
         return view;
     }
 
@@ -60,6 +66,7 @@ public class CoinRateListFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         _recyclerView.setLayoutManager(linearLayoutManager);
 
+
         CoinRateAdapter coinRateAdapter = new CoinRateAdapter(_listener, list);
         _recyclerView.setAdapter(coinRateAdapter);
 
@@ -70,6 +77,7 @@ public class CoinRateListFragment extends Fragment {
                 if (response.body() != null) {
                     list.addAll(response.body());
                     _recyclerView.getAdapter().notifyDataSetChanged();
+                    _swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
@@ -78,6 +86,13 @@ public class CoinRateListFragment extends Fragment {
                 Log.e("test", "Fail");
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+
+        GetData(getView());
+
     }
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
