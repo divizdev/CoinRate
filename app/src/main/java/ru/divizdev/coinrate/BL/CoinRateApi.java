@@ -1,11 +1,11 @@
 package ru.divizdev.coinrate.BL;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import ru.divizdev.coinrate.Entities.CoinRate;
-
-import java.util.List;
 
 public interface CoinRateApi {
 

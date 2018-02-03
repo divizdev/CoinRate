@@ -14,27 +14,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import ru.divizdev.coinrate.BL.CoinRateApi;
+import ru.divizdev.coinrate.BL.CoinRateListPresenter;
 import ru.divizdev.coinrate.Entities.CoinRate;
 
 /**
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment {
+public class CoinRateListFragment extends Fragment implements CoinRateListPresenter.CoinRateListView {
 
     private OnFragmentInteractionListener _listener;
+    private RecyclerView _recyclerView;
+    private List<CoinRate> _list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -42,42 +40,41 @@ public class CoinRateListFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_coin_rate, container, false);
-        GetData(view);
-        return view;
-    }
 
-    private void GetData(View view) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.coinmarketcap.com/") //Базовая часть адреса
-                .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
-                .build();
-
-        CoinRateApi api = retrofit.create(CoinRateApi.class);
-
-        final List<CoinRate> list = new ArrayList<>();
-
-        final RecyclerView _recyclerView = view.findViewById(R.id.coin_rate_list);
+        _recyclerView = view.findViewById(R.id.coin_rate_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         _recyclerView.setLayoutManager(linearLayoutManager);
 
-        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(_listener, list);
+        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(_listener, _list);
         _recyclerView.setAdapter(coinRateAdapter);
 
+        return view;
+    }
 
-        api.getData(200).enqueue(new Callback<List<CoinRate>>() {
-            @Override
-            public void onResponse(Call<List<CoinRate>> call, Response<List<CoinRate>> response) {
-                if (response.body() != null) {
-                    list.addAll(response.body());
-                    _recyclerView.getAdapter().notifyDataSetChanged();
-                }
-            }
+    @Override
+    public void onResume() {
+        super.onResume();
+        App.getCoinRateListPresenter().subscribe(this);
+    }
 
-            @Override
-            public void onFailure(Call<List<CoinRate>> call, Throwable t) {
-                Log.e("test", "Fail");
-            }
-        });
+    @Override
+    public void showLoadingProgress(Boolean isView) {
+        Toast.makeText(getContext(), "LoadData", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void showCoinRateList(List<CoinRate> list) {
+        _list.clear();
+        _list.addAll(list);
+        _recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void showErrorLoading() {
+
+        Toast.makeText(getContext(), "ErrorLoad", Toast.LENGTH_SHORT).show();
+
     }
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
