@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,11 +29,12 @@ import ru.divizdev.coinrate.Entities.CoinRate;
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListPresenter.CoinRateListView {
+public class CoinRateListFragment extends Fragment implements CoinRateListPresenter.CoinRateListView, SwipeRefreshLayout.OnRefreshListener {
 
     private OnFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
     private List<CoinRate> _list = new ArrayList<>();
+    private SwipeRefreshLayout _swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -47,6 +49,9 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
 
         CoinRateAdapter coinRateAdapter = new CoinRateAdapter(_listener, _list);
         _recyclerView.setAdapter(coinRateAdapter);
+
+        _swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        _swipeRefreshLayout.setOnRefreshListener(this);
 
         return view;
     }
@@ -68,12 +73,20 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
         _list.clear();
         _list.addAll(list);
         _recyclerView.getAdapter().notifyDataSetChanged();
+        _swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     public void showErrorLoading() {
 
         Toast.makeText(getContext(), "ErrorLoad", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onRefresh() {
+
+//        GetData(getView());
 
     }
 
