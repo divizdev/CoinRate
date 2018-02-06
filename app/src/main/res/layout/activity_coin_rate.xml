@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
     android:id="@+id/fragment_container"
-        tools:context="ru.divizdev.coinrate.CoinRateActivity">
+        tools:context="ru.divizdev.coinrate.ui.CoinRateActivity">
 
 
 </RelativeLayout>

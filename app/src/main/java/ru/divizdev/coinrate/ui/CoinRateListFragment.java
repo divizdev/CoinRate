@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate;
+package ru.divizdev.coinrate.ui;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -22,8 +22,10 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.BL.CoinRateListPresenter;
 import ru.divizdev.coinrate.Entities.CoinRate;
+import ru.divizdev.coinrate.R;
 
 /**
  * Created by diviz on 26.01.2018.

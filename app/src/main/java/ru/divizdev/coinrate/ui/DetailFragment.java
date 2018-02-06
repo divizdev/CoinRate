@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate;
+package ru.divizdev.coinrate.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import ru.divizdev.coinrate.Entities.CoinRate;
+import ru.divizdev.coinrate.R;
 
 
 public class DetailFragment extends Fragment {

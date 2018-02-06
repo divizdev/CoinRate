@@ -1,9 +1,11 @@
-package ru.divizdev.coinrate;
+package ru.divizdev.coinrate.ui;
 
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.PreferenceFragmentCompat;
+
+import ru.divizdev.coinrate.R;
 
 
 public class PrefFragment extends PreferenceFragmentCompat {
