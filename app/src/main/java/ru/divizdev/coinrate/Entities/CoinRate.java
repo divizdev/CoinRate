@@ -72,9 +72,18 @@ public class CoinRate implements Parcelable {
     @SerializedName("last_updated")
     @Expose
     private int _lastUpdated;
+
+    @SerializedName("price_rub")
+    @Expose
+    private double _price_rub;
+
+    @SerializedName("price_eur")
+    @Expose
+    private double _price_eur;
+
     //endregion
 
-    public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d, double availableSupply, double totalSupply, double maxSupply, int lastUpdated) {
+    public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d, double availableSupply, double totalSupply, double maxSupply, int lastUpdated, double price_rub, double price_eur) {
         _id = id;
         _name = name;
         _symbol = symbol;
@@ -87,10 +96,12 @@ public class CoinRate implements Parcelable {
         _totalSupply = totalSupply;
         _maxSupply = maxSupply;
         _lastUpdated = lastUpdated;
+        _price_rub = price_rub;
+        _price_eur = price_eur;
     }
 
-    public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d) {
-        this(id, name, symbol, rank, price, percentChange1h, percentChange24h, percentChange7d, 0, 0, 0, 0);
+    public CoinRate(String id, String name, String symbol, int rank, double price, double percentChange1h, double percentChange24h, double percentChange7d, double price_rub, double price_eur) {
+        this(id, name, symbol, rank, price, percentChange1h, percentChange24h, percentChange7d, 0, 0, 0, 0, price_rub, price_eur);
     }
 
     //region MethodClass
@@ -111,7 +122,6 @@ public class CoinRate implements Parcelable {
                 ", _lastUpdated=" + _lastUpdated +
                 '}';
     }
-
 
 
     @Override
@@ -231,7 +241,31 @@ public class CoinRate implements Parcelable {
         _rank = rank;
     }
 
+    public String getCurrency() {
+
+        if (_price_rub != 0) {
+            return "RUB";
+        }
+
+        if (_price_eur != 0) {
+            return "EUR";
+        }
+
+        return "USD";
+
+
+    }
+
+
+    //TODO: del hardcode
     public double getPrice() {
+        if (_price_rub != 0) {
+            return _price_rub;
+        }
+
+        if (_price_eur != 0) {
+            return _price_eur;
+        }
         return _price;
     }
 
@@ -279,6 +313,8 @@ public class CoinRate implements Parcelable {
         _totalSupply = parcel.readDouble();
         _maxSupply = parcel.readDouble();
         _lastUpdated = parcel.readInt();
+        _price_rub = parcel.readDouble();
+        _price_eur = parcel.readDouble();
     }
 
     @Override
@@ -300,6 +336,8 @@ public class CoinRate implements Parcelable {
         parcel.writeDouble(_totalSupply);
         parcel.writeDouble(_maxSupply);
         parcel.writeInt(_lastUpdated);
+        parcel.writeDouble(_price_rub);
+        parcel.writeDouble(_price_eur);
     }
 
     public static final Parcelable.Creator<CoinRate> CREATOR = new Creator<CoinRate>() {
@@ -313,5 +351,21 @@ public class CoinRate implements Parcelable {
             return new CoinRate[size];
         }
     };
+
+    public double getPrice_rub() {
+        return _price_rub;
+    }
+
+    public void setPrice_rub(double price_rub) {
+        _price_rub = price_rub;
+    }
+
+    public double getPrice_eur() {
+        return _price_eur;
+    }
+
+    public void setPrice_eur(double price_eur) {
+        _price_eur = price_eur;
+    }
     //endregion
 }

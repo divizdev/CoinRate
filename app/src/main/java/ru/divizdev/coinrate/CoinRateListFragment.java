@@ -29,7 +29,7 @@ import ru.divizdev.coinrate.Entities.CoinRate;
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListPresenter.CoinRateListView, SwipeRefreshLayout.OnRefreshListener {
+public class CoinRateListFragment extends Fragment implements CoinRateListPresenter.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener {
 
     private OnFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
@@ -64,7 +64,13 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
 
     @Override
     public void showLoadingProgress(Boolean isView) {
+
         Toast.makeText(getContext(), "LoadData", Toast.LENGTH_SHORT).show();
+
+        if (!isView) {
+            _swipeRefreshLayout.setRefreshing(false);
+        }
+
 
     }
 
@@ -73,7 +79,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
         _list.clear();
         _list.addAll(list);
         _recyclerView.getAdapter().notifyDataSetChanged();
-        _swipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
@@ -85,9 +91,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
 
     @Override
     public void onRefresh() {
-
-//        GetData(getView());
-
+        App.getCoinRateListPresenter().refresh();
     }
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
@@ -132,6 +136,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
             private TextView _rateCoin;
             private TextView _percentChange24h;
             private TextView _percentChange7d;
+            private TextView _currencyRateCoin;
 
             public ViewHolder(OnFragmentInteractionListener listener, CardView itemView) {
                 super(itemView);
@@ -152,6 +157,8 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
 
                 _percentChange24h.setTextColor(getColorPercent(coinRate.getPercentChange24h()));
                 _percentChange24h.setText(String.valueOf(coinRate.getPercentChange24h()));
+
+                _currencyRateCoin.setText(coinRate.getCurrency());
 
                 Picasso.with(this.itemView.getContext())
                         .load("https://files.coinmarketcap.com/static/img/coins/32x32/" + coinRate.getId() + ".png")
@@ -175,6 +182,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
                 _percentChange7d = _cardView.findViewById(R.id.percent_change_7d);
                 _percentChange24h = _cardView.findViewById(R.id.percent_change_24h);
                 _logo = _cardView.findViewById(R.id.img_coin);
+                _currencyRateCoin = _cardView.findViewById(R.id.currency_rate_coin);
                 _cardView.setOnClickListener(this);
             }
 

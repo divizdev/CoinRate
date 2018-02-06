@@ -10,10 +10,15 @@ import ru.divizdev.coinrate.BL.CoinRateListPresenter;
 
 public class App extends Application {
 
-    private static CoinRateListPresenter _coinRateListPresenter = new CoinRateListPresenter();
+    private static CoinRateListPresenter _coinRateListPresenter;
 
-    
-    
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        _coinRateListPresenter = new CoinRateListPresenter( getBaseContext() );
+    }
+
     public static CoinRateListPresenter getCoinRateListPresenter() {
         return _coinRateListPresenter;
     }
