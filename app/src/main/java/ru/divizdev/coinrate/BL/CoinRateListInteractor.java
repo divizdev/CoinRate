@@ -2,11 +2,13 @@ package ru.divizdev.coinrate.BL;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -19,33 +21,47 @@ import ru.divizdev.coinrate.Entities.CoinRate;
  * Created by diviz on 29.01.2018.
  */
 
-public class CoinRateListPresenter {
+public class CoinRateListInteractor {
 
    private ICoinRateListView _ICoinRateListView;
+   private String _curCurrency = "";
 
    private Context _context;
-   private List<CoinRate> _list = new ArrayList<>();
 
-   public  CoinRateListPresenter(Context context){
+   private Map<String, List<CoinRate>> _coinRateModel = new HashMap<>();
+
+   public CoinRateListInteractor(Context context){
        _context = context;
+       _curCurrency = getCurrencySettings();
    }
 
-   public void subscribe(ICoinRateListView ICoinRateListView){
+    private String getCurrencySettings() {
+        //TODO: Extract constants
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_context);
+        return preferences.getString("pref_currency", "USD");
+    }
+
+    public void subscribe(ICoinRateListView ICoinRateListView){
        _ICoinRateListView = ICoinRateListView;
-       if(_list.size() > 0 ){
-           _ICoinRateListView.showCoinRateList(_list);
-       } else {
-           loadCoinRate();
-       }
+        showList(_curCurrency);
    }
 
-   public void refresh(){
+    private void showList(String curCurrency) {
+        List<CoinRate> list = _coinRateModel.get(curCurrency);
+        if(list != null){
+            _ICoinRateListView.showCoinRateList(list);
+        } else {
+            loadCoinRate(curCurrency);
+        }
+    }
 
-       _list.clear(); //TODO: multi thread not lock
-       loadCoinRate();
+    public void refresh(){
+
+       loadCoinRate(_curCurrency);
+
    }
 
-   private void loadCoinRate(){
+   private void loadCoinRate(final String currency){
 
        _ICoinRateListView.showLoadingProgress(true);
 
@@ -57,18 +73,14 @@ public class CoinRateListPresenter {
 
        CoinRateApi api = retrofit.create(CoinRateApi.class);
 
-       //TODO: Extract constants
-       SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_context);
-       String currency = preferences.getString("pref_currency", "USD");
-
        api.getData(0,200, currency).enqueue(new Callback<List<CoinRate>>() {
            @Override
-           public void onResponse(Call<List<CoinRate>> call, Response<List<CoinRate>> response) {
+           public void onResponse(@NonNull Call<List<CoinRate>> call, @NonNull Response<List<CoinRate>> response) {
                if (response.body() != null) {
-                   _list.addAll(response.body());
+                   _coinRateModel.put(currency, response.body());//TODO: multi thread not lock
 
                    _ICoinRateListView.showLoadingProgress(false);
-                   _ICoinRateListView.showCoinRateList(_list);
+                   _ICoinRateListView.showCoinRateList(response.body());
                }
            }
 
@@ -82,7 +94,12 @@ public class CoinRateListPresenter {
 
    }
 
+    public void setCurrency(String currency) {
 
+       _curCurrency = currency;
+       showList(_curCurrency);
+
+    }
 
 
     public interface ICoinRateListView {

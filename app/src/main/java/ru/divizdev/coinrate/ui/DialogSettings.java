@@ -15,15 +15,19 @@ import ru.divizdev.coinrate.R;
  */
 
 public class DialogSettings extends DialogFragment {
+    public static final String KEY_NAME_PREF = "pref_currency";
+
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-
-
-        String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString("pref_currency", "USD");
+        final String cancel = getContext().getString(R.string.cancel);
+        final String currencyDefaultValue = getContext().getString(R.string.pref_currency_default_value);
         final String[] stringArray = getContext().getResources().getStringArray(R.array.pref_currency_array);
+
+        String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(KEY_NAME_PREF, currencyDefaultValue);
         int index = 0;
         for (int i = 0; i < stringArray.length; i++) {
             if(stringArray[i].compareTo(currentValue) == 0)
@@ -39,11 +43,11 @@ public class DialogSettings extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String value = stringArray[i];
-                        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString("pref_currency", value).apply();
+                        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(KEY_NAME_PREF, value).apply();
                         dialogInterface.dismiss();
 
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
