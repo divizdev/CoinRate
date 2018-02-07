@@ -7,7 +7,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import ru.divizdev.coinrate.R;
 
-
+@Deprecated
 public class PrefFragment extends PreferenceFragmentCompat {
 
 
@@ -16,6 +16,8 @@ public class PrefFragment extends PreferenceFragmentCompat {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.preferences);
+
+
     }
 
     @Override

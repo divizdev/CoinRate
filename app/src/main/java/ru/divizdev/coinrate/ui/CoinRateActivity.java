@@ -34,6 +34,8 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
         }
 
 
+
+
     }
 
     @Override
@@ -45,19 +47,30 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
     }
 
     @Override
-    public void onFragmentInteraction(CoinRate coinRate) {
+    public void onClickItemCoinRate(CoinRate coinRate) {
         FragmentManager fm = getSupportFragmentManager();
+
         Fragment detailFragment = DetailFragment.newInstance(coinRate);
 
         fm.beginTransaction().replace(R.id.fragment_container, detailFragment).addToBackStack(null).commit();
+    }
+
+
+
+
+    public void showSettingsDialog(){
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                 DialogSettings dialogSettings = new DialogSettings();
+                 dialogSettings.show(fragmentManager, "");
+//                fragmentManager.beginTransaction().replace(R.id.fragment_container, new PrefFragment()).addToBackStack(null).commit();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_settings:
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, new PrefFragment()).addToBackStack(null).commit();
+
+                showSettingsDialog();
                 break;
             default:
             return super.onOptionsItemSelected(item);

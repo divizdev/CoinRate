@@ -191,7 +191,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
             @Override
             public void onClick(View view) {
                 if (_listener != null) {
-                    _listener.onFragmentInteraction(_coinRate);
+                    _listener.onClickItemCoinRate(_coinRate);
                 }
             }
         }
@@ -216,7 +216,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListPresen
 
     public interface OnFragmentInteractionListener {
 
-        void onFragmentInteraction(CoinRate coinRate);
+        void onClickItemCoinRate(CoinRate coinRate);
     }
 
 }
