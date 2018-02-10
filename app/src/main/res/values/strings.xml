@@ -6,11 +6,13 @@
     <string name="name_unit_percent_change">%</string>
     <string name="name_unit_price">USD</string>
     <string name="title_detail_name_coin">Название</string>
-    <string name="title_available_supply">Available Supply</string>
+    <string name="title_available_supply">Предложение</string>
+    <string name="title_market_cap">Каптиализация рынка</string>
+    <string name="title_24h_volume">Объем (24 часа)</string>
     <string name="title_total_supply">Total Supply</string>
     <string name="title_max_supply">Max Supply</string>
     <string name="title_name_percent_change_1h">1h:</string>
-    <string name="title_last_updated">Последнне обновление</string>
+    <string name="title_last_updated">Последнее обновление</string>
     <string name="title_rank">Ранг</string>
     <string name="title_price">Price</string>
     <string name="pref_name_currency">Валюта</string>

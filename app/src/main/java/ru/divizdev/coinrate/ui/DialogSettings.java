@@ -18,7 +18,6 @@ public class DialogSettings extends DialogFragment {
     public static final String KEY_NAME_PREF = "pref_currency";
 
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,16 +29,15 @@ public class DialogSettings extends DialogFragment {
         String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(KEY_NAME_PREF, currencyDefaultValue);
         int index = 0;
         for (int i = 0; i < stringArray.length; i++) {
-            if(stringArray[i].compareTo(currentValue) == 0)
-            {
+            if (stringArray[i].compareTo(currentValue) == 0) {
                 index = i;
                 break;
             }
         }
 
-        return new AlertDialog.Builder(getActivity()).
-                setTitle(R.string.pref_name_currency).
-                setSingleChoiceItems(stringArray, index, new DialogInterface.OnClickListener() {
+        return new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.pref_name_currency)
+                .setSingleChoiceItems(stringArray, index, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String value = stringArray[i];
@@ -47,11 +45,13 @@ public class DialogSettings extends DialogFragment {
                         dialogInterface.dismiss();
 
                     }
-                }).setNegativeButton(cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+                })
+                .setNegativeButton(cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-            }
-        }).create();
+                    }
+                })
+                .create();
     }
 }

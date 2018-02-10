@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.divizdev.coinrate.App;
-import ru.divizdev.coinrate.BL.CoinRateListInteractor;
+import ru.divizdev.coinrate.rates.CoinRateListInteractor;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.R;
 
@@ -65,7 +65,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     @Override
     public void onResume() {
         super.onResume();
-        App.getCoinRateListPresenter().subscribe(this);
+        App.getCoinRateListPresenter().attache(this);
     }
 
     @Override
@@ -78,6 +78,12 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         }
 
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        App.getCoinRateListPresenter().detach();
     }
 
     @Override
@@ -167,16 +173,18 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                 _coinRate = coinRate;
                 _symbolCoin.setText(coinRate.getSymbol());
                 _nameCoin.setText(coinRate.getName());
-                _rateCoin.setText(String.valueOf(coinRate.getPrice()));
+                _rateCoin.setText(coinRate.getUIPrice());
 
                 _percentChange7d.setTextColor(getColorPercent(coinRate.getPercentChange7d()));
-                _percentChange7d.setText(String.valueOf(coinRate.getPercentChange7d()));
+                _percentChange7d.setText(coinRate.getUIPercentChange7d());
 
                 _percentChange24h.setTextColor(getColorPercent(coinRate.getPercentChange24h()));
-                _percentChange24h.setText(String.valueOf(coinRate.getPercentChange24h()));
+                _percentChange24h.setText(coinRate.getUIPercentChange24h());
 
                 _currencyRateCoin.setText(coinRate.getCurrency());
 
+
+                //TODO: Extract to constant
                 Picasso.with(this.itemView.getContext())
                         .load("https://files.coinmarketcap.com/static/img/coins/32x32/" + coinRate.getId() + ".png")
                         .into(_logo);

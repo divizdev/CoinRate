@@ -21,8 +21,8 @@ public class DetailFragment extends Fragment {
     private CoinRate _coinRate;
     private TextView _detailNameCoin;
     private TextView _detailAvailableSupply;
-    private TextView _detailMaxSupply; //detail_max_supply
-    private TextView _detailTotalSupply; //detail_total_supply
+    private TextView _detailMarketCap; //detail_max_supply
+    private TextView _detail24hVolume; //detail_total_supply
     private ImageView _logo;
 
 
@@ -35,7 +35,7 @@ public class DetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param coinRate CoinRate.
+     * @param coinRate ICoinRateApi.
      * @return A new instance of fragment DetailFragment.
      */
     public static DetailFragment newInstance(CoinRate coinRate) {
@@ -66,14 +66,14 @@ public class DetailFragment extends Fragment {
     private void bind(View view) {
         _detailAvailableSupply = view.findViewById(R.id.detail_available_supply);
         _detailNameCoin = view.findViewById(R.id.detail_name_coin);
-        _detailMaxSupply = view.findViewById(R.id.detail_max_supply);
-        _detailTotalSupply = view.findViewById(R.id.detail_total_supply);
+        _detailMarketCap = view.findViewById(R.id.detail_market_cap);
+        _detail24hVolume = view.findViewById(R.id.detail_24h_volume);
         _logo = view.findViewById(R.id.detail_image_view);
 
         _detailNameCoin.setText(_coinRate.getName());
-        _detailTotalSupply.setText(String.valueOf(_coinRate.getTotalSupply()));
-        _detailMaxSupply.setText(String.valueOf(_coinRate.getMaxSupply()));
-        _detailAvailableSupply.setText(String.valueOf(_coinRate.getAvailableSupply()));
+        _detail24hVolume.setText(_coinRate.getUIVolume24());
+        _detailMarketCap.setText(_coinRate.getUIMarketCap());
+        _detailAvailableSupply.setText(_coinRate.getUIAvailableSupply());
 
         Picasso.with(view.getContext())
                 .load("https://files.coinmarketcap.com/static/img/coins/64x64/" + _coinRate.getId() + ".png")

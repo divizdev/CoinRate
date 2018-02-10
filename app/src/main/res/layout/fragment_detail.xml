@@ -1,12 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="ru.divizdev.coinrate.ui.DetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,8 +16,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:contentDescription="TODO"
-             />
+            android:contentDescription="TODO" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -32,56 +29,60 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                tools:text="@string/title_detail_name_coin" />
+                android:text="@string/title_detail_name_coin" />
 
             <EditText
                 android:id="@+id/detail_name_coin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:editable="false"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
     </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
+        style="@style/text_coin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        tools:text="@string/title_available_supply" />
+        android:text="@string/title_available_supply" />
 
     <EditText
         android:id="@+id/detail_available_supply"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:editable="false"
         android:ems="10"
         android:hint="@string/title_available_supply"
         android:inputType="number" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/title_max_supply" />
+        android:text="@string/title_market_cap" />
 
     <EditText
-        android:id="@+id/detail_max_supply"
-        android:layout_width="match_parent"
+        android:id="@+id/detail_market_cap"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/title_max_supply"
-        android:inputType="number" />
+        android:hint="@string/title_market_cap"
+        android:inputType="none" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/title_total_supply" />
+        android:text="@string/title_24h_volume" />
 
     <EditText
-        android:id="@+id/detail_total_supply"
-        android:layout_width="match_parent"
+        android:id="@+id/detail_24h_volume"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:ems="10"
-        android:hint="@string/title_total_supply"
-        android:inputType="number"
+        android:hint="@string/title_24h_volume"
+        android:inputType="none"
         android:singleLine="false" />
 
     <LinearLayout
@@ -90,43 +91,69 @@
         android:orientation="horizontal">
 
         <TextView
+            style="@style/text_coin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/title_rank" android:textStyle="bold" />
+            android:text="@string/title_rank"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/detail_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <TextView style="@style/text_coin"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
+
+        <TextView
+            style="@style/text_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/name_percent_change_24h"
-            android:textStyle="bold"/>
-        <TextView style="@style/text_coin" android:paddingStart="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/percent_change_24h"
-            android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="+2"/>
-        <TextView style="@style/text_coin"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/name_unit_percent_change"/>
-        <TextView style="@style/text_coin" android:layout_weight="1" android:gravity="end"
-            android:layout_width="0dp" android:layout_height="wrap_content"
-            android:text="@string/name_percent_change_7d"
-            android:textStyle="bold"/>
-        <TextView style="@style/text_coin"
-            android:id="@+id/percent_change_7d" android:paddingStart="@dimen/activity_horizontal_margin"
+            style="@style/text_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:text="+2" />
+
+        <TextView
+            style="@style/text_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_unit_percent_change" />
+
+        <TextView
+            style="@style/text_coin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:text="@string/name_percent_change_7d"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/percent_change_7d"
+            style="@style/text_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="end"
             android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="-1"
-            android:layout_gravity="fill_horizontal" android:gravity="end"/>
-        <TextView style="@style/text_coin"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="@string/name_unit_percent_change"
-            />
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:text="-1" />
+
+        <TextView
+            style="@style/text_coin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_unit_percent_change" />
 
     </LinearLayout>
 
