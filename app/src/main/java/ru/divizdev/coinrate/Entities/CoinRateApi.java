@@ -100,7 +100,25 @@ public class CoinRateApi implements Parcelable {
     //endregion
 
 
-
+    public CoinRateApi(String id, String name, String symbol, int rank, BigDecimal priceUsd, BigDecimal marketCapUsd, BigDecimal marketCapAlternate, double percentChange1h, double percentChange24h, double percentChange7d, BigDecimal availableSupply, BigDecimal totalSupply, BigDecimal maxSupply, int lastUpdated, BigDecimal priceAlternate, BigDecimal volume24hUsd, BigDecimal volume24hAlternate) {
+        _id = id;
+        _name = name;
+        _symbol = symbol;
+        _rank = rank;
+        _priceUsd = priceUsd;
+        _marketCapUsd = marketCapUsd;
+        _marketCapAlternate = marketCapAlternate;
+        _percentChange1h = percentChange1h;
+        _percentChange24h = percentChange24h;
+        _percentChange7d = percentChange7d;
+        _availableSupply = availableSupply;
+        _totalSupply = totalSupply;
+        _maxSupply = maxSupply;
+        _lastUpdated = lastUpdated;
+        _priceAlternate = priceAlternate;
+        _volume24hUsd = volume24hUsd;
+        _volume24hAlternate = volume24hAlternate;
+    }
 
     //region MethodClass
     @Override
@@ -121,7 +139,68 @@ public class CoinRateApi implements Parcelable {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        CoinRateApi that = (CoinRateApi) o;
+
+        if (getRank() != that.getRank()) return false;
+        if (Double.compare(that.getPercentChange1h(), getPercentChange1h()) != 0) return false;
+        if (Double.compare(that.getPercentChange24h(), getPercentChange24h()) != 0) return false;
+        if (Double.compare(that.getPercentChange7d(), getPercentChange7d()) != 0) return false;
+        if (getLastUpdated() != that.getLastUpdated()) return false;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
+        if (getSymbol() != null ? !getSymbol().equals(that.getSymbol()) : that.getSymbol() != null)
+            return false;
+        if (getPriceUsd() != null ? !getPriceUsd().equals(that.getPriceUsd()) : that.getPriceUsd() != null)
+            return false;
+        if (getMarketCapUsd() != null ? !getMarketCapUsd().equals(that.getMarketCapUsd()) : that.getMarketCapUsd() != null)
+            return false;
+        if (getMarketCapAlternate() != null ? !getMarketCapAlternate().equals(that.getMarketCapAlternate()) : that.getMarketCapAlternate() != null)
+            return false;
+        if (getAvailableSupply() != null ? !getAvailableSupply().equals(that.getAvailableSupply()) : that.getAvailableSupply() != null)
+            return false;
+        if (getTotalSupply() != null ? !getTotalSupply().equals(that.getTotalSupply()) : that.getTotalSupply() != null)
+            return false;
+        if (getMaxSupply() != null ? !getMaxSupply().equals(that.getMaxSupply()) : that.getMaxSupply() != null)
+            return false;
+        if (getPriceAlternate() != null ? !getPriceAlternate().equals(that.getPriceAlternate()) : that.getPriceAlternate() != null)
+            return false;
+        if (getVolume24hUsd() != null ? !getVolume24hUsd().equals(that.getVolume24hUsd()) : that.getVolume24hUsd() != null)
+            return false;
+        return getVolume24hAlternate() != null ? getVolume24hAlternate().equals(that.getVolume24hAlternate()) : that.getVolume24hAlternate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getSymbol() != null ? getSymbol().hashCode() : 0);
+        result = 31 * result + getRank();
+        result = 31 * result + (getPriceUsd() != null ? getPriceUsd().hashCode() : 0);
+        result = 31 * result + (getMarketCapUsd() != null ? getMarketCapUsd().hashCode() : 0);
+        result = 31 * result + (getMarketCapAlternate() != null ? getMarketCapAlternate().hashCode() : 0);
+        temp = Double.doubleToLongBits(getPercentChange1h());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getPercentChange24h());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getPercentChange7d());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (getAvailableSupply() != null ? getAvailableSupply().hashCode() : 0);
+        result = 31 * result + (getTotalSupply() != null ? getTotalSupply().hashCode() : 0);
+        result = 31 * result + (getMaxSupply() != null ? getMaxSupply().hashCode() : 0);
+        result = 31 * result + getLastUpdated();
+        result = 31 * result + (getPriceAlternate() != null ? getPriceAlternate().hashCode() : 0);
+        result = 31 * result + (getVolume24hUsd() != null ? getVolume24hUsd().hashCode() : 0);
+        result = 31 * result + (getVolume24hAlternate() != null ? getVolume24hAlternate().hashCode() : 0);
+        return result;
+    }
 
     //endregion
 
