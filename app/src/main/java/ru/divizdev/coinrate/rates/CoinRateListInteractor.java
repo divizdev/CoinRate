@@ -53,6 +53,7 @@ public class CoinRateListInteractor {
 
     private void showList(String curCurrency) {
         List<CoinRate> list = _coinRateModel.get(curCurrency);
+        _curCurrency = curCurrency;
         if (list != null) {
             _ICoinRateListView.showCoinRateList(list);
         } else {
