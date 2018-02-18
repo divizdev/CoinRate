@@ -2,15 +2,43 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
-    <style name="text_coin">
+    <style name="TextViewBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+
+    <style name="TextViewBase.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextViewBase.Small.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextViewBase.Small.Up">
+        <item name="android:textColor">@color/colorUp</item>
+    </style>
+
+    <style name="TextViewBase.Small.Down">
+        <item name="android:textColor">@color/colorDown</item>
+    </style>
+
+
+    <style name="TextViewBase.Big">
         <item name="android:textSize">17sp</item>
     </style>
+
+    <style name="TextViewBase.Big.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 
 </resources>

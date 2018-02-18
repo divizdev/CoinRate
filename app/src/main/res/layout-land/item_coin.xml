@@ -18,21 +18,21 @@
 
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                           android:orientation="horizontal">
-                <TextView style="@style/text_coin"
+                <TextView style="@style/TextViewBase"
                           android:id="@+id/symbol_coin"
                           android:layout_width="wrap_content" android:layout_height="wrap_content"
                           android:text="{symbol_coin}" android:textStyle="bold"/>
-                <TextView style="@style/text_coin" android:paddingStart="@dimen/activity_horizontal_margin"
+                <TextView style="@style/TextViewBase" android:paddingStart="@dimen/activity_horizontal_margin"
                           android:paddingLeft="@dimen/activity_horizontal_margin"
                           android:paddingRight="@dimen/activity_horizontal_margin"
                           android:paddingEnd="@dimen/activity_horizontal_margin"
                           android:layout_width="wrap_content" android:layout_height="wrap_content"
                           android:text="@string/separator_name_coin"/>
-                <TextView style="@style/text_coin"
+                <TextView style="@style/TextViewBase"
                           android:id="@+id/name_coin"
                           android:layout_width="wrap_content" android:layout_height="wrap_content"
                           android:text="{name_coin}"/>
-                <TextView style="@style/text_coin"
+                <TextView style="@style/TextViewBase"
                           android:layout_width="0dp"
                           android:layout_height="wrap_content"
                           android:id="@+id/rate_coin"
@@ -42,7 +42,7 @@
                           android:paddingEnd="@dimen/activity_horizontal_margin"
                           android:text="{10 000}"
                           android:gravity="end" android:layout_weight="1" android:textStyle="bold|italic"/>
-                <TextView style="@style/text_coin"
+                <TextView style="@style/TextViewBase"
                           android:id="@+id/currency_rate_coin"
                           android:layout_width="wrap_content" android:layout_height="wrap_content"
                           android:text="@string/name_unit_price"
@@ -60,7 +60,7 @@
                 android:padding="@dimen/activity_margin">
 
                 <TextView
-                    style="@style/text_coin"
+                    style="@style/TextViewBase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/name_percent_change_24h"
@@ -68,7 +68,7 @@
 
                 <TextView
                     android:id="@+id/percent_change_24h"
-                    style="@style/text_coin"
+                    style="@style/TextViewBase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingEnd="@dimen/activity_horizontal_margin"
@@ -78,13 +78,13 @@
                     android:text="+2" />
 
                 <TextView
-                    style="@style/text_coin"
+                    style="@style/TextViewBase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/name_unit_percent_change" />
 
                 <TextView
-                    style="@style/text_coin"
+                    style="@style/TextViewBase"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -94,7 +94,7 @@
 
                 <TextView
                     android:id="@+id/percent_change_7d"
-                    style="@style/text_coin"
+                    style="@style/TextViewBase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill_horizontal"
@@ -107,7 +107,7 @@
                     android:text="-1" />
 
                 <TextView
-                    style="@style/text_coin"
+                    style="@style/TextViewBase"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 

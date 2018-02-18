@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.divizdev.coinrate.App;
-import ru.divizdev.coinrate.rates.CoinRateListInteractor;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.R;
+import ru.divizdev.coinrate.rates.CoinRateListInteractor;
 
 /**
  * Created by diviz on 26.01.2018.
@@ -181,7 +181,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                 _percentChange24h.setTextColor(getColorPercent(coinRate.getPercentChange24h()));
                 _percentChange24h.setText(coinRate.getUIPercentChange24h());
 
-                _currencyRateCoin.setText(coinRate.getCurrency());
+                _currencyRateCoin.setText(coinRate.getUICurrency());
 
 
                 //TODO: Extract to constant
@@ -193,6 +193,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
             }
 
             private int getColorPercent(double percent) {
+
                 if (percent > 0.0) {
                     return Color.GREEN;
                 } else {

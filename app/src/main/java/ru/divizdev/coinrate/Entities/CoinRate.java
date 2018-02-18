@@ -201,6 +201,21 @@ public class CoinRate implements Parcelable {
         return _currency;
     }
 
+    public String getUICurrency() {
+        if(_currency.compareTo("USD") == 0){
+            return "\u0024";//"\uf155";
+        }
+        if(_currency.compareTo("RUB") == 0){
+            return "\u20BD";//"\uf155";
+        }
+        if(_currency.compareTo("EUR") == 0){
+            return "\u20AC";//"\uf155";
+        }
+
+
+        return _currency;
+    }
+
     protected CoinRate(Parcel parcel) {
         _coinRateApi = CoinRateApi.CREATOR.createFromParcel(parcel);
         _currency = parcel.readString();
