@@ -1,6 +1,8 @@
 package ru.divizdev.coinrate.ui;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.R;
 
-public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.OnFragmentInteractionListener {
+public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.OnFragmentInteractionListener, DialogSettings.NoticeDialogListener {
 
 
     @Override
@@ -76,6 +79,17 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
             return super.onOptionsItemSelected(item);
         }
         return true;
+
+    }
+
+    @Override
+    public void onDialogSelectedItem(String currency) {
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(DialogSettings.KEY_NAME_PREF, currency).apply();
+        App.getCoinRateListPresenter().setCurrency(currency);
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
 
     }
 }

@@ -1,10 +1,8 @@
 package ru.divizdev.coinrate.ui;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -33,7 +31,7 @@ import ru.divizdev.coinrate.rates.CoinRateListInteractor;
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListInteractor.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class CoinRateListFragment extends Fragment implements CoinRateListInteractor.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener {
 
     private OnFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
@@ -56,8 +54,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
         _swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         _swipeRefreshLayout.setOnRefreshListener(this);
-
-        PreferenceManager.getDefaultSharedPreferences(getContext()).registerOnSharedPreferenceChangeListener(this);
 
         return view;
     }
@@ -106,16 +102,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         App.getCoinRateListPresenter().refresh();
     }
 
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-        if (key.compareTo(DialogSettings.KEY_NAME_PREF)==0){
-            String currencyValue = sharedPreferences.getString(DialogSettings.KEY_NAME_PREF, "");
-            App.getCoinRateListPresenter().setCurrency(currencyValue);
-        }
-
-
-    }
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
 

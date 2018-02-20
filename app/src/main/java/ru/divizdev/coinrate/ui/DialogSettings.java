@@ -8,7 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
 import ru.divizdev.coinrate.R;
 
@@ -18,6 +17,13 @@ import ru.divizdev.coinrate.R;
 
 public class DialogSettings extends DialogFragment {
     public static final String KEY_NAME_PREF = "pref_currency";
+    private NoticeDialogListener _listener;
+
+
+    public interface NoticeDialogListener {
+        void onDialogSelectedItem(String currency);
+        void onDialogNegativeClick(DialogFragment dialog);
+    }
 
 
     @NonNull
@@ -43,7 +49,7 @@ public class DialogSettings extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String value = stringArray[i];
-                        PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString(KEY_NAME_PREF, value).apply();
+                        _listener.onDialogSelectedItem(value);
                         dialogInterface.dismiss();
 
                     }
@@ -51,7 +57,8 @@ public class DialogSettings extends DialogFragment {
                 .setNegativeButton(cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        _listener.onDialogNegativeClick(DialogSettings.this);
+                        dialogInterface.dismiss();
                     }
                 })
                 .create();
@@ -61,8 +68,13 @@ public class DialogSettings extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof CoinRateActivity) {
-            Toast.makeText(context, "test", Toast.LENGTH_LONG).show();
+        if (context instanceof NoticeDialogListener) {
+
+            _listener = (NoticeDialogListener) context;
+
+        }else {
+            throw new RuntimeException(context.toString()
+                    + " must implement NoticeDialogListener");
         }
 
 
