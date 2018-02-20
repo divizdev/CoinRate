@@ -71,9 +71,9 @@ public class DetailFragment extends Fragment {
         _logo = view.findViewById(R.id.detail_image_view);
 
         _detailNameCoin.setText(_coinRate.getName());
-        _detail24hVolume.setText(_coinRate.getUIVolume24());
-        _detailMarketCap.setText(_coinRate.getUIMarketCap());
-        _detailAvailableSupply.setText(_coinRate.getUIAvailableSupply());
+        _detail24hVolume.setText(String.format("%s %s",  _coinRate.getUIVolume24(), _coinRate.getUICurrency()));
+        _detailMarketCap.setText(String.format("%s %s",_coinRate.getUIMarketCap(), _coinRate.getUICurrency()));
+        _detailAvailableSupply.setText(String.format("%s %s", _coinRate.getUIAvailableSupply(), _coinRate.getSymbol()));
 
         Picasso.with(view.getContext())
                 .load("https://files.coinmarketcap.com/static/img/coins/64x64/" + _coinRate.getId() + ".png")

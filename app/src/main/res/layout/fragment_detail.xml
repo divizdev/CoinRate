@@ -25,65 +25,46 @@
             android:orientation="vertical">
 
             <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
+                style="@style/TextViewBase.Title"
                 android:text="@string/title_detail_name_coin" />
 
-            <EditText
+            <TextView
                 android:id="@+id/detail_name_coin"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:editable="false"
-                android:inputType="textPersonName" />
+                style="@style/TextViewBase.Value" />
         </LinearLayout>
 
     </LinearLayout>
 
     <TextView
-        style="@style/TextViewBase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextViewBase.Title"
+
 
         android:text="@string/title_available_supply" />
 
-    <EditText
+    <TextView
         android:id="@+id/detail_available_supply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:editable="false"
-        android:ems="10"
-        android:hint="@string/title_available_supply"
-        android:inputType="number" />
+        style="@style/TextViewBase.Value"
+        android:hint="@string/title_available_supply" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_market_cap" />
 
-    <EditText
+    <TextView
         android:id="@+id/detail_market_cap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/title_market_cap"
-        android:inputType="none" />
+        style="@style/TextViewBase.Value"
+        android:hint="@string/title_market_cap" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_24h_volume" />
 
-    <EditText
+    <TextView
         android:id="@+id/detail_24h_volume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:ems="10"
-        android:hint="@string/title_24h_volume"
-        android:inputType="none"
-        android:singleLine="false" />
+        style="@style/TextViewBase.Value"
+        android:hint="@string/title_24h_volume" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,68 +72,56 @@
         android:orientation="horizontal">
 
         <TextView
-            style="@style/TextViewBase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewBase.Small.Bold"
             android:text="@string/title_rank"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/detail_rank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewBase.Small"
             android:layout_weight="1" />
 
         <TextView
-            style="@style/TextViewBase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/name_percent_change_24h"
-            android:textStyle="bold" />
+
+            style="@style/TextViewBase.Small.Bold"
+            android:text="@string/name_percent_change_24h" />
 
         <TextView
             android:id="@+id/percent_change_24h"
-            style="@style/TextViewBase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewBase.Small"
+
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
-            android:text="+2" />
+            tools:text="+2" />
 
         <TextView
-            style="@style/TextViewBase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewBase.Small"
             android:text="@string/name_unit_percent_change" />
 
         <TextView
-            style="@style/TextViewBase"
+            style="@style/TextViewBase.Small.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="@string/name_percent_change_7d"
-            android:textStyle="bold" />
+            android:text="@string/name_percent_change_7d" />
 
         <TextView
             android:id="@+id/percent_change_7d"
-            style="@style/TextViewBase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewBase.Small"
+
             android:layout_gravity="fill_horizontal"
             android:gravity="end"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
-            android:text="-1" />
+            tools:text="-1" />
 
         <TextView
-            style="@style/TextViewBase"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/TextViewBase.Small"
             android:text="@string/name_unit_percent_change" />
 
     </LinearLayout>
