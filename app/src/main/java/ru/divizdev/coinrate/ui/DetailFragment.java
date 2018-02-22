@@ -76,7 +76,7 @@ public class DetailFragment extends Fragment {
         _detailAvailableSupply.setText(String.format("%s %s", _coinRate.getUIAvailableSupply(), _coinRate.getSymbol()));
 
         Picasso.with(view.getContext())
-                .load("https://files.coinmarketcap.com/static/img/coins/64x64/" + _coinRate.getId() + ".png")
+                .load("http://divizdev.ru/CoinRate/color/" + _coinRate.getSymbol().toLowerCase() + "@2x.png")
                 .into(_logo);
     }
 
