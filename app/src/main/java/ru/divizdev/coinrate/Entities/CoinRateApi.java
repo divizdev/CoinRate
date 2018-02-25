@@ -207,7 +207,7 @@ public class CoinRateApi implements Parcelable {
 
     //region GetSetMethod
     public BigDecimal getAvailableSupply() {
-        return _availableSupply;
+        return checkAndReturnValue(_availableSupply);
     }
 
     public void setAvailableSupply(BigDecimal availableSupply) {
@@ -215,7 +215,7 @@ public class CoinRateApi implements Parcelable {
     }
 
     public BigDecimal getTotalSupply() {
-        return _totalSupply;
+        return checkAndReturnValue(_totalSupply);
     }
 
     public void setTotalSupply(BigDecimal totalSupply) {
@@ -223,7 +223,7 @@ public class CoinRateApi implements Parcelable {
     }
 
     public BigDecimal getMaxSupply() {
-        return _maxSupply;
+        return checkAndReturnValue(_maxSupply);
     }
 
     public void setMaxSupply(BigDecimal maxSupply) {
@@ -272,7 +272,7 @@ public class CoinRateApi implements Parcelable {
 
 
     public BigDecimal getPriceUsd() {
-        return _priceUsd;
+        return checkAndReturnValue(_priceUsd);
     }
 
     public void setPriceUsd(BigDecimal priceUsd) {
@@ -304,7 +304,7 @@ public class CoinRateApi implements Parcelable {
     }
 
     public BigDecimal getMarketCapUsd() {
-        return _marketCapUsd;
+        return checkAndReturnValue(_marketCapUsd);
     }
 
     public void setMarketCapUsd(BigDecimal marketCapUsd) {
@@ -312,7 +312,8 @@ public class CoinRateApi implements Parcelable {
     }
 
     public BigDecimal getMarketCapAlternate() {
-        return _marketCapAlternate;
+
+        return checkAndReturnValue(_marketCapAlternate);
     }
 
     public void setMarketCapAlternate(BigDecimal marketCapAlternate) {
@@ -322,7 +323,8 @@ public class CoinRateApi implements Parcelable {
 
 
     public BigDecimal getVolume24hUsd() {
-        return _volume24hUsd;
+
+        return checkAndReturnValue(_volume24hUsd);
     }
 
     public void setVolume24hUsd(BigDecimal volume24hUsd) {
@@ -330,15 +332,31 @@ public class CoinRateApi implements Parcelable {
     }
 
     public BigDecimal getVolume24hAlternate() {
-        return _volume24hAlternate;
+
+        return checkAndReturnValue(_volume24hAlternate);
     }
 
     public void setVolume24hAlternate(BigDecimal volume24hAlternate) {
         _volume24hAlternate = volume24hAlternate;
     }
 
+    public BigDecimal getPriceAlternate() {
+
+        return checkAndReturnValue(_priceAlternate);
+    }
+
+    public void setPriceAlternate(BigDecimal priceAlternate) {
+        _priceAlternate = priceAlternate;
+    }
+
     //endregion
 
+    private BigDecimal checkAndReturnValue(BigDecimal value){
+        if(value == null){
+            return BigDecimal.ZERO;
+        }
+        return value;
+    }
 
     //region Parcel
     private CoinRateApi(Parcel parcel) {
@@ -372,25 +390,25 @@ public class CoinRateApi implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(_id);
-        parcel.writeString(_name);
-        parcel.writeString(_symbol);
-        parcel.writeInt(_rank);
-        parcel.writeDouble(_priceUsd.doubleValue());
-        parcel.writeDouble(_percentChange1h);
-        parcel.writeDouble(_percentChange24h);
-        parcel.writeDouble(_percentChange7d);
-        parcel.writeDouble(_availableSupply.doubleValue());
-        parcel.writeDouble(_totalSupply.doubleValue());
-        parcel.writeDouble(_maxSupply.doubleValue());
-        parcel.writeInt(_lastUpdated);
-        parcel.writeDouble(_priceAlternate.doubleValue());
+        parcel.writeString(getId());
+        parcel.writeString(getName());
+        parcel.writeString(getSymbol());
+        parcel.writeInt(getRank());
+        parcel.writeDouble(getPriceUsd().doubleValue());
+        parcel.writeDouble(getPercentChange1h());
+        parcel.writeDouble(getPercentChange24h());
+        parcel.writeDouble(getPercentChange7d());
+        parcel.writeDouble(getAvailableSupply().doubleValue());
+        parcel.writeDouble(getTotalSupply().doubleValue());
+        parcel.writeDouble(getMaxSupply().doubleValue());
+        parcel.writeInt(getLastUpdated());
+        parcel.writeDouble(getPriceAlternate().doubleValue());
 
-        parcel.writeDouble(_marketCapUsd.doubleValue());
-        parcel.writeDouble(_marketCapAlternate.doubleValue());
+        parcel.writeDouble(getMarketCapUsd().doubleValue());
+        parcel.writeDouble(getMarketCapAlternate().doubleValue());
 
-        parcel.writeDouble(_volume24hUsd.doubleValue());
-        parcel.writeDouble(_volume24hAlternate.doubleValue());
+        parcel.writeDouble(getVolume24hUsd().doubleValue());
+        parcel.writeDouble(getVolume24hAlternate().doubleValue());
 
     }
 
@@ -406,20 +424,8 @@ public class CoinRateApi implements Parcelable {
         }
     };
 
-    public BigDecimal getPriceAlternate() {
-        return _priceAlternate;
-    }
 
-    public void setPriceAlternate(BigDecimal priceAlternate) {
-        _priceAlternate = priceAlternate;
-    }
 
-    public BigDecimal getPriceEur() {
-        return BigDecimal.ZERO;
-}
 
-    public void setPriceEur(BigDecimal priceEur) {
-
-    }
     //endregion
 }

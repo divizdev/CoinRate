@@ -49,7 +49,7 @@ public class CoinRateListInteractor {
     }
 
     public void detach(){
-        _ICoinRateListView = null;
+        _ICoinRateListView = NullRateListView.getInstance();
     }
 
     private void showList(String curCurrency) {
@@ -120,5 +120,33 @@ public class CoinRateListInteractor {
         void showCoinRateList(List<CoinRate> list);
 
         void showErrorLoading();
+    }
+
+    private static class NullRateListView  implements  ICoinRateListView{
+
+        private static NullRateListView _nullRateListView = new NullRateListView();
+
+        private NullRateListView(){
+
+        }
+
+        public static NullRateListView getInstance(){
+            return  _nullRateListView;
+        }
+
+        @Override
+        public void showLoadingProgress(Boolean isView) {
+
+        }
+
+        @Override
+        public void showCoinRateList(List<CoinRate> list) {
+
+        }
+
+        @Override
+        public void showErrorLoading() {
+
+        }
     }
 }
