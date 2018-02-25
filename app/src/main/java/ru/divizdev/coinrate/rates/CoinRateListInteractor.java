@@ -17,6 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.Entities.CoinRateApi;
+import ru.divizdev.coinrate.ui.DialogSettings;
 
 /**
  * Created by diviz on 29.01.2018.
@@ -53,9 +54,11 @@ public class CoinRateListInteractor {
 
     private void showList(String curCurrency) {
         List<CoinRate> list = _coinRateModel.get(curCurrency);
-        _curCurrency = curCurrency;
+
         if (list != null) {
             _ICoinRateListView.showCoinRateList(list);
+            _curCurrency = curCurrency;
+            android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(DialogSettings.KEY_NAME_PREF, _curCurrency).apply();
         } else {
             loadCoinRate(curCurrency);
         }
@@ -70,7 +73,6 @@ public class CoinRateListInteractor {
     private void loadCoinRate(final String currency) {
 
         _ICoinRateListView.showLoadingProgress(true);
-        _curCurrency = currency;
         //TODO: Extract constants
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.coinmarketcap.com/") //Базовая часть адреса
@@ -79,7 +81,7 @@ public class CoinRateListInteractor {
 
         ICoinRateApi api = retrofit.create(ICoinRateApi.class);
 
-        api.getData(0, 200, currency).enqueue(new Callback<List<ru.divizdev.coinrate.Entities.CoinRateApi>>() {
+        api.getData(0, 100, currency).enqueue(new Callback<List<ru.divizdev.coinrate.Entities.CoinRateApi>>() {
             @Override
             public void onResponse(@NonNull Call<List<ru.divizdev.coinrate.Entities.CoinRateApi>> call, @NonNull Response<List<ru.divizdev.coinrate.Entities.CoinRateApi>> response) {
                 if (response.body() != null) {
@@ -88,6 +90,9 @@ public class CoinRateListInteractor {
 
                     _ICoinRateListView.showLoadingProgress(false);
                     _ICoinRateListView.showCoinRateList(coinRates);
+
+                    _curCurrency = currency;
+                    android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(DialogSettings.KEY_NAME_PREF, _curCurrency).apply();
                 }
             }
 
@@ -104,7 +109,6 @@ public class CoinRateListInteractor {
     public void setCurrency(String currency) {
         if (_curCurrency.compareTo(currency) != 0) {
             showList(currency);
-
         }
 
     }

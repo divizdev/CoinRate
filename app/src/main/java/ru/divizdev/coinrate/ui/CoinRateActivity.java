@@ -84,7 +84,7 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
 
     @Override
     public void onDialogSelectedItem(String currency) {
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(DialogSettings.KEY_NAME_PREF, currency).apply();
+
         App.getCoinRateListPresenter().setCurrency(currency);
     }
 
