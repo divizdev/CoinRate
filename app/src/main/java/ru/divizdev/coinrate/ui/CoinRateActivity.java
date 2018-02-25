@@ -1,7 +1,6 @@
 package ru.divizdev.coinrate.ui;
 
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,7 +13,7 @@ import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.R;
 
-public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.OnFragmentInteractionListener, DialogSettings.NoticeDialogListener {
+public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.OnFragmentInteractionListener, SettingsDialog.NoticeDialogListener {
 
 
     @Override
@@ -37,8 +36,6 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
         }
 
 
-
-
     }
 
     @Override
@@ -59,27 +56,33 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
     }
 
 
-
-
-    public void showSettingsDialog(){
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                 DialogSettings dialogSettings = new DialogSettings();
-                 dialogSettings.show(fragmentManager, "");
-//                fragmentManager.beginTransaction().replace(R.id.fragment_container, new PrefFragment()).addToBackStack(null).commit();
+    public void showSettingsDialog() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        SettingsDialog settingsDialog = new SettingsDialog();
+        settingsDialog.show(fragmentManager, "");
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_settings:
-
                 showSettingsDialog();
                 break;
+            case R.id.about:
+                showDialogAbout();
+                break;
             default:
-            return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected(item);
         }
         return true;
 
+    }
+
+    private void showDialogAbout() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        AboutDialog aboutDialog = new AboutDialog();
+        aboutDialog.show(fragmentManager, "");
     }
 
     @Override

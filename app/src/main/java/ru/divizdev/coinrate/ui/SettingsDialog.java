@@ -15,7 +15,7 @@ import ru.divizdev.coinrate.R;
  * Created by diviz on 06.02.2018.
  */
 
-public class DialogSettings extends DialogFragment {
+public class SettingsDialog extends DialogFragment {
     public static final String KEY_NAME_PREF = "pref_currency";
     private NoticeDialogListener _listener;
 
@@ -54,10 +54,10 @@ public class DialogSettings extends DialogFragment {
 
                     }
                 })
-                .setNegativeButton(cancel, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        _listener.onDialogNegativeClick(DialogSettings.this);
+                        _listener.onDialogNegativeClick(SettingsDialog.this);
                         dialogInterface.dismiss();
                     }
                 })

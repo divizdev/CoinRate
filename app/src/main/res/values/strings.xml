@@ -19,5 +19,8 @@
     <string name="pref_currency_default_value">USD</string>
     <string name="action_settings">Настройки</string>
     <string name="cancel">Отмена</string>
+    <string name="ok">Ok</string>
+    <string name="about_description">Трекер криптовалют. Будь в курсе курса!</string>
+    <string name="menu_item_about">O программе</string>
 
 </resources>

@@ -17,7 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.Entities.CoinRateApi;
-import ru.divizdev.coinrate.ui.DialogSettings;
+import ru.divizdev.coinrate.ui.SettingsDialog;
 
 /**
  * Created by diviz on 29.01.2018.
@@ -58,7 +58,7 @@ public class CoinRateListInteractor {
         if (list != null) {
             _ICoinRateListView.showCoinRateList(list);
             _curCurrency = curCurrency;
-            android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(DialogSettings.KEY_NAME_PREF, _curCurrency).apply();
+            android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(SettingsDialog.KEY_NAME_PREF, _curCurrency).apply();
         } else {
             loadCoinRate(curCurrency);
         }
@@ -92,7 +92,7 @@ public class CoinRateListInteractor {
                     _ICoinRateListView.showCoinRateList(coinRates);
 
                     _curCurrency = currency;
-                    android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(DialogSettings.KEY_NAME_PREF, _curCurrency).apply();
+                    android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(SettingsDialog.KEY_NAME_PREF, _curCurrency).apply();
                 }
             }
 
