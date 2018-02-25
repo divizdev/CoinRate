@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CoinRate</string>
+    <string name="app_name">CryptoCoinRate</string>
     <string name="separator_name_coin">|</string>
     <string name="name_percent_change_7d">7d:</string>
     <string name="name_percent_change_24h">24h:</string>
@@ -20,7 +20,7 @@
     <string name="action_settings">Настройки</string>
     <string name="cancel">Отмена</string>
     <string name="ok">Ok</string>
-    <string name="about_description">Трекер криптовалют. Будь в курсе курса!</string>
+    <string name="about_description">Курс криптовалют. Будь в курсе курса!</string>
     <string name="menu_item_about">O программе</string>
 
 </resources>

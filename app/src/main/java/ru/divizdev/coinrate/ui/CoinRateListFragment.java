@@ -178,7 +178,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
                 //TODO: Extract to constant
                 Picasso loader = Picasso.with(this.itemView.getContext());
-                        loader.setIndicatorsEnabled(true);
                         loader.load("http://divizdev.ru/CoinRate/color/" + coinRate.getSymbol().toLowerCase() + "@2x.png")
                         .into(_logo);
                 Log.d("ViewHolder", "SetData");
