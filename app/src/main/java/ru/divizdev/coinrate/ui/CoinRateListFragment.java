@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     private RecyclerView _recyclerView;
     private List<CoinRate> _list = new ArrayList<>();
     private SwipeRefreshLayout _swipeRefreshLayout;
+    private ProgressBar _progressBar;
 
     @Nullable
     @Override
@@ -55,6 +57,8 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         _swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         _swipeRefreshLayout.setOnRefreshListener(this);
 
+        _progressBar = view.findViewById(R.id.progress_bar);
+
         return view;
     }
 
@@ -67,9 +71,13 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     @Override
     public void showLoadingProgress(Boolean isView) {
 
-        Toast.makeText(getContext(), "LoadData", Toast.LENGTH_SHORT).show();
+        if (isView) {
+            if(!_swipeRefreshLayout.isRefreshing()){
+                _progressBar.setVisibility(View.VISIBLE);
+            }
 
-        if (!isView) {
+        }else {
+            _progressBar.setVisibility(View.GONE);
             _swipeRefreshLayout.setRefreshing(false);
         }
 
@@ -92,9 +100,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
     @Override
     public void showErrorLoading() {
-
         Toast.makeText(getContext(), "ErrorLoad", Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
