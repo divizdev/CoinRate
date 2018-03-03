@@ -2,6 +2,8 @@ package ru.divizdev.coinrate.ui;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -19,14 +21,19 @@ public class AboutDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        String version = "1.0";
+        try {
+            PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         View aboutPage = new AboutPage(getContext())
                 .setDescription(getContext().getResources().getString(R.string.about_description))
-                .addItem(new Element().setTitle("Version 1.0"))
-                .addEmail("diviz.dev@gmail.com")
+                .addItem(new Element().setTitle("Version " + version))
                 .addWebsite("http://divizdev.ru")
-                .addTwitter("@divizdev")
-                .addPlayStore("com.ideashower.readitlater.pro")
+                .addPlayStore("ru.divizdev.coinrate")
                 .addGitHub("divizdev/CoinRate")
                 .create();
 
