@@ -1,9 +1,6 @@
 package ru.divizdev.coinrate.rates;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -17,7 +14,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.Entities.CoinRateApi;
-import ru.divizdev.coinrate.ui.SettingsDialog;
 
 /**
  * Created by diviz on 29.01.2018.
@@ -28,19 +24,18 @@ public class CoinRateListInteractor {
     private ICoinRateListView _ICoinRateListView;
     private String _curCurrency = "";
 
-    private Context _context;
 
     private Map<String, List<CoinRate>> _coinRateModel = new HashMap<>();
+    private final IManagerSettings _managerSettings;
 
-    public CoinRateListInteractor(Context context) {
-        _context = context;
+    public CoinRateListInteractor(IManagerSettings managerSettings) {
+        _managerSettings = managerSettings;
         _curCurrency = getCurrencySettings();
     }
 
     private String getCurrencySettings() {
         //TODO: Extract constants
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_context);
-        return preferences.getString("pref_currency", "USD");
+        return _managerSettings.getCurCurrency();
     }
 
     public void attache(ICoinRateListView ICoinRateListView) {
@@ -48,7 +43,7 @@ public class CoinRateListInteractor {
         showList(_curCurrency);
     }
 
-    public void detach(){
+    public void detach() {
         _ICoinRateListView = NullRateListView.getInstance();
     }
 
@@ -58,7 +53,7 @@ public class CoinRateListInteractor {
         if (list != null) {
             _ICoinRateListView.showCoinRateList(list);
             _curCurrency = curCurrency;
-            android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(SettingsDialog.KEY_NAME_PREF, _curCurrency).apply();
+            _managerSettings.setCurCurrency(curCurrency);
         } else {
             loadCoinRate(curCurrency);
         }
@@ -90,9 +85,9 @@ public class CoinRateListInteractor {
 
                     _ICoinRateListView.showLoadingProgress(false);
                     _ICoinRateListView.showCoinRateList(coinRates);
-
+                    _managerSettings.setCurCurrency(currency);
                     _curCurrency = currency;
-                    android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(SettingsDialog.KEY_NAME_PREF, _curCurrency).apply();
+
                 }
             }
 
@@ -122,16 +117,16 @@ public class CoinRateListInteractor {
         void showErrorLoading();
     }
 
-    private static class NullRateListView  implements  ICoinRateListView{
+    private static class NullRateListView implements ICoinRateListView {
 
         private static NullRateListView _nullRateListView = new NullRateListView();
 
-        private NullRateListView(){
+        private NullRateListView() {
 
         }
 
-        public static NullRateListView getInstance(){
-            return  _nullRateListView;
+        public static NullRateListView getInstance() {
+            return _nullRateListView;
         }
 
         @Override

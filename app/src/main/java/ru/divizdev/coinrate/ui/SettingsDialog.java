@@ -10,13 +10,14 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import ru.divizdev.coinrate.R;
+import ru.divizdev.coinrate.rates.PreferenceManagerSettings;
 
 /**
  * Created by diviz on 06.02.2018.
  */
 
 public class SettingsDialog extends DialogFragment {
-    public static final String KEY_NAME_PREF = "pref_currency";
+
     private NoticeDialogListener _listener;
 
 
@@ -34,7 +35,7 @@ public class SettingsDialog extends DialogFragment {
         final String currencyDefaultValue = getContext().getString(R.string.pref_currency_default_value);
         final String[] stringArray = getContext().getResources().getStringArray(R.array.pref_currency_array);
 
-        String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(KEY_NAME_PREF, currencyDefaultValue);
+        String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(PreferenceManagerSettings.KEY_NAME_PREF, currencyDefaultValue);
         int index = 0;
         for (int i = 0; i < stringArray.length; i++) {
             if (stringArray[i].compareTo(currentValue) == 0) {
