@@ -17,22 +17,22 @@ import ru.divizdev.coinrate.rates.LocaleUtils;
  * Created by diviz on 08.02.2018.
  */
 
-public class CoinRate implements Parcelable {
+public class CoinRateUI implements Parcelable {
 
     final private CoinRateApi _coinRateApi;
     final private String _currency;
 
-    public static List<CoinRate> convertList(List<CoinRateApi> coinRateApis, String currency) {
-        List<CoinRate> result = new ArrayList<>();
+    public static List<CoinRateUI> convertList(List<CoinRateApi> coinRateApis, String currency) {
+        List<CoinRateUI> result = new ArrayList<>();
 
         for (CoinRateApi coinRateApi : coinRateApis) {
-            result.add(new CoinRate(coinRateApi, currency));
+            result.add(new CoinRateUI(coinRateApi, currency));
         }
         return result;
     }
 
 
-    public CoinRate(CoinRateApi coinRateApi, String currency) {
+    public CoinRateUI(CoinRateApi coinRateApi, String currency) {
 
         _coinRateApi = coinRateApi;
         _currency = currency;
@@ -131,6 +131,10 @@ public class CoinRate implements Parcelable {
         return formatBigDecimal(getPrice());
     }
 
+    public String getURLImage() {
+        return "http://divizdev.ru/CoinRate/color/" + getSymbol().toLowerCase() + "@2x.png";
+    }
+
     public double getPercentChange1h() {
         return _coinRateApi.getPercentChange1h();
     }
@@ -142,6 +146,21 @@ public class CoinRate implements Parcelable {
     public double getPercentChange7d() {
         return _coinRateApi.getPercentChange7d();
     }
+
+    public int getColorPercentChange1h() {
+        return getColorPercent(getPercentChange1h());
+    }
+
+    public int getColorPercentChange24h() {
+        return getColorPercent(getPercentChange24h());
+
+    }
+
+    public int getColorPercentChange7d() {
+        return getColorPercent(getPercentChange7d());
+
+    }
+
 
     public BigDecimal getAvailableSupply() {
         if (_coinRateApi.getAvailableSupply() == null) {
@@ -202,13 +221,13 @@ public class CoinRate implements Parcelable {
     }
 
     public String getUICurrency() {
-        if(_currency.compareTo("USD") == 0){
+        if (_currency.compareTo("USD") == 0) {
             return "\u0024";//"\uf155";
         }
-        if(_currency.compareTo("RUB") == 0){
+        if (_currency.compareTo("RUB") == 0) {
             return "\u20BD";//"\uf155";
         }
-        if(_currency.compareTo("EUR") == 0){
+        if (_currency.compareTo("EUR") == 0) {
             return "\u20AC";//"\uf155";
         }
 
@@ -216,7 +235,8 @@ public class CoinRate implements Parcelable {
         return _currency;
     }
 
-    protected CoinRate(Parcel parcel) {
+
+    protected CoinRateUI(Parcel parcel) {
         _coinRateApi = CoinRateApi.CREATOR.createFromParcel(parcel);
         _currency = parcel.readString();
     }
@@ -226,11 +246,11 @@ public class CoinRate implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CoinRate coinRate = (CoinRate) o;
+        CoinRateUI coinRateUI = (CoinRateUI) o;
 
-        if (_coinRateApi != null ? !_coinRateApi.equals(coinRate._coinRateApi) : coinRate._coinRateApi != null)
+        if (_coinRateApi != null ? !_coinRateApi.equals(coinRateUI._coinRateApi) : coinRateUI._coinRateApi != null)
             return false;
-        return getCurrency() != null ? getCurrency().equals(coinRate.getCurrency()) : coinRate.getCurrency() == null;
+        return getCurrency() != null ? getCurrency().equals(coinRateUI.getCurrency()) : coinRateUI.getCurrency() == null;
     }
 
     @Override
@@ -240,15 +260,15 @@ public class CoinRate implements Parcelable {
         return result;
     }
 
-    public static final Creator<CoinRate> CREATOR = new Creator<CoinRate>() {
+    public static final Creator<CoinRateUI> CREATOR = new Creator<CoinRateUI>() {
         @Override
-        public CoinRate createFromParcel(Parcel parcel) {
-            return new CoinRate(parcel);
+        public CoinRateUI createFromParcel(Parcel parcel) {
+            return new CoinRateUI(parcel);
         }
 
         @Override
-        public CoinRate[] newArray(int size) {
-            return new CoinRate[size];
+        public CoinRateUI[] newArray(int size) {
+            return new CoinRateUI[size];
         }
     };
 

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import ru.divizdev.coinrate.App;
-import ru.divizdev.coinrate.Entities.CoinRate;
+import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
 
 
@@ -19,7 +19,7 @@ public class DetailFragment extends Fragment implements ICurrencyChangeListener 
 
     private static final String ARG_COIN_RATE = "coin_rate";
 
-    private CoinRate _coinRate;
+    private CoinRateUI _coinRateUI;
     private TextView _detailNameCoin;
     private TextView _detailAvailableSupply;
     private TextView _detailMarketCap; //detail_max_supply
@@ -33,10 +33,10 @@ public class DetailFragment extends Fragment implements ICurrencyChangeListener 
     }
 
 
-    public static DetailFragment newInstance(CoinRate coinRate) {
+    public static DetailFragment newInstance(CoinRateUI coinRateUI) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_COIN_RATE, coinRate);
+        args.putParcelable(ARG_COIN_RATE, coinRateUI);
 
         fragment.setArguments(args);
         return fragment;
@@ -46,7 +46,7 @@ public class DetailFragment extends Fragment implements ICurrencyChangeListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            _coinRate = getArguments().getParcelable(ARG_COIN_RATE);
+            _coinRateUI = getArguments().getParcelable(ARG_COIN_RATE);
         }
     }
 
@@ -65,13 +65,13 @@ public class DetailFragment extends Fragment implements ICurrencyChangeListener 
         _detail24hVolume = view.findViewById(R.id.detail_24h_volume);
         _logo = view.findViewById(R.id.detail_image_view);
 
-        _detailNameCoin.setText(_coinRate.getName());
-        _detail24hVolume.setText(String.format("%s %s",  _coinRate.getUIVolume24(), _coinRate.getUICurrency()));
-        _detailMarketCap.setText(String.format("%s %s",_coinRate.getUIMarketCap(), _coinRate.getUICurrency()));
-        _detailAvailableSupply.setText(String.format("%s %s", _coinRate.getUIAvailableSupply(), _coinRate.getSymbol()));
+        _detailNameCoin.setText(_coinRateUI.getName());
+        _detail24hVolume.setText(String.format("%s %s",  _coinRateUI.getUIVolume24(), _coinRateUI.getUICurrency()));
+        _detailMarketCap.setText(String.format("%s %s", _coinRateUI.getUIMarketCap(), _coinRateUI.getUICurrency()));
+        _detailAvailableSupply.setText(String.format("%s %s", _coinRateUI.getUIAvailableSupply(), _coinRateUI.getSymbol()));
 
         Picasso.with(view.getContext())
-                .load("http://divizdev.ru/CoinRate/color/" + _coinRate.getSymbol().toLowerCase() + "@2x.png")
+                .load(_coinRateUI.getURLImage())
                 .into(_logo);
     }
 

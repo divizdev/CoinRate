@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.divizdev.coinrate.Entities.CoinRate;
+import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
 
 public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.IFragmentInteractionListener, SettingsDialog.INoticeDialogListener {
@@ -46,10 +46,10 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
     }
 
     @Override
-    public void onClickItemCoinRate(CoinRate coinRate) {
+    public void onClickItemCoinRate(CoinRateUI coinRateUI) {
         FragmentManager fm = getSupportFragmentManager();
 
-        Fragment detailFragment = DetailFragment.newInstance(coinRate);
+        Fragment detailFragment = DetailFragment.newInstance(coinRateUI);
 
         fm.beginTransaction().replace(R.id.fragment_container, detailFragment).addToBackStack(null).commit();
     }

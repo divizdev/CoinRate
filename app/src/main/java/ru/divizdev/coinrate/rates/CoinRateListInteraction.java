@@ -12,7 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.divizdev.coinrate.Entities.CoinRate;
+import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.Entities.CoinRateApi;
 
 /**
@@ -25,7 +25,7 @@ public class CoinRateListInteraction {
     private String _curCurrency = "";
 
 
-    private Map<String, List<CoinRate>> _coinRateModel = new HashMap<>();
+    private Map<String, List<CoinRateUI>> _coinRateModel = new HashMap<>();
     private final IManagerSettings _managerSettings;
 
     public CoinRateListInteraction(IManagerSettings managerSettings) {
@@ -48,7 +48,7 @@ public class CoinRateListInteraction {
     }
 
     private void showList(String curCurrency) {
-        List<CoinRate> list = _coinRateModel.get(curCurrency);
+        List<CoinRateUI> list = _coinRateModel.get(curCurrency);
 
         if (list != null) {
             _curCurrency = curCurrency;
@@ -80,11 +80,11 @@ public class CoinRateListInteraction {
             @Override
             public void onResponse(@NonNull Call<List<ru.divizdev.coinrate.Entities.CoinRateApi>> call, @NonNull Response<List<ru.divizdev.coinrate.Entities.CoinRateApi>> response) {
                 if (response.body() != null) {
-                    List<CoinRate> coinRates = CoinRate.convertList(response.body(), currency);
-                    _coinRateModel.put(currency, coinRates);//TODO: multi thread not lock
+                    List<CoinRateUI> coinRateUI = CoinRateUI.convertList(response.body(), currency);
+                    _coinRateModel.put(currency, coinRateUI);//TODO: multi thread not lock
 
                     _ICoinRateListView.showLoadingProgress(false);
-                    _ICoinRateListView.showCoinRateList(coinRates);
+                    _ICoinRateListView.showCoinRateList(coinRateUI);
                     _managerSettings.setCurCurrency(currency);
                     _curCurrency = currency;
 
@@ -112,7 +112,7 @@ public class CoinRateListInteraction {
     public interface ICoinRateListView {
         void showLoadingProgress(Boolean isView);
 
-        void showCoinRateList(List<CoinRate> list);
+        void showCoinRateList(List<CoinRateUI> list);
 
         void showErrorLoading();
     }
@@ -135,7 +135,7 @@ public class CoinRateListInteraction {
         }
 
         @Override
-        public void showCoinRateList(List<CoinRate> list) {
+        public void showCoinRateList(List<CoinRateUI> list) {
 
         }
 

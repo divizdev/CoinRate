@@ -1,7 +1,6 @@
 package ru.divizdev.coinrate.ui;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.divizdev.coinrate.App;
-import ru.divizdev.coinrate.Entities.CoinRate;
+import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.CoinRateListInteraction;
 
@@ -36,7 +35,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
     private IFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
-    private List<CoinRate> _list = new ArrayList<>();
+    private List<CoinRateUI> _list = new ArrayList<>();
     private SwipeRefreshLayout _swipeRefreshLayout;
     private ProgressBar _progressBar;
 
@@ -91,7 +90,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     }
 
     @Override
-    public void showCoinRateList(List<CoinRate> list) {
+    public void showCoinRateList(List<CoinRateUI> list) {
         _list.clear();
         _list.addAll(list);
         _recyclerView.getAdapter().notifyDataSetChanged();
@@ -117,9 +116,9 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
 
         private IFragmentInteractionListener _listener;
-        private List<CoinRate> _list;
+        private List<CoinRateUI> _list;
 
-        CoinRateAdapter(IFragmentInteractionListener listener, List<CoinRate> list) {
+        CoinRateAdapter(IFragmentInteractionListener listener, List<CoinRateUI> list) {
             _listener = listener;
             _list = list;
         }
@@ -145,7 +144,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             private IFragmentInteractionListener _listener;
-            private CoinRate _coinRate;
+            private CoinRateUI _coinRateUI;
 
             private CardView _cardView;
 
@@ -166,37 +165,29 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                 Log.d("ViewHolder", "Create ViewHolder");
             }
 
-            public void setData(CoinRate coinRate) {
-                _coinRate = coinRate;
-                _symbolCoin.setText(coinRate.getSymbol());
-                _nameCoin.setText(coinRate.getName());
-                _rateCoin.setText(coinRate.getUIPrice());
+            public void setData(CoinRateUI coinRateUI) {
+                _coinRateUI = coinRateUI;
+                _symbolCoin.setText(coinRateUI.getSymbol());
+                _nameCoin.setText(coinRateUI.getName());
+                _rateCoin.setText(coinRateUI.getUIPrice());
 
-                _percentChange7d.setTextColor(getColorPercent(coinRate.getPercentChange7d()));
-                _percentChange7d.setText(coinRate.getUIPercentChange7d());
+                _percentChange7d.setTextColor(coinRateUI.getColorPercentChange7d());
+                _percentChange7d.setText(coinRateUI.getUIPercentChange7d());
 
-                _percentChange24h.setTextColor(getColorPercent(coinRate.getPercentChange24h()));
-                _percentChange24h.setText(coinRate.getUIPercentChange24h());
+                _percentChange24h.setTextColor(coinRateUI.getColorPercentChange24h());
+                _percentChange24h.setText(coinRateUI.getUIPercentChange24h());
 
-                _currencyRateCoin.setText(coinRate.getUICurrency());
+                _currencyRateCoin.setText(coinRateUI.getUICurrency());
 
 
-                //TODO: Extract to constant
+
                 Picasso loader = Picasso.with(this.itemView.getContext());
-                        loader.load("http://divizdev.ru/CoinRate/color/" + coinRate.getSymbol().toLowerCase() + "@2x.png")
+                        loader.load(coinRateUI.getURLImage())
                         .into(_logo);
                 Log.d("ViewHolder", "SetData");
 
             }
 
-            private int getColorPercent(double percent) {
-
-                if (percent > 0.0) {
-                    return Color.GREEN;
-                } else {
-                    return Color.RED;
-                }
-            }
 
             private void bind() {
                 _symbolCoin = _cardView.findViewById(R.id.symbol_coin);
@@ -212,7 +203,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
             @Override
             public void onClick(View view) {
                 if (_listener != null) {
-                    _listener.onClickItemCoinRate(_coinRate);
+                    _listener.onClickItemCoinRate(_coinRateUI);
                 }
             }
         }
@@ -237,7 +228,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
     public interface IFragmentInteractionListener {
 
-        void onClickItemCoinRate(CoinRate coinRate);
+        void onClickItemCoinRate(CoinRateUI coinRateUI);
     }
 
 }
