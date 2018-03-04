@@ -10,11 +10,12 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.R;
 
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements ICurrencyChangeListener {
 
     private static final String ARG_COIN_RATE = "coin_rate";
 
@@ -31,13 +32,7 @@ public class DetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param coinRate ICoinRateApi.
-     * @return A new instance of fragment DetailFragment.
-     */
+
     public static DetailFragment newInstance(CoinRate coinRate) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
@@ -81,4 +76,9 @@ public class DetailFragment extends Fragment {
     }
 
 
+    @Override
+    public void onChangeCurrency(String currency) {
+        //TODO: Implement his Interaction
+        App.getCoinRateListPresenter().setCurrency(currency);
+    }
 }

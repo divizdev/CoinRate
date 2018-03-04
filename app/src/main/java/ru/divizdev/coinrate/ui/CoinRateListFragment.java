@@ -26,15 +26,15 @@ import java.util.List;
 import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.rates.CoinRateListInteractor;
+import ru.divizdev.coinrate.rates.CoinRateListInteraction;
 
 /**
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListInteractor.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener {
+public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener, ICurrencyChangeListener {
 
-    private OnFragmentInteractionListener _listener;
+    private IFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
     private List<CoinRate> _list = new ArrayList<>();
     private SwipeRefreshLayout _swipeRefreshLayout;
@@ -108,13 +108,18 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         App.getCoinRateListPresenter().refresh();
     }
 
+    @Override
+    public void onChangeCurrency(String currency) {
+        App.getCoinRateListPresenter().setCurrency(currency);
+    }
+
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
 
-        private OnFragmentInteractionListener _listener;
+        private IFragmentInteractionListener _listener;
         private List<CoinRate> _list;
 
-        public CoinRateAdapter(OnFragmentInteractionListener listener, List<CoinRate> list) {
+        CoinRateAdapter(IFragmentInteractionListener listener, List<CoinRate> list) {
             _listener = listener;
             _list = list;
         }
@@ -139,7 +144,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
         public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-            private OnFragmentInteractionListener _listener;
+            private IFragmentInteractionListener _listener;
             private CoinRate _coinRate;
 
             private CardView _cardView;
@@ -153,7 +158,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
             private TextView _percentChange7d;
             private TextView _currencyRateCoin;
 
-            public ViewHolder(OnFragmentInteractionListener listener, CardView itemView) {
+            ViewHolder(IFragmentInteractionListener listener, CardView itemView) {
                 super(itemView);
                 _listener = listener;
                 this._cardView = itemView;
@@ -216,11 +221,11 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            _listener = (OnFragmentInteractionListener) context;
+        if (context instanceof IFragmentInteractionListener) {
+            _listener = (IFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement IFragmentInteractionListener");
         }
     }
 
@@ -230,7 +235,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         _listener = null;
     }
 
-    public interface OnFragmentInteractionListener {
+    public interface IFragmentInteractionListener {
 
         void onClickItemCoinRate(CoinRate coinRate);
     }

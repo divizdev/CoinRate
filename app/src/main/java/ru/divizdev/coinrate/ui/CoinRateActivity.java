@@ -9,11 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRate;
 import ru.divizdev.coinrate.R;
 
-public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.OnFragmentInteractionListener, SettingsDialog.NoticeDialogListener {
+public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.IFragmentInteractionListener, SettingsDialog.INoticeDialogListener {
 
 
     @Override
@@ -88,7 +87,11 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
     @Override
     public void onDialogSelectedItem(String currency) {
 
-        App.getCoinRateListPresenter().setCurrency(currency);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(fragment != null && fragment instanceof ICurrencyChangeListener){
+            ((ICurrencyChangeListener)fragment).onChangeCurrency(currency);
+        }
+
     }
 
     @Override

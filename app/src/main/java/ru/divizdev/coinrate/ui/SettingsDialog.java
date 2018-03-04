@@ -18,10 +18,10 @@ import ru.divizdev.coinrate.rates.PreferenceManagerSettings;
 
 public class SettingsDialog extends DialogFragment {
 
-    private NoticeDialogListener _listener;
+    private INoticeDialogListener _listener;
 
 
-    public interface NoticeDialogListener {
+    public interface INoticeDialogListener {
         void onDialogSelectedItem(String currency);
         void onDialogNegativeClick(DialogFragment dialog);
     }
@@ -69,13 +69,13 @@ public class SettingsDialog extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        if (context instanceof NoticeDialogListener) {
+        if (context instanceof INoticeDialogListener) {
 
-            _listener = (NoticeDialogListener) context;
+            _listener = (INoticeDialogListener) context;
 
         }else {
             throw new RuntimeException(context.toString()
-                    + " must implement NoticeDialogListener");
+                    + " must implement INoticeDialogListener");
         }
 
 

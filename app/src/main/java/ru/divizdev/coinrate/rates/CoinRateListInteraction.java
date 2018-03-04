@@ -19,27 +19,27 @@ import ru.divizdev.coinrate.Entities.CoinRateApi;
  * Created by diviz on 29.01.2018.
  */
 
-public class CoinRateListInteractor {
+public class CoinRateListInteraction {
 
-    private ICoinRateListView _ICoinRateListView;
+    private ICoinRateListView _ICoinRateListView = NullRateListView.getInstance();
     private String _curCurrency = "";
 
 
     private Map<String, List<CoinRate>> _coinRateModel = new HashMap<>();
     private final IManagerSettings _managerSettings;
 
-    public CoinRateListInteractor(IManagerSettings managerSettings) {
+    public CoinRateListInteraction(IManagerSettings managerSettings) {
         _managerSettings = managerSettings;
         _curCurrency = getCurrencySettings();
     }
 
     private String getCurrencySettings() {
-        //TODO: Extract constants
         return _managerSettings.getCurCurrency();
     }
 
     public void attache(ICoinRateListView ICoinRateListView) {
         _ICoinRateListView = ICoinRateListView;
+        _curCurrency = getCurrencySettings();
         showList(_curCurrency);
     }
 
@@ -51,9 +51,9 @@ public class CoinRateListInteractor {
         List<CoinRate> list = _coinRateModel.get(curCurrency);
 
         if (list != null) {
-            _ICoinRateListView.showCoinRateList(list);
             _curCurrency = curCurrency;
             _managerSettings.setCurCurrency(curCurrency);
+            _ICoinRateListView.showCoinRateList(list);
         } else {
             loadCoinRate(curCurrency);
         }
@@ -125,7 +125,7 @@ public class CoinRateListInteractor {
 
         }
 
-        public static NullRateListView getInstance() {
+        static NullRateListView getInstance() {
             return _nullRateListView;
         }
 
