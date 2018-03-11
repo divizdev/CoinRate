@@ -3,14 +3,20 @@ package ru.divizdev.coinrate.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -31,13 +37,16 @@ import ru.divizdev.coinrate.rates.CoinRateListInteraction;
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener, ICurrencyChangeListener {
+public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener, SettingsDialog.INoticeDialogListener{
 
     private IFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
     private List<CoinRateUI> _list = new ArrayList<>();
     private SwipeRefreshLayout _swipeRefreshLayout;
     private ProgressBar _progressBar;
+
+
+    //region LifeCycle
 
     @Nullable
     @Override
@@ -58,6 +67,9 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
         _progressBar = view.findViewById(R.id.progress_bar);
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+
         return view;
     }
 
@@ -66,6 +78,91 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         super.onResume();
         App.getCoinRateListPresenter().attache(this);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        App.getCoinRateListPresenter().detach();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof IFragmentInteractionListener) {
+            _listener = (IFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement IFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        _listener = null;
+    }
+
+
+    //endregion LifeCycle
+
+
+    //region Menu
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+         inflater.inflate(R.menu.main_menu, menu);
+
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                showSettingsDialog();
+                break;
+            case R.id.about:
+                showDialogAbout();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void showDialogAbout() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        AboutDialog aboutDialog = new AboutDialog();
+        aboutDialog.show(fragmentManager, "");
+    }
+
+    private void showSettingsDialog() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        SettingsDialog settingsDialog = new SettingsDialog();
+        settingsDialog.show(fragmentManager, "");
+    }
+
+    @Override
+    public void onDialogSettingsSelectedItem(String currency) {
+        App.getCoinRateListPresenter().setCurrency(currency);
+    }
+
+    @Override
+    public void onDialogSettingsNegativeClick(DialogFragment dialog) {
+
+    }
+
+    //endregion Menu
+
+    //region ICoinRateListView
 
     @Override
     public void showLoadingProgress(Boolean isView) {
@@ -79,15 +176,9 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
             _progressBar.setVisibility(View.GONE);
             _swipeRefreshLayout.setRefreshing(false);
         }
-
-
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        App.getCoinRateListPresenter().detach();
-    }
+
 
     @Override
     public void showCoinRateList(List<CoinRateUI> list) {
@@ -102,15 +193,17 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         Toast.makeText(getContext(), "ErrorLoad", Toast.LENGTH_SHORT).show();
     }
 
+    //endregion
+
     @Override
     public void onRefresh() {
         App.getCoinRateListPresenter().refresh();
     }
 
-    @Override
-    public void onChangeCurrency(String currency) {
-        App.getCoinRateListPresenter().setCurrency(currency);
-    }
+
+
+
+
 
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
@@ -209,22 +302,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof IFragmentInteractionListener) {
-            _listener = (IFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement IFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        _listener = null;
-    }
 
     public interface IFragmentInteractionListener {
 

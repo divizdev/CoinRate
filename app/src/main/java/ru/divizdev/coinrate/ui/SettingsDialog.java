@@ -22,8 +22,8 @@ public class SettingsDialog extends DialogFragment {
 
 
     public interface INoticeDialogListener {
-        void onDialogSelectedItem(String currency);
-        void onDialogNegativeClick(DialogFragment dialog);
+        void onDialogSettingsSelectedItem(String currency);
+        void onDialogSettingsNegativeClick(DialogFragment dialog);
     }
 
 
@@ -50,7 +50,7 @@ public class SettingsDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String value = stringArray[i];
-                        _listener.onDialogSelectedItem(value);
+                        _listener.onDialogSettingsSelectedItem(value);
                         dialogInterface.dismiss();
 
                     }
@@ -58,7 +58,7 @@ public class SettingsDialog extends DialogFragment {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        _listener.onDialogNegativeClick(SettingsDialog.this);
+                        _listener.onDialogSettingsNegativeClick(SettingsDialog.this);
                         dialogInterface.dismiss();
                     }
                 })

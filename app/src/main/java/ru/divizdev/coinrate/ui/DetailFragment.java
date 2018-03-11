@@ -2,6 +2,7 @@ package ru.divizdev.coinrate.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
 
 
-public class DetailFragment extends Fragment implements ICurrencyChangeListener {
+public class DetailFragment extends Fragment  {
 
     private static final String ARG_COIN_RATE = "coin_rate";
 
@@ -48,7 +48,12 @@ public class DetailFragment extends Fragment implements ICurrencyChangeListener 
         if (getArguments() != null) {
             _coinRateUI = getArguments().getParcelable(ARG_COIN_RATE);
         }
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,9 +81,4 @@ public class DetailFragment extends Fragment implements ICurrencyChangeListener 
     }
 
 
-    @Override
-    public void onChangeCurrency(String currency) {
-        //TODO: Implement his Interaction
-        App.getCoinRateListPresenter().setCurrency(currency);
-    }
 }

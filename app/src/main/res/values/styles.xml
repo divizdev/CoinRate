@@ -16,10 +16,19 @@
 
     <style name="TextViewBase.Title">
         <item name="android:textSize">12sp</item>
+
+    </style>
+
+    <style name="TextViewBase.Title.Big">
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="TextViewBase.Value">
         <item name="android:textSize">17sp</item>
+        <item name="background">@drawable/list_section_divider_holo_light</item>
+        <item name="textAllCaps">true</item>
+
+
     </style>
 
     <style name="TextViewBase.Small">

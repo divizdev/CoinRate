@@ -25,7 +25,7 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/TextViewBase.Title"
+                style="@style/TextViewBase.Title.Big"
                 android:text="@string/title_detail_name_coin" />
 
             <TextView
@@ -37,8 +37,6 @@
 
     <TextView
         style="@style/TextViewBase.Title"
-
-
         android:text="@string/title_available_supply" />
 
     <TextView
