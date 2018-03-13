@@ -23,7 +23,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="TextViewBase.Value">
+    <style name="TextViewBase.Value" >
         <item name="android:textSize">17sp</item>
         <item name="background">@drawable/list_section_divider_holo_light</item>
         <item name="textAllCaps">true</item>
