@@ -115,6 +115,10 @@ public class CoinRateListInteraction {
         void showCoinRateList(List<CoinRateUI> list);
 
         void showErrorLoading();
+
+        void showDialogAbout();
+
+        void showDialogSettings();
     }
 
     private static class NullRateListView implements ICoinRateListView {
@@ -141,6 +145,16 @@ public class CoinRateListInteraction {
 
         @Override
         public void showErrorLoading() {
+
+        }
+
+        @Override
+        public void showDialogAbout() {
+
+        }
+
+        @Override
+        public void showDialogSettings() {
 
         }
     }

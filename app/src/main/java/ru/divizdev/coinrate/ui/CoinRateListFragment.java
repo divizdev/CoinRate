@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.CardView;
@@ -67,8 +68,12 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
         _progressBar = view.findViewById(R.id.progress_bar);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(false);
+        ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+        if(supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+            supportActionBar.setDisplayShowHomeEnabled(false);
+        }
 
         return view;
     }
@@ -127,7 +132,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                showSettingsDialog();
+                showDialogSettings();
                 break;
             case R.id.about:
                 showDialogAbout();
@@ -138,15 +143,18 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         return true;
     }
 
-    private void showDialogAbout() {
+    @Override
+    public void showDialogAbout() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         AboutDialog aboutDialog = new AboutDialog();
         aboutDialog.show(fragmentManager, "");
     }
 
-    private void showSettingsDialog() {
+    @Override
+    public void showDialogSettings() {
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         SettingsDialog settingsDialog = new SettingsDialog();
+        settingsDialog.setTargetFragment(this, 0);
         settingsDialog.show(fragmentManager, "");
     }
 
