@@ -5,9 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +69,7 @@ public class CoinRateUI implements Parcelable {
     }
 
     public String getUIVolume24() {
-        return formatBigDecimal(getVolume24h());
+        return LocaleUtils.formatBigDecimal(getVolume24h());
     }
 
 
@@ -92,7 +89,7 @@ public class CoinRateUI implements Parcelable {
     }
 
     public String getUIMarketCap() {
-        return formatBigDecimal(getMarketCap());
+        return LocaleUtils.formatBigDecimal(getMarketCap());
     }
 
     public BigDecimal getPrice() {
@@ -119,16 +116,8 @@ public class CoinRateUI implements Parcelable {
         }
     }
 
-    private String formatBigDecimal(BigDecimal decimal) {
-        BigDecimal decimalCopy = decimal.setScale(LocaleUtils.getCurrentScale(), RoundingMode.HALF_DOWN);
-        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(LocaleUtils.getCurrentLocale());
-        df.setMinimumFractionDigits(2);
-        df.setGroupingUsed(true);
-        return df.format(decimalCopy);
-    }
-
     public String getUIPrice() {
-        return formatBigDecimal(getPrice());
+        return LocaleUtils.formatBigDecimal(getPrice());
     }
 
     public String getURLImage() {
@@ -200,15 +189,15 @@ public class CoinRateUI implements Parcelable {
     }
 
     public String getUIAvailableSupply() {
-        return formatBigDecimal(getAvailableSupply());
+        return LocaleUtils.formatBigDecimal(getAvailableSupply());
     }
 
     public String getUITotalSupply() {
-        return formatBigDecimal(getTotalSupply());
+        return LocaleUtils.formatBigDecimal(getTotalSupply());
     }
 
     public String getUIMaxSupply() {
-        return formatBigDecimal(getMaxSupply());
+        return LocaleUtils.formatBigDecimal(getMaxSupply());
     }
 
     public String getUILastUpdated() {

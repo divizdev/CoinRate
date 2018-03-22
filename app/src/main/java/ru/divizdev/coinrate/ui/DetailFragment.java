@@ -14,9 +14,10 @@ import com.squareup.picasso.Picasso;
 
 import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
+import ru.divizdev.coinrate.rates.CoinRateDetailInteraction;
 
 
-public class DetailFragment extends Fragment  {
+public class DetailFragment extends Fragment implements CoinRateDetailInteraction.ICoinRateDetailView {
 
     private static final String ARG_COIN_RATE = "coin_rate";
     private static final String SYMBOL_PERCENT = "%";
@@ -31,6 +32,9 @@ public class DetailFragment extends Fragment  {
     private TextView _percentChanged7d;
     private TextView _detailSymbolCoin;
     private ImageView _logo;
+
+    private TextView _nameCurrencyFrom;
+    private TextView _nameCurrencyTo;
 
 
 
@@ -83,6 +87,11 @@ public class DetailFragment extends Fragment  {
         _percentChanged7d = view.findViewById(R.id.percent_change_7d);
         _logo = view.findViewById(R.id.detail_image_view);
         _detailSymbolCoin = view.findViewById(R.id.detail_symbol_coin);
+        _nameCurrencyFrom = view.findViewById(R.id.name_currency_from);
+        _nameCurrencyTo = view.findViewById(R.id.name_currency_to);
+
+
+
 
 
         setData(view, _coinRateUI);
@@ -109,4 +118,28 @@ public class DetailFragment extends Fragment  {
     }
 
 
+    @Override
+    public void setCurrencyFrom(String currencyFrom) {
+        _nameCurrencyFrom.setText(currencyFrom);
+    }
+
+    @Override
+    public void setCurrencyTo(String currencyTo) {
+        _nameCurrencyTo.setText(currencyTo);
+    }
+
+    @Override
+    public void setValue(String value) {
+
+    }
+
+    @Override
+    public void clearAll() {
+
+    }
+
+    @Override
+    public void showError(String error) {
+
+    }
 }

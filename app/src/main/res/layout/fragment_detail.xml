@@ -212,6 +212,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:id="@+id/value_from"
             android:hint="@string/hint_value_from"
             />
 
@@ -222,7 +223,7 @@
             android:layout_height="wrap_content"
             style="@style/TextViewBase.Title.Big"
             android:id="@+id/value_to"
-            android:layout_marginTop="10dp"
+
             tools:text="0"
             />
     </LinearLayout>
@@ -232,8 +233,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/button_convert"
         android:text="@string/name_button_convert"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+
+            />
 
 
 
