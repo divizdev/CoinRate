@@ -34,21 +34,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
 
-        <!--<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>-->
-        <!--<item name="android:textSelectHandleLeft">?android:attr/textSelectHandleLeft</item>-->
-        <!--<item name="android:textSelectHandleRight">?android:attr/textSelectHandleRight</item>-->
-        <!--<item name="android:textSelectHandle">?android:attr/textSelectHandle</item>-->
-        <!--<item name="android:textEditPasteWindowLayout">?android:attr/textEditPasteWindowLayout</item>-->
-        <!--<item name="android:textEditNoPasteWindowLayout">?android:attr/textEditNoPasteWindowLayout</item>-->
-        <!--<item name="android:textEditSidePasteWindowLayout">?android:attr/textEditSidePasteWindowLayout</item>-->
-        <!--<item name="android:textEditSideNoPasteWindowLayout">?android:attr/textEditSideNoPasteWindowLayout</item>-->
-        <!--<item name="android:textEditSuggestionItemLayout">?android:attr/textEditSuggestionItemLayout</item>-->
-        <!--&lt;!&ndash;<item name="android:textEditSuggestionContainerLayout">?attr/textEditSuggestionContainerLayout</item>&ndash;&gt;-->
-        <!--&lt;!&ndash;<item name="android:textEditSuggestionHighlightStyle">?attr/textEditSuggestionHighlightStyle</item>&ndash;&gt;-->
-        <!--<item name="android:textCursorDrawable">?android:attr/textCursorDrawable</item>-->
-        <!--<item name="android:breakStrategy">high_quality</item>-->
-        <!--<item name="android:hyphenationFrequency">normal</item>-->
-        <!--<item name="textAllCaps">true</item>-->
 
 
     </style>
