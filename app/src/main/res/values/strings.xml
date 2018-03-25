@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CryptoCoinRate</string>
+    <string name="app_name">Трекер криптовалют</string>
     <string name="separator_name_coin">|</string>
     <string name="name_percent_change_7d">7д:</string>
     <string name="name_percent_change_24h">24ч:</string>
