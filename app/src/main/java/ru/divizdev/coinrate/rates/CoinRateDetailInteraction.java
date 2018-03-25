@@ -76,7 +76,7 @@ public class CoinRateDetailInteraction implements ICoinRateDetailInteraction {
 
             } else {
 
-                result = _coinRateUI.getPrice().floatValue() / valueF;
+                result = valueF / _coinRateUI.getPrice().floatValue();
 
             }
 

@@ -194,9 +194,10 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/TextViewBase.Title"
+                    style="@style/TextViewBase.Title.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
 
                     android:layout_marginTop="40dp"
                     android:text="@string/name_convertor" />
@@ -245,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="@string/hint_value_from"
-                        android:inputType="number" />
+                        android:inputType="numberDecimal" />
 
 
                     <TextView
@@ -254,6 +255,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="end"
 
                         tools:text="0" />
                 </LinearLayout>

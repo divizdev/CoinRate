@@ -78,8 +78,10 @@ public class CoinRateDetailInteractionTest {
     public void convertCurrencyReverseInteger() throws Exception {
         _interaction.changeCurrency();
         _interaction.convertCurrency("100");
-
         Assert.assertEquals("1,00", _view._value);
+
+        _interaction.convertCurrency("1000");
+        Assert.assertEquals("10,00", _view._value);
 
 
 

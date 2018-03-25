@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,6 +107,17 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _valueFrom = view.findViewById(R.id.value_from);
         _valueTo = view.findViewById(R.id.value_to);
 
+        _valueFrom.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_UP){
+
+                    _interaction.convertCurrency(_valueFrom.getText().toString());
+                }
+                return false;
+            }
+        });
+
         _buttonConvert.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -177,6 +189,8 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
 
     @Override
     public void clearAll() {
+        _valueFrom.setText("");
+        _valueTo.setText("");
 
     }
 
