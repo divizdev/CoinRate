@@ -2,245 +2,276 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="ru.divizdev.coinrate.ui.DetailFragment">
-
-    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@drawable/list_section_divider_holo_light"
-        >
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="ru.divizdev.coinrate.ui.DetailFragment">
 
-        <ImageView
-            android:id="@+id/detail_image_view"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            />
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_card_view"
             >
 
-            <TextView
-                android:id="@+id/detail_name_coin"
-                style="@style/TextViewBase.Title.Big"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                tools:text="Bitcoin" />
-            <TextView
-                android:id="@+id/detail_symbol_coin"
-                style="@style/TextViewBase.Title.Big"
-                tools:text = "BTC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                />
-        </LinearLayout>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/detail_image_view"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="@dimen/activity_horizontal_margin" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/detail_name_coin"
+                        style="@style/TextViewBase.Title.Big"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        tools:text="Bitcoin" />
+
+                    <TextView
+                        android:id="@+id/detail_symbol_coin"
+                        style="@style/TextViewBase.Title.Big"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        tools:text="BTC" />
+                </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
 
-        <LinearLayout
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            style="@style/TextViewBase.Small.Bold"
+                            android:text="@string/name_percent_change_1h" />
+
+                        <TextView
+                            android:id="@+id/percent_change_1h"
+                            style="@style/TextViewBase.Small"
+
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            tools:text="+2 %" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+
+                            style="@style/TextViewBase.Small.Bold"
+                            android:text="@string/name_percent_change_24h" />
+
+                        <TextView
+                            android:id="@+id/percent_change_24h"
+                            style="@style/TextViewBase.Small"
+
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            tools:text="+2 %" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextViewBase.Small.Bold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:text="@string/name_percent_change_7d" />
+
+                        <TextView
+                            android:id="@+id/percent_change_7d"
+                            style="@style/TextViewBase.Small"
+
+                            android:layout_gravity="fill_horizontal"
+                            android:gravity="end"
+                            android:paddingEnd="@dimen/activity_horizontal_margin"
+                            android:paddingLeft="@dimen/activity_horizontal_margin"
+                            android:paddingRight="@dimen/activity_horizontal_margin"
+                            android:paddingStart="@dimen/activity_horizontal_margin"
+                            tools:text="-1 %" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_card_view"
+            >
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+        <TextView
+            style="@style/TextViewBase.Title"
+            android:text="@string/title_available_supply" />
+
+        <TextView
+            android:id="@+id/detail_available_supply"
+            style="@style/TextViewBase.Value"
+            android:hint="@string/title_available_supply" />
+
+        <TextView
+            style="@style/TextViewBase.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
+            android:text="@string/title_market_cap" />
 
-                    style="@style/TextViewBase.Small.Bold"
-                    android:text="@string/name_percent_change_1h" />
-
-                <TextView
-                    android:id="@+id/percent_change_1h"
-                    style="@style/TextViewBase.Small"
-
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    tools:text="+2 %" />
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-
-                    style="@style/TextViewBase.Small.Bold"
-                    android:text="@string/name_percent_change_24h" />
-
-                <TextView
-                    android:id="@+id/percent_change_24h"
-                    style="@style/TextViewBase.Small"
-
-                    android:paddingEnd="@dimen/activity_horizontal_margin"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    tools:text="+2 %" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            <TextView
-                style="@style/TextViewBase.Small.Bold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:text="@string/name_percent_change_7d" />
-
-            <TextView
-                android:id="@+id/percent_change_7d"
-                style="@style/TextViewBase.Small"
-
-                android:layout_gravity="fill_horizontal"
-                android:gravity="end"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                tools:text="-1 %" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-
-
-    <TextView
-        style="@style/TextViewBase.Title"
-        android:text="@string/title_available_supply" />
-
-    <TextView
-        android:id="@+id/detail_available_supply"
-        style="@style/TextViewBase.Value"
-        android:hint="@string/title_available_supply" />
-
-    <TextView
-        style="@style/TextViewBase.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_market_cap" />
-
-    <TextView
-        android:id="@+id/detail_market_cap"
-        style="@style/TextViewBase.Value"
-        android:hint="@string/title_market_cap" />
-
-    <TextView
-        style="@style/TextViewBase.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_24h_volume" />
-
-    <TextView
-        android:id="@+id/detail_24h_volume"
-    style="@style/TextViewBase.Value"
-
-        android:hint="@string/title_24h_volume" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TextViewBase.Title"
-
-        android:layout_marginTop="40dp"
-        android:text="@string/name_convertor"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
+            android:id="@+id/detail_market_cap"
+            style="@style/TextViewBase.Value"
+            android:hint="@string/title_market_cap" />
+
+        <TextView
             style="@style/TextViewBase.Title"
-            android:id="@+id/name_currency_from"
-            android:layout_marginTop="40dp"
-            tools:text="RUB"
-            />
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_change_currency"
-            android:text="@string/name_change_button"/>
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            style="@style/TextViewBase.Title"
-            android:id="@+id/name_currency_to"
-            android:layout_marginTop="10dp"
-            tools:text="BTC"
-            android:gravity="end"
-            />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:id="@+id/value_from"
-            android:hint="@string/hint_value_from"
-            />
-
+            android:text="@string/title_24h_volume" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/detail_24h_volume"
+            style="@style/TextViewBase.Value"
+
+            android:hint="@string/title_24h_volume" />
+
+        </LinearLayout></android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/TextViewBase.Title.Big"
-            android:id="@+id/value_to"
+            android:layout_margin="@dimen/margin_card_view"
+            android:elevation="4dp"
+            >
 
-            tools:text="0"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextViewBase.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="40dp"
+                    android:text="@string/name_convertor" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/name_currency_from"
+                        style="@style/TextViewBase.Title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:layout_weight="1"
+                        tools:text="RUB" />
+
+                    <Button
+                        android:id="@+id/button_change_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name_change_button" />
+
+                    <TextView
+                        android:id="@+id/name_currency_to"
+                        style="@style/TextViewBase.Title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        tools:text="BTC" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/value_from"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/hint_value_from"
+                        android:inputType="number" />
+
+
+                    <TextView
+                        android:id="@+id/value_to"
+                        style="@style/TextViewBase.Title.Big"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        tools:text="0" />
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/button_convert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/name_button_convert"
+
+                    />
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
     </LinearLayout>
-
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_convert"
-        android:text="@string/name_button_convert"
-        android:layout_gravity="center"
-
-            />
-
-
-
-
-</LinearLayout>
-    </ScrollView>
+</ScrollView>

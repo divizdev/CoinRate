@@ -7,20 +7,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.CoinRateDetailInteraction;
+import ru.divizdev.coinrate.rates.ICoinRateDetailInteraction;
 
 
 public class DetailFragment extends Fragment implements CoinRateDetailInteraction.ICoinRateDetailView {
 
     private static final String ARG_COIN_RATE = "coin_rate";
     private static final String SYMBOL_PERCENT = "%";
+
+    private static ICoinRateDetailInteraction _interaction = App.getCoiCoinRateDetailInteraction();
 
     private CoinRateUI _coinRateUI;
     private TextView _detailNameCoin;
@@ -35,7 +41,12 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
 
     private TextView _nameCurrencyFrom;
     private TextView _nameCurrencyTo;
+    private EditText _valueFrom;
+    private TextView _valueTo;
 
+    private Button _buttonChangeCurrency;
+
+    private Button _buttonConvert;
 
 
     public DetailFragment() {
@@ -65,6 +76,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setDisplayShowHomeEnabled(true);
         }
+
     }
 
 
@@ -89,12 +101,42 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _detailSymbolCoin = view.findViewById(R.id.detail_symbol_coin);
         _nameCurrencyFrom = view.findViewById(R.id.name_currency_from);
         _nameCurrencyTo = view.findViewById(R.id.name_currency_to);
+        _buttonChangeCurrency = view.findViewById(R.id.button_change_currency);
+        _buttonConvert = view.findViewById(R.id.button_convert);
+        _valueFrom = view.findViewById(R.id.value_from);
+        _valueTo = view.findViewById(R.id.value_to);
 
+        _buttonConvert.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                _interaction.convertCurrency(_valueFrom.getText().toString());
+            }
+        });
+
+        _buttonChangeCurrency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _interaction.changeCurrency();
+            }
+        });
 
 
 
         setData(view, _coinRateUI);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        _interaction.attache(this, _coinRateUI);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        _interaction.detache();
     }
 
     private void setData(View view, CoinRateUI coinRateUI) {
@@ -130,7 +172,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
 
     @Override
     public void setValue(String value) {
-
+        _valueTo.setText(value);
     }
 
     @Override

@@ -8,7 +8,7 @@ import ru.divizdev.coinrate.Entities.CoinRateUI;
  * Created by diviz on 22.03.2018.
  */
 
-public class CoinRateDetailInteraction {
+public class CoinRateDetailInteraction implements ICoinRateDetailInteraction {
 
     private ICoinRateDetailView _view;
     private CoinRateUI _coinRateUI;
@@ -29,6 +29,9 @@ public class CoinRateDetailInteraction {
 
     }
 
+
+
+    @Override
     public void attache(ICoinRateDetailView view, CoinRateUI coinRate) {
         _view = view;
         _coinRateUI = coinRate;
@@ -48,10 +51,12 @@ public class CoinRateDetailInteraction {
         }
     }
 
+    @Override
     public void detache() {
         _view = null;
     }
 
+    @Override
     public void changeCurrency() {
 
         _direct = !_direct;
@@ -60,7 +65,8 @@ public class CoinRateDetailInteraction {
 
     }
 
-    public void converCurrency(String value) {
+    @Override
+    public void convertCurrency(String value) {
         try {
             float valueF = Float.parseFloat(value);
             float result = 0f;
