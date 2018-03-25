@@ -1,5 +1,5 @@
 # CoinRate
 
-[![CircleCI](https://circleci.com/gh/divizdev/CoinRate.svg?style=svg)](https://circleci.com/gh/divizdev/CoinRate)
+[![CircleCI](https://circleci.com/gh/divizdev/CoinRate.svg?style=shield)](https://circleci.com/gh/divizdev/CoinRate)
 
-This is a learning application for converting and tracking the cryptocurrency exchange rate.
+This is an educational android application for converting and tracking the cryptocurrency exchange rate.
