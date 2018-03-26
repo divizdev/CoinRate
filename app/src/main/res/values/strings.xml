@@ -7,7 +7,7 @@
     <string name="name_unit_price">USD</string>
     <string name="title_detail_name_coin">Название</string>
     <string name="title_available_supply">Предложение</string>
-    <string name="title_market_cap">Каптиализация рынка</string>
+    <string name="title_market_cap">Капитализация рынка</string>
     <string name="title_24h_volume">Объем (24 часа)</string>
     <string name="title_total_supply">Total Supply</string>
     <string name="title_max_supply">Max Supply</string>
