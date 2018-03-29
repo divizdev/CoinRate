@@ -10,10 +10,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,12 +32,13 @@ import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.CoinRateListInteraction;
+import ru.divizdev.coinrate.rates.LocaleUtils;
 
 /**
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener, SettingsDialog.INoticeDialogListener{
+public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener, SettingsDialog.INoticeDialogListener {
 
     private IFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
@@ -59,9 +59,9 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         _recyclerView = view.findViewById(R.id.coin_rate_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         _recyclerView.setLayoutManager(linearLayoutManager);
-
         CoinRateAdapter coinRateAdapter = new CoinRateAdapter(_listener, _list);
         _recyclerView.setAdapter(coinRateAdapter);
+        _recyclerView.addItemDecoration(new DividerItemDecoration(_recyclerView.getContext(), linearLayoutManager.getOrientation()));
 
         _swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
         _swipeRefreshLayout.setOnRefreshListener(this);
@@ -70,7 +70,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
         ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
-        if(supportActionBar != null) {
+        if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(false);
             supportActionBar.setDisplayShowHomeEnabled(false);
         }
@@ -124,10 +124,11 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-         inflater.inflate(R.menu.main_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu);
 
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -176,16 +177,15 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     public void showLoadingProgress(Boolean isView) {
 
         if (isView) {
-            if(!_swipeRefreshLayout.isRefreshing()){
+            if (!_swipeRefreshLayout.isRefreshing()) {
                 _progressBar.setVisibility(View.VISIBLE);
             }
 
-        }else {
+        } else {
             _progressBar.setVisibility(View.GONE);
             _swipeRefreshLayout.setRefreshing(false);
         }
     }
-
 
 
     @Override
@@ -209,11 +209,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     }
 
 
-
-
-
-
-
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
 
         private IFragmentInteractionListener _listener;
@@ -226,7 +221,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coin,
+            View cardView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_coin_constraint,
                     parent, false);
             return new ViewHolder(_listener, cardView);
         }
@@ -247,7 +242,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
             private IFragmentInteractionListener _listener;
             private CoinRateUI _coinRateUI;
 
-            private CardView _cardView;
+            private View _itemView;
 
             private AppCompatImageView _logo;
 
@@ -257,13 +252,14 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
             private TextView _percentChange24h;
             private TextView _percentChange7d;
             private TextView _currencyRateCoin;
+            private TextView _percentChange1h;
 
-            ViewHolder(IFragmentInteractionListener listener, CardView itemView) {
+            ViewHolder(IFragmentInteractionListener listener, View itemView) {
                 super(itemView);
                 _listener = listener;
-                this._cardView = itemView;
+                this._itemView = itemView;
                 bind();
-                Log.d("ViewHolder", "Create ViewHolder");
+
             }
 
             public void setData(CoinRateUI coinRateUI) {
@@ -273,32 +269,36 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                 _rateCoin.setText(coinRateUI.getUIPrice());
 
                 _percentChange7d.setTextColor(coinRateUI.getColorPercentChange7d());
-                _percentChange7d.setText(coinRateUI.getUIPercentChange7d());
+                _percentChange7d.setText(String.format("%s %s", coinRateUI.getUIPercentChange7d(), LocaleUtils.SYMBOL_PERCENT));
+
 
                 _percentChange24h.setTextColor(coinRateUI.getColorPercentChange24h());
-                _percentChange24h.setText(coinRateUI.getUIPercentChange24h());
+                _percentChange24h.setText(String.format("%s %s",coinRateUI.getUIPercentChange24h(), LocaleUtils.SYMBOL_PERCENT));
+
+                _percentChange1h.setTextColor(coinRateUI.getColorPercentChange1h());
+                _percentChange1h.setText(String.format("%s %s", coinRateUI.getUIPercentChange1h(), LocaleUtils.SYMBOL_PERCENT));
 
                 _currencyRateCoin.setText(coinRateUI.getUICurrency());
 
 
-
                 Picasso loader = Picasso.with(this.itemView.getContext());
-                        loader.load(coinRateUI.getURLImage())
+                loader.load(coinRateUI.getURLImage())
                         .into(_logo);
-                Log.d("ViewHolder", "SetData");
+
 
             }
 
 
             private void bind() {
-                _symbolCoin = _cardView.findViewById(R.id.symbol_coin);
-                _nameCoin = _cardView.findViewById(R.id.name_coin);
-                _rateCoin = _cardView.findViewById(R.id.rate_coin);
-                _percentChange7d = _cardView.findViewById(R.id.percent_change_7d);
-                _percentChange24h = _cardView.findViewById(R.id.percent_change_24h);
-                _logo = _cardView.findViewById(R.id.img_coin);
-                _currencyRateCoin = _cardView.findViewById(R.id.currency_rate_coin);
-                _cardView.setOnClickListener(this);
+                _symbolCoin = _itemView.findViewById(R.id.symbol_coin);
+                _nameCoin = _itemView.findViewById(R.id.name_coin);
+                _rateCoin = _itemView.findViewById(R.id.rate_coin);
+                _percentChange7d = _itemView.findViewById(R.id.percent_change_7d);
+                _percentChange24h = _itemView.findViewById(R.id.percent_change_24h);
+                _percentChange1h = _itemView.findViewById(R.id.percent_change_1h);
+                _logo = _itemView.findViewById(R.id.img_coin);
+                _currencyRateCoin = _itemView.findViewById(R.id.currency_rate_coin);
+                _itemView.setOnClickListener(this);
             }
 
             @Override
@@ -309,7 +309,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
             }
         }
     }
-
 
 
     public interface IFragmentInteractionListener {

@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_card_view"
-            >
+            android:padding="@dimen/card_view_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -25,6 +25,7 @@
                     android:id="@+id/detail_image_view"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
+                    android:layout_gravity="center"
                     android:layout_margin="@dimen/activity_horizontal_margin"
                     android:contentDescription="Logo" />
 
@@ -53,86 +54,8 @@
                 </LinearLayout>
 
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-
-                            style="@style/TextViewBase.Small.Bold"
-                            android:text="@string/name_percent_change_1h" />
-
-                        <TextView
-                            android:id="@+id/percent_change_1h"
-                            style="@style/TextViewBase.Small"
-
-                            android:paddingEnd="@dimen/activity_horizontal_margin"
-                            android:paddingLeft="@dimen/activity_horizontal_margin"
-                            android:paddingRight="@dimen/activity_horizontal_margin"
-                            android:paddingStart="@dimen/activity_horizontal_margin"
-                            tools:text="+2 %" />
 
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-
-                            style="@style/TextViewBase.Small.Bold"
-                            android:text="@string/name_percent_change_24h" />
-
-                        <TextView
-                            android:id="@+id/percent_change_24h"
-                            style="@style/TextViewBase.Small"
-
-                            android:paddingEnd="@dimen/activity_horizontal_margin"
-                            android:paddingLeft="@dimen/activity_horizontal_margin"
-                            android:paddingRight="@dimen/activity_horizontal_margin"
-                            android:paddingStart="@dimen/activity_horizontal_margin"
-                            tools:text="+2 %" />
-
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/TextViewBase.Small.Bold"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="end"
-                            android:text="@string/name_percent_change_7d" />
-
-                        <TextView
-                            android:id="@+id/percent_change_7d"
-                            style="@style/TextViewBase.Small"
-
-                            android:layout_gravity="fill_horizontal"
-                            android:gravity="end"
-                            android:paddingEnd="@dimen/activity_horizontal_margin"
-                            android:paddingLeft="@dimen/activity_horizontal_margin"
-                            android:paddingRight="@dimen/activity_horizontal_margin"
-                            android:paddingStart="@dimen/activity_horizontal_margin"
-                            tools:text="-1 %" />
-
-                    </LinearLayout>
-                </LinearLayout>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -141,53 +64,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_card_view"
+            android:padding="@dimen/card_view_padding"
+
             >
+
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
-        <TextView
-            style="@style/TextViewBase.Title"
-            android:text="@string/title_available_supply" />
+                <TextView
+                    style="@style/TextViewBase.Title"
+                    android:text="@string/title_available_supply" />
 
-        <TextView
-            android:id="@+id/detail_available_supply"
-            style="@style/TextViewBase.Value"
-            android:hint="@string/title_available_supply" />
+                <TextView
+                    android:id="@+id/detail_available_supply"
+                    style="@style/TextViewBase.Value"
+                    android:hint="@string/title_available_supply" />
 
-        <TextView
-            style="@style/TextViewBase.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_market_cap" />
+                <TextView
+                    style="@style/TextViewBase.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_market_cap" />
 
-        <TextView
-            android:id="@+id/detail_market_cap"
-            style="@style/TextViewBase.Value"
-            android:hint="@string/title_market_cap" />
+                <TextView
+                    android:id="@+id/detail_market_cap"
+                    style="@style/TextViewBase.Value"
+                    android:hint="@string/title_market_cap" />
 
-        <TextView
-            style="@style/TextViewBase.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_24h_volume" />
+                <TextView
+                    style="@style/TextViewBase.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_24h_volume" />
 
-        <TextView
-            android:id="@+id/detail_24h_volume"
-            style="@style/TextViewBase.Value"
+                <TextView
+                    android:id="@+id/detail_24h_volume"
+                    style="@style/TextViewBase.Value"
 
-            android:hint="@string/title_24h_volume" />
+                    android:hint="@string/title_24h_volume" />
 
-        </LinearLayout></android.support.v7.widget.CardView>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_card_view"
-            android:elevation="4dp"
-            >
+            android:padding="@dimen/card_view_padding">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -198,9 +124,9 @@
                     style="@style/TextViewBase.Title.Big"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-
                     android:layout_marginTop="40dp"
+
+                    android:gravity="center"
                     android:text="@string/name_convertor" />
 
 
@@ -248,7 +174,7 @@
                         android:layout_weight="1"
                         android:hint="@string/hint_value_from"
                         android:inputType="numberDecimal"
-                        android:maxLength="11"/>
+                        android:maxLength="20" />
 
 
                     <TextView

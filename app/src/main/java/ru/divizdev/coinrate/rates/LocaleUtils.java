@@ -14,6 +14,7 @@ public class LocaleUtils {
 
     private static final Locale RUSSIAN_LOCALE = new Locale("RU");
     private static final Locale ENGLISH_LOCALE = Locale.ENGLISH;
+    public static final String SYMBOL_PERCENT = "%";
 
 
     public static Locale getCurrentLocale() {

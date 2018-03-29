@@ -25,7 +25,7 @@
     <string name="name_percent_change_1h">1ч:</string>
     <string name="hint_value_from">Введите количество</string>
     <string name="name_button_convert">Конвертировать</string>
-    <string name="name_convertor">Конвертор валют</string>
+    <string name="name_convertor">Конвертер валют</string>
     <string name="name_change_button"><![CDATA[<=>]]></string>
 
 </resources>

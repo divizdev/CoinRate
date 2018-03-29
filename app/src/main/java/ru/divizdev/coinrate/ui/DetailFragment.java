@@ -25,7 +25,6 @@ import ru.divizdev.coinrate.rates.ICoinRateDetailInteraction;
 public class DetailFragment extends Fragment implements CoinRateDetailInteraction.ICoinRateDetailView {
 
     private static final String ARG_COIN_RATE = "coin_rate";
-    private static final String SYMBOL_PERCENT = "%";
 
     private static ICoinRateDetailInteraction _interaction = App.getCoiCoinRateDetailInteraction();
 
@@ -34,9 +33,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
     private TextView _detailAvailableSupply;
     private TextView _detailMarketCap; //detail_max_supply
     private TextView _detail24hVolume; //detail_total_supply
-    private TextView _percentChanged24h;
-    private TextView _percentChanged1h;
-    private TextView _percentChanged7d;
+
     private TextView _detailSymbolCoin;
     private ImageView _logo;
 
@@ -95,9 +92,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _detailNameCoin = view.findViewById(R.id.detail_name_coin);
         _detailMarketCap = view.findViewById(R.id.detail_market_cap);
         _detail24hVolume = view.findViewById(R.id.detail_24h_volume);
-        _percentChanged1h = view.findViewById(R.id.percent_change_1h);
-        _percentChanged24h = view.findViewById(R.id.percent_change_24h);
-        _percentChanged7d = view.findViewById(R.id.percent_change_7d);
+
         _logo = view.findViewById(R.id.detail_image_view);
         _detailSymbolCoin = view.findViewById(R.id.detail_symbol_coin);
         _nameCurrencyFrom = view.findViewById(R.id.name_currency_from);
@@ -158,13 +153,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _detailAvailableSupply.setText(String.format("%s %s", coinRateUI.getUIAvailableSupply(), coinRateUI.getSymbol()));
         _detailSymbolCoin.setText(coinRateUI.getSymbol());
 
-        _percentChanged1h.setText(String.format("%s %s", coinRateUI.getPercentChange1h(), SYMBOL_PERCENT));
-        _percentChanged24h.setText(String.format("%s %s", coinRateUI.getPercentChange24h(), SYMBOL_PERCENT));
-        _percentChanged7d.setText(String.format("%s %s", coinRateUI.getPercentChange7d(), SYMBOL_PERCENT));
 
-        _percentChanged1h.setTextColor(coinRateUI.getColorPercentChange1h());
-        _percentChanged24h.setTextColor(coinRateUI.getColorPercentChange24h());
-        _percentChanged7d.setTextColor(coinRateUI.getColorPercentChange7d());
 
         Picasso.with(view.getContext())
                 .load(coinRateUI.getURLImage())
