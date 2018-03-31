@@ -1,6 +1,5 @@
 package ru.divizdev.coinrate.Entities;
 
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.LocaleUtils;
 
 /**
@@ -110,9 +110,9 @@ public class CoinRateUI implements Parcelable {
 
     private int getColorPercent(double percent) {
         if (percent > 0.0) {
-            return Color.GREEN;
+            return R.color.colorUp;
         } else {
-            return Color.RED;
+            return R.color.colorDown;
         }
     }
 

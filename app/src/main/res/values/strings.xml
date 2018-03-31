@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Трекер криптовалют</string>
     <string name="separator_name_coin">|</string>
-    <string name="name_percent_change_7d">7д:</string>
-    <string name="name_percent_change_24h">24ч:</string>
+    <string name="name_percent_change_7d">7д</string>
+    <string name="name_percent_change_24h">24ч</string>
     <string name="name_unit_percent_change">%</string>
     <string name="name_unit_price">USD</string>
     <string name="title_detail_name_coin">Название</string>
@@ -11,7 +11,7 @@
     <string name="title_24h_volume">Объем (24 часа)</string>
     <string name="title_total_supply">Total Supply</string>
     <string name="title_max_supply">Max Supply</string>
-    <string name="title_name_percent_change_1h">1ч:</string>
+    <string name="title_name_percent_change_1h">1ч</string>
     <string name="title_last_updated">Последнее обновление</string>
     <string name="title_rank">Ранг</string>
     <string name="title_price">Price</string>
@@ -22,7 +22,7 @@
     <string name="ok">OK</string>
     <string name="about_description">Курс криптовалют. Будь в курсе курса!</string>
     <string name="menu_item_about">O программе</string>
-    <string name="name_percent_change_1h">1ч:</string>
+    <string name="name_percent_change_1h">1ч</string>
     <string name="hint_value_from">Введите количество</string>
     <string name="name_button_convert">Конвертировать</string>
     <string name="name_convertor">Конвертер валют</string>

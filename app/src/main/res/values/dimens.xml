@@ -11,5 +11,5 @@
     <dimen name="card_view_padding">6dp</dimen>
     <dimen name="margin_percent">2dp</dimen>
     <dimen name="size_logo_list">32dp</dimen>
-    <dimen name="margin_constraint_element">6dp</dimen>
+    <dimen name="margin_constraint_element">0dp</dimen>
 </resources>

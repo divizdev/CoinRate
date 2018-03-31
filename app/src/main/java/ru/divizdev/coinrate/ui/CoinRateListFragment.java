@@ -1,6 +1,7 @@
 package ru.divizdev.coinrate.ui;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -268,14 +269,24 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                 _nameCoin.setText(coinRateUI.getName());
                 _rateCoin.setText(coinRateUI.getUIPrice());
 
-                _percentChange7d.setTextColor(coinRateUI.getColorPercentChange7d());
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                    _percentChange7d.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange7d(), _itemView.getContext().getTheme()));
+                    _percentChange1h.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange1h(), _itemView.getContext().getTheme()));
+                    _percentChange24h.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange24h(), _itemView.getContext().getTheme()));
+
+                }else {
+
+                    _percentChange7d.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange7d()));
+                    _percentChange1h.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange1h()));
+                    _percentChange24h.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange24h()));
+
+                }
+
+
                 _percentChange7d.setText(String.format("%s %s", coinRateUI.getUIPercentChange7d(), LocaleUtils.SYMBOL_PERCENT));
-
-
-                _percentChange24h.setTextColor(coinRateUI.getColorPercentChange24h());
                 _percentChange24h.setText(String.format("%s %s",coinRateUI.getUIPercentChange24h(), LocaleUtils.SYMBOL_PERCENT));
-
-                _percentChange1h.setTextColor(coinRateUI.getColorPercentChange1h());
                 _percentChange1h.setText(String.format("%s %s", coinRateUI.getUIPercentChange1h(), LocaleUtils.SYMBOL_PERCENT));
 
                 _currencyRateCoin.setText(coinRateUI.getUICurrency());
