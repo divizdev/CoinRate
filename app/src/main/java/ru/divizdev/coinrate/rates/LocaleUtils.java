@@ -15,29 +15,31 @@ public class LocaleUtils {
     private static final Locale RUSSIAN_LOCALE = new Locale("RU");
     private static final Locale ENGLISH_LOCALE = Locale.ENGLISH;
     public static final String SYMBOL_PERCENT = "%";
+    private static Locale _currentLocale;
 
+    public static void setCurrentLocale(Locale locale) {
+        _currentLocale = locale;
+    }
 
     public static Locale getCurrentLocale() {
+        if (_currentLocale != null) {
+            return _currentLocale;
+        }
         return RUSSIAN_LOCALE;
     }
 
-    public static Locale getRussianLocale() {
-        return RUSSIAN_LOCALE;
-    }
-
-    public static Locale getEnglishLocale() {
-        return ENGLISH_LOCALE;
-    }
-
-    public static int getCurrentScale() {
+    private static int getCurrentScale() {
         return 2;
     }
 
     public static String formatBigDecimal(BigDecimal decimal) {
         BigDecimal decimalCopy = decimal.setScale(getCurrentScale(), RoundingMode.HALF_DOWN);
         DecimalFormat df = (DecimalFormat) NumberFormat.getInstance(getCurrentLocale());
-        df.setMinimumFractionDigits(2);
+        df.setMinimumFractionDigits(getCurrentScale());
         df.setGroupingUsed(true);
         return df.format(decimalCopy);
     }
+
 }
+
+
