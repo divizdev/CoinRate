@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.divizdev.coinrate.BuildConfig;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.LocaleUtils;
 
@@ -121,7 +122,7 @@ public class CoinRateUI implements Parcelable {
     }
 
     public String getURLImage() {
-        return "http://divizdev.ru/CoinRate/color/" + getSymbol().toLowerCase() + "@2x.png";
+        return BuildConfig.IMG_URL + getSymbol().toLowerCase() + "@2x.png";
     }
 
     public double getPercentChange1h() {

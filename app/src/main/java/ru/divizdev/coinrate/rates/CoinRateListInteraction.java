@@ -12,6 +12,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.divizdev.coinrate.BuildConfig;
 import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.Entities.CoinRateApi;
 
@@ -68,9 +69,9 @@ public class CoinRateListInteraction {
     private void loadCoinRate(final String currency) {
 
         _ICoinRateListView.showLoadingProgress(true);
-        //TODO: Extract constants
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.coinmarketcap.com/") //Базовая часть адреса
+                .baseUrl(BuildConfig.API_URL) //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
 
