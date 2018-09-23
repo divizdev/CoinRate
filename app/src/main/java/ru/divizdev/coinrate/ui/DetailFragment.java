@@ -42,8 +42,6 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
     private EditText _valueFrom;
     private TextView _valueTo;
 
-    private Button _buttonChangeCurrency;
-
     private Button _buttonConvert;
 
 
@@ -97,7 +95,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _detailSymbolCoin = view.findViewById(R.id.detail_symbol_coin);
         _nameCurrencyFrom = view.findViewById(R.id.name_currency_from);
         _nameCurrencyTo = view.findViewById(R.id.name_currency_to);
-        _buttonChangeCurrency = view.findViewById(R.id.button_change_currency);
+        Button buttonChangeCurrency = view.findViewById(R.id.button_change_currency);
         _buttonConvert = view.findViewById(R.id.button_convert);
         _valueFrom = view.findViewById(R.id.value_from);
         _valueTo = view.findViewById(R.id.value_to);
@@ -121,7 +119,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
             }
         });
 
-        _buttonChangeCurrency.setOnClickListener(new View.OnClickListener() {
+        buttonChangeCurrency.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 _interaction.changeCurrency();
