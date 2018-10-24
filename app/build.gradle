@@ -5,6 +5,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion "27.0.3"
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "ru.divizdev.coinrate"
         minSdkVersion 16
         targetSdkVersion 27
