@@ -28,4 +28,7 @@
     <string name="name_button_convert">Convert</string>
     <string name="name_convertor">Currency converter</string>
     <string name="name_change_button"><![CDATA[<=>]]></string>
+    <string name="git_hub_link" translatable="false">divizdev/CoinRate</string>
+    <string name="website_link" translatable="false">http://divizdev.ru</string>
+    <string name="url_play_store" translatable="false">ru.divizdev.coinrate</string>
 </resources>
