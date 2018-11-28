@@ -4,10 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.divizdev.coinrate.BuildConfig;
+import ru.divizdev.coinrate.Entities.v2.ApiData;
+import ru.divizdev.coinrate.Entities.v2.Datum;
+import ru.divizdev.coinrate.Entities.v2.Price;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.LocaleUtils;
 
@@ -17,8 +21,31 @@ import ru.divizdev.coinrate.rates.LocaleUtils;
 
 public class CoinRateUI implements Parcelable {
 
+    public static final Creator<CoinRateUI> CREATOR = new Creator<CoinRateUI>() {
+        @Override
+        public CoinRateUI createFromParcel(Parcel parcel) {
+            return new CoinRateUI(parcel);
+        }
+
+        @Override
+        public CoinRateUI[] newArray(int size) {
+            return new CoinRateUI[size];
+        }
+    };
     final private CoinRateApi _coinRateApi;
     final private String _currency;
+
+    public CoinRateUI(CoinRateApi coinRateApi, String currency) {
+
+        _coinRateApi = coinRateApi;
+        _currency = currency;
+    }
+
+
+    protected CoinRateUI(Parcel parcel) {
+        _coinRateApi = CoinRateApi.CREATOR.createFromParcel(parcel);
+        _currency = parcel.readString();
+    }
 
     public static List<CoinRateUI> convertList(List<CoinRateApi> coinRateApis, String currency) {
         List<CoinRateUI> result = new ArrayList<>();
@@ -29,13 +56,34 @@ public class CoinRateUI implements Parcelable {
         return result;
     }
 
+    public static List<CoinRateUI> convertList(ApiData apiData, String currency) {
+        List<CoinRateUI> result = new ArrayList<>();
+        Price price = Price.getEmpety();
+        for (Datum datum : apiData.getData()) {
 
-    public CoinRateUI(CoinRateApi coinRateApi, String currency) {
+            //TODO: ALARM hardcode
+            if (currency.compareTo("USD") == 0) {
+                price = datum.getQuote().get("USD");
+            } else if (currency.compareTo("EUR") == 0) {
+                price = datum.getQuote().get("EUR");
+            } else if (currency.compareTo("RUB") == 0) {
+                price = datum.getQuote().get("RUB");
+            }
 
-        _coinRateApi = coinRateApi;
-        _currency = currency;
+            result.add(new CoinRateUI(
+                    new CoinRateApi(
+                        datum.getId().toString(), datum.getName(), datum.getSymbol(), datum.getCmcRank(), price.getPrice(), price.getMarketCap(),
+                        price.getMarketCap(), price.getPercentChange1h().round(new MathContext(2)).doubleValue(),
+                        price.getPercentChange24h().round(new MathContext(2)).doubleValue(),
+                        price.getPercentChange7d().round(new MathContext(2)).doubleValue(), datum.getCirculatingSupply(),
+                        datum.getTotalSupply(), datum.getMaxSupply(), 0, price.getPrice(), price.getVolume24h(), price.getVolume24h()
+                    ),
+                    currency));
+
+        }
+
+        return result;
     }
-
 
     public String getId() {
         return _coinRateApi.getId();
@@ -72,7 +120,6 @@ public class CoinRateUI implements Parcelable {
     public String getUIVolume24() {
         return LocaleUtils.formatBigDecimal(getVolume24h());
     }
-
 
     public BigDecimal getMarketCap() {
         BigDecimal result;
@@ -151,7 +198,6 @@ public class CoinRateUI implements Parcelable {
 
     }
 
-
     public BigDecimal getAvailableSupply() {
         if (_coinRateApi.getAvailableSupply() == null) {
             return BigDecimal.ZERO;
@@ -205,7 +251,6 @@ public class CoinRateUI implements Parcelable {
         return String.valueOf(getLastUpdated());
     }
 
-
     public String getCurrency() {
         return _currency;
     }
@@ -223,12 +268,6 @@ public class CoinRateUI implements Parcelable {
 
 
         return _currency;
-    }
-
-
-    protected CoinRateUI(Parcel parcel) {
-        _coinRateApi = CoinRateApi.CREATOR.createFromParcel(parcel);
-        _currency = parcel.readString();
     }
 
     @Override
@@ -249,18 +288,6 @@ public class CoinRateUI implements Parcelable {
         result = 31 * result + (getCurrency() != null ? getCurrency().hashCode() : 0);
         return result;
     }
-
-    public static final Creator<CoinRateUI> CREATOR = new Creator<CoinRateUI>() {
-        @Override
-        public CoinRateUI createFromParcel(Parcel parcel) {
-            return new CoinRateUI(parcel);
-        }
-
-        @Override
-        public CoinRateUI[] newArray(int size) {
-            return new CoinRateUI[size];
-        }
-    };
 
     @Override
     public int describeContents() {
