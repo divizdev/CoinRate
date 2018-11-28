@@ -1,7 +1,5 @@
 package ru.divizdev.coinrate.rates;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,35 +67,6 @@ public class CoinRateListInteraction {
 
         _ICoinRateListView.showLoadingProgress(true);
 
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(BuildConfig.API_URL) //Базовая часть адреса
-//                .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
-//                .build();
-
-//        ICoinRateApi api = retrofit.create(ICoinRateApi.class);
-
-//        api.getData(0, 100, currency).enqueue(new Callback<List<ru.divizdev.coinrate.Entities.CoinRateApi>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<ru.divizdev.coinrate.Entities.CoinRateApi>> call, @NonNull Response<List<ru.divizdev.coinrate.Entities.CoinRateApi>> response) {
-//                if (response.body() != null) {
-//                    List<CoinRateUI> coinRateUI = CoinRateUI.convertList(response.body(), currency);
-//                    _coinRateModel.put(currency, coinRateUI);//TODO: multi thread not lock
-//
-//                    _ICoinRateListView.showLoadingProgress(false);
-//                    _ICoinRateListView.showCoinRateList(coinRateUI);
-//                    _managerSettings.setCurCurrency(currency);
-//                    _curCurrency = currency;
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<CoinRateApi>> call, Throwable t) {
-//                _ICoinRateListView.showLoadingProgress(false);
-//                _ICoinRateListView.showErrorLoading();
-//                Log.e("test", "Fail");
-//            }
-//        });
 
         Retrofit retrofitV2 = new Retrofit.Builder()
                 .baseUrl(BuildConfig.API2_URL) //Базовая часть адреса
@@ -106,12 +75,12 @@ public class CoinRateListInteraction {
 
         ICoinRateApi apiV2 = retrofitV2.create(ICoinRateApi.class);
 
-        apiV2.getRate(1, 11, currency).enqueue(new Callback<ApiData>() {
+        apiV2.getRate(1, 100, currency).enqueue(new Callback<ApiData>() {
             @Override
             public void onResponse(Call<ApiData> call, Response<ApiData> response) {
                 if (response.body() != null) {
-                   Log.d("APIv2", response.body().toString());
                     List<CoinRateUI> coinRateUI = CoinRateUI.convertList(response.body(), currency);
+                    _coinRateModel.put(currency, coinRateUI);//TODO: multi thread not lock
                     _ICoinRateListView.showLoadingProgress(false);
                     _ICoinRateListView.showCoinRateList(coinRateUI);
                     _managerSettings.setCurCurrency(currency);
@@ -123,7 +92,7 @@ public class CoinRateListInteraction {
             public void onFailure(Call<ApiData> call, Throwable t) {
                 _ICoinRateListView.showLoadingProgress(false);
                 _ICoinRateListView.showErrorLoading();
-                Log.e("test", "Fail");
+
             }
         });
 
