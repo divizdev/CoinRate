@@ -1,8 +1,5 @@
 package ru.divizdev.coinrate.rates;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.BuildConfig;
 import ru.divizdev.coinrate.Entities.CoinRateUI;
-import ru.divizdev.coinrate.Entities.CoinRateApi;
+import ru.divizdev.coinrate.Entities.api.ApiData;
 
 /**
  * Created by diviz on 29.01.2018.
@@ -70,33 +67,32 @@ public class CoinRateListInteraction {
 
         _ICoinRateListView.showLoadingProgress(true);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BuildConfig.API_URL) //Базовая часть адреса
+
+        Retrofit retrofitV2 = new Retrofit.Builder()
+                .baseUrl(BuildConfig.API2_URL) //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .build();
 
-        ICoinRateApi api = retrofit.create(ICoinRateApi.class);
+        ICoinRateApi apiV2 = retrofitV2.create(ICoinRateApi.class);
 
-        api.getData(0, 100, currency).enqueue(new Callback<List<ru.divizdev.coinrate.Entities.CoinRateApi>>() {
+        apiV2.getRate(1, 100, currency).enqueue(new Callback<ApiData>() {
             @Override
-            public void onResponse(@NonNull Call<List<ru.divizdev.coinrate.Entities.CoinRateApi>> call, @NonNull Response<List<ru.divizdev.coinrate.Entities.CoinRateApi>> response) {
+            public void onResponse(Call<ApiData> call, Response<ApiData> response) {
                 if (response.body() != null) {
                     List<CoinRateUI> coinRateUI = CoinRateUI.convertList(response.body(), currency);
                     _coinRateModel.put(currency, coinRateUI);//TODO: multi thread not lock
-
                     _ICoinRateListView.showLoadingProgress(false);
                     _ICoinRateListView.showCoinRateList(coinRateUI);
                     _managerSettings.setCurCurrency(currency);
                     _curCurrency = currency;
-
                 }
             }
 
             @Override
-            public void onFailure(Call<List<CoinRateApi>> call, Throwable t) {
+            public void onFailure(Call<ApiData> call, Throwable t) {
                 _ICoinRateListView.showLoadingProgress(false);
                 _ICoinRateListView.showErrorLoading();
-                Log.e("test", "Fail");
+
             }
         });
 

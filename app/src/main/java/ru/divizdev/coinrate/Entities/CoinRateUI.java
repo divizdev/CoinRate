@@ -4,89 +4,162 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.divizdev.coinrate.BuildConfig;
+import ru.divizdev.coinrate.Entities.api.ApiData;
+import ru.divizdev.coinrate.Entities.api.Datum;
+import ru.divizdev.coinrate.Entities.api.Price;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.LocaleUtils;
 
-/**
- * Created by diviz on 08.02.2018.
- */
-
 public class CoinRateUI implements Parcelable {
 
-    final private CoinRateApi _coinRateApi;
+
     final private String _currency;
+    final private String _id;
+    final private String _name;
+    final private String _symbol;
+    final private int _rank;
+    final private BigDecimal _price;
+    final private BigDecimal _marketCap;
+    final private double _percentChange1h;
+    final private double _percentChange24h;
+    final private double _percentChange7d;
+    final private BigDecimal _availableSupply;
+    final private BigDecimal _totalSupply;
+    final private BigDecimal _maxSupply;
+    final private int _lastUpdated;
+    final private BigDecimal _volume24h;
 
-    public static List<CoinRateUI> convertList(List<CoinRateApi> coinRateApis, String currency) {
+    public CoinRateUI(String currency, String id, String name, String symbol, int rank, BigDecimal price, BigDecimal marketCap, double percentChange1h, double percentChange24h, double percentChange7d, BigDecimal availableSupply, BigDecimal totalSupply, BigDecimal maxSupply, int lastUpdated, BigDecimal volume24h) {
+        _currency = currency;
+        _id = id;
+        _name = name;
+        _symbol = symbol;
+        _rank = rank;
+        _price = price;
+        _marketCap = marketCap;
+        _percentChange1h = percentChange1h;
+        _percentChange24h = percentChange24h;
+        _percentChange7d = percentChange7d;
+        _availableSupply = availableSupply;
+        _totalSupply = totalSupply;
+        _maxSupply = maxSupply;
+        _lastUpdated = lastUpdated;
+        _volume24h = volume24h;
+    }
+
+    public static List<CoinRateUI> convertList(ApiData apiData, String currency) {
         List<CoinRateUI> result = new ArrayList<>();
+        Price price = Price.getEmpety();
+        for (Datum datum : apiData.getData()) {
 
-        for (CoinRateApi coinRateApi : coinRateApis) {
-            result.add(new CoinRateUI(coinRateApi, currency));
+            //TODO: ALARM hardcode
+            if (currency.compareTo("USD") == 0) {
+                price = datum.getQuote().get("USD");
+            } else if (currency.compareTo("EUR") == 0) {
+                price = datum.getQuote().get("EUR");
+            } else if (currency.compareTo("RUB") == 0) {
+                price = datum.getQuote().get("RUB");
+            }
+
+            result.add(new CoinRateUI(currency,
+                    datum.getId().toString(), datum.getName(), datum.getSymbol(), datum.getCmcRank(), price.getPrice(), price.getMarketCap(),
+                    price.getPercentChange1h().round(new MathContext(2)).doubleValue(),
+                    price.getPercentChange24h().round(new MathContext(2)).doubleValue(),
+                    price.getPercentChange7d().round(new MathContext(2)).doubleValue(), datum.getCirculatingSupply(),
+                    datum.getTotalSupply(), datum.getMaxSupply(), 0, price.getVolume24h()));
         }
+
         return result;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    public CoinRateUI(CoinRateApi coinRateApi, String currency) {
+        CoinRateUI that = (CoinRateUI) o;
 
-        _coinRateApi = coinRateApi;
-        _currency = currency;
+        if (getRank() != that.getRank()) return false;
+        if (Double.compare(that.getPercentChange1h(), getPercentChange1h()) != 0) return false;
+        if (Double.compare(that.getPercentChange24h(), getPercentChange24h()) != 0) return false;
+        if (Double.compare(that.getPercentChange7d(), getPercentChange7d()) != 0) return false;
+        if (getLastUpdated() != that.getLastUpdated()) return false;
+        if (getCurrency() != null ? !getCurrency().equals(that.getCurrency()) : that.getCurrency() != null)
+            return false;
+        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
+            return false;
+        if (getSymbol() != null ? !getSymbol().equals(that.getSymbol()) : that.getSymbol() != null)
+            return false;
+        if (getPrice() != null ? !getPrice().equals(that.getPrice()) : that.getPrice() != null)
+            return false;
+        if (getMarketCap() != null ? !getMarketCap().equals(that.getMarketCap()) : that.getMarketCap() != null)
+            return false;
+        if (getAvailableSupply() != null ? !getAvailableSupply().equals(that.getAvailableSupply()) : that.getAvailableSupply() != null)
+            return false;
+        if (getTotalSupply() != null ? !getTotalSupply().equals(that.getTotalSupply()) : that.getTotalSupply() != null)
+            return false;
+        if (getMaxSupply() != null ? !getMaxSupply().equals(that.getMaxSupply()) : that.getMaxSupply() != null)
+            return false;
+        return getVolume24h() != null ? getVolume24h().equals(that.getVolume24h()) : that.getVolume24h() == null;
     }
 
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = getCurrency() != null ? getCurrency().hashCode() : 0;
+        result = 31 * result + (getId() != null ? getId().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getSymbol() != null ? getSymbol().hashCode() : 0);
+        result = 31 * result + getRank();
+        result = 31 * result + (getPrice() != null ? getPrice().hashCode() : 0);
+        result = 31 * result + (getMarketCap() != null ? getMarketCap().hashCode() : 0);
+        temp = Double.doubleToLongBits(getPercentChange1h());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getPercentChange24h());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(getPercentChange7d());
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (getAvailableSupply() != null ? getAvailableSupply().hashCode() : 0);
+        result = 31 * result + (getTotalSupply() != null ? getTotalSupply().hashCode() : 0);
+        result = 31 * result + (getMaxSupply() != null ? getMaxSupply().hashCode() : 0);
+        result = 31 * result + getLastUpdated();
+        result = 31 * result + (getVolume24h() != null ? getVolume24h().hashCode() : 0);
+        return result;
+    }
 
     public String getId() {
-        return _coinRateApi.getId();
+        return _id;
     }
 
     public String getName() {
-        return _coinRateApi.getName();
+        return _name;
     }
 
     public String getSymbol() {
-        return _coinRateApi.getSymbol();
+        return _symbol;
     }
 
     public int getRank() {
-        return _coinRateApi.getRank();
+        return _rank;
     }
 
     public BigDecimal getVolume24h() {
-        BigDecimal result;
-
-        if (getCurrency().compareTo("USD") != 0) {
-
-            result = _coinRateApi.getVolume24hAlternate();
-        } else {
-            result = _coinRateApi.getVolume24hUsd();
-        }
-
-        if (result == null) {
-            return BigDecimal.ZERO;
-        }
-        return result;
+        return _volume24h;
     }
 
     public String getUIVolume24() {
         return LocaleUtils.formatBigDecimal(getVolume24h());
     }
 
-
     public BigDecimal getMarketCap() {
-        BigDecimal result;
-
-        if (getCurrency().compareTo("USD") != 0) {
-
-            result = _coinRateApi.getMarketCapAlternate();
-        } else {
-            result = _coinRateApi.getMarketCapUsd();
-        }
-        if (result == null) {
-            return BigDecimal.ZERO;
-        }
-        return result;
+        return _marketCap;
     }
 
     public String getUIMarketCap() {
@@ -94,19 +167,7 @@ public class CoinRateUI implements Parcelable {
     }
 
     public BigDecimal getPrice() {
-
-        BigDecimal result;
-
-        if (getCurrency().compareTo("USD") != 0) {
-            result = _coinRateApi.getPriceAlternate();
-        } else {
-            result = _coinRateApi.getPriceUsd();
-        }
-
-        if (result == null) {
-            return BigDecimal.ZERO;
-        }
-        return result;
+        return _price;
     }
 
     private int getColorPercent(double percent) {
@@ -126,15 +187,15 @@ public class CoinRateUI implements Parcelable {
     }
 
     public double getPercentChange1h() {
-        return _coinRateApi.getPercentChange1h();
+        return _percentChange1h;
     }
 
     public double getPercentChange24h() {
-        return _coinRateApi.getPercentChange24h();
+        return _percentChange24h;
     }
 
     public double getPercentChange7d() {
-        return _coinRateApi.getPercentChange7d();
+        return _percentChange7d;
     }
 
     public int getColorPercentChange1h() {
@@ -151,30 +212,20 @@ public class CoinRateUI implements Parcelable {
 
     }
 
-
     public BigDecimal getAvailableSupply() {
-        if (_coinRateApi.getAvailableSupply() == null) {
-            return BigDecimal.ZERO;
-        }
-        return _coinRateApi.getAvailableSupply();
+        return _availableSupply;
     }
 
     public BigDecimal getTotalSupply() {
-        if (_coinRateApi.getTotalSupply() == null) {
-            return BigDecimal.ZERO;
-        }
-        return _coinRateApi.getTotalSupply();
+        return _totalSupply;
     }
 
     public BigDecimal getMaxSupply() {
-        if (_coinRateApi.getMaxSupply() == null) {
-            return BigDecimal.ZERO;
-        }
-        return _coinRateApi.getMaxSupply();
+        return _maxSupply;
     }
 
     public int getLastUpdated() {
-        return _coinRateApi.getLastUpdated();
+        return _lastUpdated;
     }
 
     public String getUIPercentChange1h() {
@@ -205,7 +256,6 @@ public class CoinRateUI implements Parcelable {
         return String.valueOf(getLastUpdated());
     }
 
-
     public String getCurrency() {
         return _currency;
     }
@@ -221,46 +271,9 @@ public class CoinRateUI implements Parcelable {
             return "\u20AC";//"\uf155";
         }
 
-
         return _currency;
     }
 
-
-    protected CoinRateUI(Parcel parcel) {
-        _coinRateApi = CoinRateApi.CREATOR.createFromParcel(parcel);
-        _currency = parcel.readString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        CoinRateUI coinRateUI = (CoinRateUI) o;
-
-        if (_coinRateApi != null ? !_coinRateApi.equals(coinRateUI._coinRateApi) : coinRateUI._coinRateApi != null)
-            return false;
-        return getCurrency() != null ? getCurrency().equals(coinRateUI.getCurrency()) : coinRateUI.getCurrency() == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = _coinRateApi != null ? _coinRateApi.hashCode() : 0;
-        result = 31 * result + (getCurrency() != null ? getCurrency().hashCode() : 0);
-        return result;
-    }
-
-    public static final Creator<CoinRateUI> CREATOR = new Creator<CoinRateUI>() {
-        @Override
-        public CoinRateUI createFromParcel(Parcel parcel) {
-            return new CoinRateUI(parcel);
-        }
-
-        @Override
-        public CoinRateUI[] newArray(int size) {
-            return new CoinRateUI[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -268,10 +281,51 @@ public class CoinRateUI implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-        _coinRateApi.writeToParcel(parcel, i);
-        parcel.writeString(getCurrency());
-
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this._currency);
+        dest.writeString(this._id);
+        dest.writeString(this._name);
+        dest.writeString(this._symbol);
+        dest.writeInt(this._rank);
+        dest.writeSerializable(this._price);
+        dest.writeSerializable(this._marketCap);
+        dest.writeDouble(this._percentChange1h);
+        dest.writeDouble(this._percentChange24h);
+        dest.writeDouble(this._percentChange7d);
+        dest.writeSerializable(this._availableSupply);
+        dest.writeSerializable(this._totalSupply);
+        dest.writeSerializable(this._maxSupply);
+        dest.writeInt(this._lastUpdated);
+        dest.writeSerializable(this._volume24h);
     }
+
+    protected CoinRateUI(Parcel in) {
+        this._currency = in.readString();
+        this._id = in.readString();
+        this._name = in.readString();
+        this._symbol = in.readString();
+        this._rank = in.readInt();
+        this._price = (BigDecimal) in.readSerializable();
+        this._marketCap = (BigDecimal) in.readSerializable();
+        this._percentChange1h = in.readDouble();
+        this._percentChange24h = in.readDouble();
+        this._percentChange7d = in.readDouble();
+        this._availableSupply = (BigDecimal) in.readSerializable();
+        this._totalSupply = (BigDecimal) in.readSerializable();
+        this._maxSupply = (BigDecimal) in.readSerializable();
+        this._lastUpdated = in.readInt();
+        this._volume24h = (BigDecimal) in.readSerializable();
+    }
+
+    public static final Creator<CoinRateUI> CREATOR = new Creator<CoinRateUI>() {
+        @Override
+        public CoinRateUI createFromParcel(Parcel source) {
+            return new CoinRateUI(source);
+        }
+
+        @Override
+        public CoinRateUI[] newArray(int size) {
+            return new CoinRateUI[size];
+        }
+    };
 }

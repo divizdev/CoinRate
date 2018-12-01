@@ -17,13 +17,6 @@ public class App extends Application {
     private static CoinRateDetailInteraction _coiCoinRateDetailInteraction = new CoinRateDetailInteraction();
     private static IManagerSettings _managerSettings;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        _managerSettings = new PreferenceManagerSettings(getApplicationContext());
-        _coinRateListPresenter = new CoinRateListInteraction( _managerSettings );
-    }
-
     public static CoinRateListInteraction getCoinRateListPresenter() {
         return _coinRateListPresenter;
     }
@@ -31,4 +24,13 @@ public class App extends Application {
     public static CoinRateDetailInteraction getCoiCoinRateDetailInteraction() {
         return _coiCoinRateDetailInteraction;
     }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        _managerSettings = new PreferenceManagerSettings(getApplicationContext());
+        _coinRateListPresenter = new CoinRateListInteraction(_managerSettings);
+    }
+
+
 }
