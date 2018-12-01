@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import ru.divizdev.coinrate.Entities.CoinRateApi;
 import ru.divizdev.coinrate.Entities.CoinRateUI;
 
 /**
@@ -56,10 +55,10 @@ public class CoinRateDetailInteractionTest {
     public void setUp() throws Exception {
         _interaction = new CoinRateDetailInteraction();
         _view = new StubView();
-        _coinRateUI = new CoinRateUI(new CoinRateApi("BTC", "Bitcoin", "BTC", 0,
-                                     new BigDecimal(100),BigDecimal.ZERO, BigDecimal.ZERO, 1,
+        _coinRateUI = new CoinRateUI("USD","BTC", "Bitcoin", "BTC", 0,
+                                     new BigDecimal(100),BigDecimal.ZERO,  1,
                                      2, 7, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-                                     0, null, BigDecimal.ZERO, BigDecimal.ZERO), "USD");
+                                     0,  BigDecimal.ZERO);
 
 
         _interaction.attache(_view, _coinRateUI);

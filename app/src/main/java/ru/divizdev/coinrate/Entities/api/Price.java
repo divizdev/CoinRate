@@ -1,5 +1,5 @@
 
-package ru.divizdev.coinrate.Entities.v2;
+package ru.divizdev.coinrate.Entities.api;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

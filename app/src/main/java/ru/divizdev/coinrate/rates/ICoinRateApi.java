@@ -5,7 +5,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import ru.divizdev.coinrate.BuildConfig;
-import ru.divizdev.coinrate.Entities.v2.ApiData;
+import ru.divizdev.coinrate.Entities.api.ApiData;
 
 public interface ICoinRateApi {
 
