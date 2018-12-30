@@ -12,6 +12,8 @@ public class PreferenceManagerSettings implements IManagerSettings {
 
     public static final String KEY_NAME_PREF = "pref_currency";
 
+    public static final String DEFAULT_CURRENCY = "USD";
+
     private final Context _context;
 
     public PreferenceManagerSettings(Context context){

@@ -3,10 +3,14 @@ package ru.divizdev.coinrate.ui;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +18,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +39,7 @@ import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.rates.CoinRateListInteraction;
 import ru.divizdev.coinrate.rates.LocaleUtils;
+import ru.divizdev.coinrate.rates.PreferenceManagerSettings;
 
 /**
  * Created by diviz on 26.01.2018.
@@ -46,7 +52,8 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     private List<CoinRateUI> _list = new ArrayList<>();
     private SwipeRefreshLayout _swipeRefreshLayout;
     private ProgressBar _progressBar;
-
+    private DrawerLayout _drawerLayout;
+    private NavigationView _navigationView;
 
     //region LifeCycle
 
@@ -69,14 +76,45 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
         _progressBar = view.findViewById(R.id.progress_bar);
 
-        ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        _drawerLayout = view.findViewById(R.id.drawer_layout);
+        _navigationView = view.findViewById(R.id.nav_view);
 
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(false);
-            supportActionBar.setDisplayShowHomeEnabled(false);
+        Toolbar toolbar = view.findViewById(R.id.my_toolbar);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+            ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+            if (supportActionBar != null) {
+                supportActionBar.setDisplayHomeAsUpEnabled(true);
+                supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_24dp);
+            }
         }
 
+        _navigationView.setNavigationItemSelectedListener(menuItem -> {
+            _drawerLayout.closeDrawers();
+            return onOptionsItemSelected(menuItem);
+        });
+
+        setCheckedInitialItemMenu();
+
         return view;
+    }
+
+    private void setCheckedInitialItemMenu() {
+        String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(PreferenceManagerSettings.KEY_NAME_PREF, PreferenceManagerSettings.DEFAULT_CURRENCY);
+        int itemSelectMenu = R.id.menu_item_usd;
+        switch (currentValue){
+            case "RUB":
+                itemSelectMenu = R.id.menu_item_rub;
+                break;
+            case "USD":
+                itemSelectMenu = R.id.menu_item_usd;
+                break;
+            case "EUR":
+                itemSelectMenu = R.id.menu_item_eur;
+                break;
+        }
+        _navigationView.setCheckedItem(itemSelectMenu);
     }
 
     @Override
@@ -118,23 +156,29 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
     }
 
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.main_menu, menu);
-
-
+//        inflater.inflate(R.menu.main_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                showDialogSettings();
+            case android.R.id.home:
+                _drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+            case R.id.menu_item_rub:
+                App.getCoinRateListPresenter().setCurrency("RUB");
+                break;
+            case R.id.menu_item_usd:
+                App.getCoinRateListPresenter().setCurrency("USD");
+                break;
+            case R.id.menu_item_eur:
+                App.getCoinRateListPresenter().setCurrency("EUR");
                 break;
             case R.id.about:
                 showDialogAbout();
@@ -152,13 +196,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         aboutDialog.show(fragmentManager, "");
     }
 
-    @Override
-    public void showDialogSettings() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        SettingsDialog settingsDialog = new SettingsDialog();
-        settingsDialog.setTargetFragment(this, 0);
-        settingsDialog.show(fragmentManager, "");
-    }
 
     @Override
     public void onDialogSettingsSelectedItem(String currency) {
@@ -209,6 +246,11 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         App.getCoinRateListPresenter().refresh();
     }
 
+
+    public interface IFragmentInteractionListener {
+
+        void onClickItemCoinRate(CoinRateUI coinRateUI);
+    }
 
     public static class CoinRateAdapter extends RecyclerView.Adapter<CoinRateAdapter.ViewHolder> {
 
@@ -276,7 +318,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                     _percentChange1h.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange1h(), _itemView.getContext().getTheme()));
                     _percentChange24h.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange24h(), _itemView.getContext().getTheme()));
 
-                }else {
+                } else {
 
                     _percentChange7d.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange7d()));
                     _percentChange1h.setTextColor(_itemView.getResources().getColor(coinRateUI.getColorPercentChange1h()));
@@ -286,7 +328,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
 
                 _percentChange7d.setText(String.format("%s %s", coinRateUI.getUIPercentChange7d(), LocaleUtils.SYMBOL_PERCENT));
-                _percentChange24h.setText(String.format("%s %s",coinRateUI.getUIPercentChange24h(), LocaleUtils.SYMBOL_PERCENT));
+                _percentChange24h.setText(String.format("%s %s", coinRateUI.getUIPercentChange24h(), LocaleUtils.SYMBOL_PERCENT));
                 _percentChange1h.setText(String.format("%s %s", coinRateUI.getUIPercentChange1h(), LocaleUtils.SYMBOL_PERCENT));
 
                 _currencyRateCoin.setText(coinRateUI.getUICurrency());
@@ -319,12 +361,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                 }
             }
         }
-    }
-
-
-    public interface IFragmentInteractionListener {
-
-        void onClickItemCoinRate(CoinRateUI coinRateUI);
     }
 
 }

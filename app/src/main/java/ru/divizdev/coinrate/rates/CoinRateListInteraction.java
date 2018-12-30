@@ -115,7 +115,6 @@ public class CoinRateListInteraction {
 
         void showDialogAbout();
 
-        void showDialogSettings();
     }
 
     private static class NullRateListView implements ICoinRateListView {
@@ -150,9 +149,6 @@ public class CoinRateListInteraction {
 
         }
 
-        @Override
-        public void showDialogSettings() {
 
-        }
     }
 }

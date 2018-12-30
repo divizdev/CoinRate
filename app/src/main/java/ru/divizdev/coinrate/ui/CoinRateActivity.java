@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import java.util.Locale;
 
@@ -21,15 +20,9 @@ public class CoinRateActivity extends AppCompatActivity implements CoinRateListF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coin_rate);
 
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
-        setSupportActionBar(toolbar);
-
-
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);
-
-        if (fragment == null) {
-            fragment = new CoinRateListFragment();
+        if (savedInstanceState == null) {
+            Fragment fragment = new CoinRateListFragment();
             fragmentManager
                     .beginTransaction()
                     .add(R.id.fragment_container, fragment)
