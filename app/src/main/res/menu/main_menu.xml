@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id = "@+id/main_menu" >
+
     <item
         android:id="@+id/action_settings"
-        android:icon="@drawable/ic_settings_24dp"
-        android:title="@string/action_settings"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_change_cryptocurrency"
+        android:title="@string/pref_name_currency">
+    <menu>
+        <group android:checkableBehavior="single">
+
+            <item
+                android:id="@+id/menu_item_usd"
+                android:title="@string/currency_name_usd"
+                android:icon="@drawable/ic_dollar"/>
+            <item
+                android:id="@+id/menu_item_rub"
+                android:title="@string/currency_name_rub"
+                android:icon="@mipmap/ic_ruble"/>
+            <item
+                android:id="@+id/menu_item_eur"
+                android:title="@string/currency_name_eur"
+                android:icon="@drawable/ic_euro"/>
+        </group>
+    </menu>
+    </item>
     <item
         android:id="@+id/about"
         android:title="@string/menu_item_about"
         android:icon="@drawable/ic_info_24dp"
         app:showAsAction="never"
         />
+
 
 </menu>

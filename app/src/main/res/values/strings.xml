@@ -31,4 +31,8 @@
     <string name="git_hub_link" translatable="false">divizdev/CoinRate</string>
     <string name="website_link" translatable="false">http://divizdev.ru</string>
     <string name="url_play_store" translatable="false">ru.divizdev.coinrate</string>
+    <string name="currency_name_rub">Ruble</string>
+    <string name="currency_name_usd">Dollar</string>
+    <string name="currency_name_eur">Euro</string>
+    <string name="change_cryptocurrency">Currency</string>
 </resources>

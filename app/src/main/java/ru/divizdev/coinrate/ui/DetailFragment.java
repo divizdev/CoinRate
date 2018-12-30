@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,14 +66,6 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         if (getArguments() != null) {
             _coinRateUI = getArguments().getParcelable(ARG_COIN_RATE);
         }
-
-        ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-
-        if(supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
-
     }
 
 
@@ -86,6 +79,19 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
     }
 
     private void bind(View view) {
+
+        Toolbar toolbar = view.findViewById(R.id.my_toolbar);
+        if (getActivity() != null) {
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+            ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+
+            if(supportActionBar != null) {
+                supportActionBar.setDisplayHomeAsUpEnabled(true);
+                supportActionBar.setDisplayShowHomeEnabled(true);
+            }
+        }
+
         _detailAvailableSupply = view.findViewById(R.id.detail_available_supply);
         _detailNameCoin = view.findViewById(R.id.detail_name_coin);
         _detailMarketCap = view.findViewById(R.id.detail_market_cap);

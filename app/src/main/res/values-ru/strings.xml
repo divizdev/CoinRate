@@ -27,5 +27,9 @@
     <string name="name_button_convert">Конвертировать</string>
     <string name="name_convertor">Конвертер валют</string>
     <string name="name_change_button"><![CDATA[<=>]]></string>
+    <string name="currency_name_rub">Рубли</string>
+    <string name="currency_name_usd">Доллары</string>
+    <string name="currency_name_eur">Евро</string>
+    <string name="change_cryptocurrency">Currency</string>
 
 </resources>
