@@ -12,6 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.BuildConfig;
 import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.Entities.api.ApiData;
+import ru.divizdev.coinrate.utils.EspressoIdlingResource;
 
 /**
  * Created by diviz on 29.01.2018.
@@ -65,6 +66,7 @@ public class CoinRateListInteraction {
 
     private void loadCoinRate(final String currency) {
 
+        EspressoIdlingResource.increment();
         _ICoinRateListView.showLoadingProgress(true);
 
 
@@ -85,6 +87,8 @@ public class CoinRateListInteraction {
                     _ICoinRateListView.showCoinRateList(coinRateUI);
                     _managerSettings.setCurCurrency(currency);
                     _curCurrency = currency;
+                    EspressoIdlingResource.decrement();
+
                 }
             }
 
@@ -92,6 +96,8 @@ public class CoinRateListInteraction {
             public void onFailure(Call<ApiData> call, Throwable t) {
                 _ICoinRateListView.showLoadingProgress(false);
                 _ICoinRateListView.showErrorLoading();
+                EspressoIdlingResource.decrement();
+
 
             }
         });
