@@ -1,5 +1,8 @@
 package ru.divizdev.coinrate.presentation.listCoins.presenter;
 
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,26 +13,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.BuildConfig;
-import ru.divizdev.coinrate.entities.CoinRateUI;
-import ru.divizdev.coinrate.entities.api.ApiData;
 import ru.divizdev.coinrate.data.ICoinRateApi;
 import ru.divizdev.coinrate.data.IManagerSettings;
+import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.entities.api.ApiData;
 import ru.divizdev.coinrate.utils.EspressoIdlingResource;
 
 /**
  * Created by diviz on 29.01.2018.
  */
+@InjectViewState
+public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
 
-public class CoinRateListInteraction {
-
-    private ICoinRateListView _ICoinRateListView = NullRateListView.getInstance();
-    private String _curCurrency;
-
-
-    private Map<String, List<CoinRateUI>> _coinRateModel = new HashMap<>();
     private final IManagerSettings _managerSettings;
+    private String _curCurrency;
+    private Map<String, List<CoinRateUI>> _coinRateModel = new HashMap<>();
 
-    public CoinRateListInteraction(IManagerSettings managerSettings) {
+    public CoinRateListPresenter(IManagerSettings managerSettings) {
         _managerSettings = managerSettings;
         _curCurrency = getCurrencySettings();
     }
@@ -38,14 +38,11 @@ public class CoinRateListInteraction {
         return _managerSettings.getCurCurrency();
     }
 
-    public void attache(ICoinRateListView ICoinRateListView) {
-        _ICoinRateListView = ICoinRateListView;
+    @Override
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
         _curCurrency = getCurrencySettings();
         showList(_curCurrency);
-    }
-
-    public void detach() {
-        _ICoinRateListView = NullRateListView.getInstance();
     }
 
     private void showList(String curCurrency) {
@@ -54,7 +51,7 @@ public class CoinRateListInteraction {
         if (list != null) {
             _curCurrency = curCurrency;
             _managerSettings.setCurCurrency(curCurrency);
-            _ICoinRateListView.showCoinRateList(list);
+            getViewState().showCoinRateList(list);
         } else {
             loadCoinRate(curCurrency);
         }
@@ -69,7 +66,7 @@ public class CoinRateListInteraction {
     private void loadCoinRate(final String currency) {
 
         EspressoIdlingResource.increment();
-        _ICoinRateListView.showLoadingProgress(true);
+        getViewState().showLoadingProgress(true);
 
 
         Retrofit retrofitV2 = new Retrofit.Builder()
@@ -85,22 +82,19 @@ public class CoinRateListInteraction {
                 if (response.body() != null) {
                     List<CoinRateUI> coinRateUI = CoinRateUI.convertList(response.body(), currency);
                     _coinRateModel.put(currency, coinRateUI);//TODO: multi thread not lock
-                    _ICoinRateListView.showLoadingProgress(false);
-                    _ICoinRateListView.showCoinRateList(coinRateUI);
+                    getViewState().showLoadingProgress(false);
+                    getViewState().showCoinRateList(coinRateUI);
                     _managerSettings.setCurCurrency(currency);
                     _curCurrency = currency;
                     EspressoIdlingResource.decrement();
-
                 }
             }
 
             @Override
             public void onFailure(Call<ApiData> call, Throwable t) {
-                _ICoinRateListView.showLoadingProgress(false);
-                _ICoinRateListView.showErrorLoading();
+                getViewState().showLoadingProgress(false);
+                getViewState().showErrorLoading();
                 EspressoIdlingResource.decrement();
-
-
             }
         });
 
@@ -110,53 +104,6 @@ public class CoinRateListInteraction {
         if (_curCurrency.compareTo(currency) != 0) {
             showList(currency);
         }
-
-    }
-
-
-    public interface ICoinRateListView {
-        void showLoadingProgress(Boolean isView);
-
-        void showCoinRateList(List<CoinRateUI> list);
-
-        void showErrorLoading();
-
-        void showDialogAbout();
-
-    }
-
-    private static class NullRateListView implements ICoinRateListView {
-
-        private static NullRateListView _nullRateListView = new NullRateListView();
-
-        private NullRateListView() {
-
-        }
-
-        static NullRateListView getInstance() {
-            return _nullRateListView;
-        }
-
-        @Override
-        public void showLoadingProgress(Boolean isView) {
-
-        }
-
-        @Override
-        public void showCoinRateList(List<CoinRateUI> list) {
-
-        }
-
-        @Override
-        public void showErrorLoading() {
-
-        }
-
-        @Override
-        public void showDialogAbout() {
-
-        }
-
 
     }
 }

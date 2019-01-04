@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +26,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,14 +40,15 @@ import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.data.PreferenceManagerSettings;
 import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.presentation.about.AboutDialog;
-import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListInteraction;
+import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListPresenter;
+import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListView;
 import ru.divizdev.coinrate.utils.LocaleUtils;
 
 /**
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener {
+public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRateListView, SwipeRefreshLayout.OnRefreshListener {
 
     private IFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
@@ -55,13 +58,18 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     private DrawerLayout _drawerLayout;
     private NavigationView _navigationView;
 
+    @InjectPresenter
+    CoinRateListPresenter _coinRateListPresenter;
+
+    @ProvidePresenter
+    CoinRateListPresenter provideCoinRateListPresenter() {
+        return new CoinRateListPresenter(App.getManagerSettings());
+    }
     //region LifeCycle
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
         View view = inflater.inflate(R.layout.fragment_coin_rate, container, false);
 
         _recyclerView = view.findViewById(R.id.coin_rate_list);
@@ -117,17 +125,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
         _navigationView.setCheckedItem(itemSelectMenu);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        App.getCoinRateListPresenter().attache(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        App.getCoinRateListPresenter().detach();
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -166,13 +163,13 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
                 _drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.menu_item_rub:
-                App.getCoinRateListPresenter().setCurrency("RUB");
+                _coinRateListPresenter.setCurrency("RUB");
                 break;
             case R.id.menu_item_usd:
-                App.getCoinRateListPresenter().setCurrency("USD");
+                _coinRateListPresenter.setCurrency("USD");
                 break;
             case R.id.menu_item_eur:
-                App.getCoinRateListPresenter().setCurrency("EUR");
+                _coinRateListPresenter.setCurrency("EUR");
                 break;
             case R.id.about:
                 showDialogAbout();
@@ -192,7 +189,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
     //endregion Menu
 
-    //region ICoinRateListView
+    //region CoinRateListView
 
     @Override
     public void showLoadingProgress(Boolean isView) {
@@ -226,7 +223,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
     @Override
     public void onRefresh() {
-        App.getCoinRateListPresenter().refresh();
+        _coinRateListPresenter.refresh();
     }
 
 

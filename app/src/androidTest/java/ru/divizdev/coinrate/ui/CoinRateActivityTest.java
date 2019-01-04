@@ -68,7 +68,7 @@ public class CoinRateActivityTest {
     }
 
     @Test
-    public void coinRateActivityTest() {
+    public void changeCurrencyTest() {
         onView(withId(R.id.drawer_layout))
                 .check(matches(isClosed(Gravity.START)))
                 .perform(DrawerActions.open()); // Open Drawer
