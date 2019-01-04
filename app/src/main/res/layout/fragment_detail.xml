@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:context="ru.divizdev.coinrate.ui.DetailFragment"><include layout="@layout/toolbar"/>
+        tools:context="ru.divizdev.coinrate.presentation.detail.ui.DetailFragment"><include layout="@layout/toolbar"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

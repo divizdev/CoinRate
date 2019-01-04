@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.ui;
+package ru.divizdev.coinrate.presentation.main;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -8,11 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.Locale;
 
-import ru.divizdev.coinrate.Entities.CoinRateUI;
+import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.rates.LocaleUtils;
+import ru.divizdev.coinrate.utils.LocaleUtils;
+import ru.divizdev.coinrate.presentation.listCoins.ui.CoinRateListFragment;
+import ru.divizdev.coinrate.presentation.listCoins.ui.CoinRateListFragment.IFragmentInteractionListener;
+import ru.divizdev.coinrate.presentation.detail.ui.DetailFragment;
 
-public class CoinRateActivity extends AppCompatActivity implements CoinRateListFragment.IFragmentInteractionListener {
+public class CoinRateActivity extends AppCompatActivity implements IFragmentInteractionListener {
 
 
     @Override

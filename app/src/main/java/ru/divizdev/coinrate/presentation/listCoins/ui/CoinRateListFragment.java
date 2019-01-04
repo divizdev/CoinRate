@@ -1,12 +1,12 @@
-package ru.divizdev.coinrate.ui;
+package ru.divizdev.coinrate.presentation.listCoins.ui;
 
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -20,8 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,19 +31,21 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import ru.divizdev.coinrate.App;
-import ru.divizdev.coinrate.Entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.rates.CoinRateListInteraction;
-import ru.divizdev.coinrate.rates.LocaleUtils;
-import ru.divizdev.coinrate.rates.PreferenceManagerSettings;
+import ru.divizdev.coinrate.data.PreferenceManagerSettings;
+import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.about.AboutDialog;
+import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListInteraction;
+import ru.divizdev.coinrate.utils.LocaleUtils;
 
 /**
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener, SettingsDialog.INoticeDialogListener {
+public class CoinRateListFragment extends Fragment implements CoinRateListInteraction.ICoinRateListView, SwipeRefreshLayout.OnRefreshListener {
 
     private IFragmentInteractionListener _listener;
     private RecyclerView _recyclerView;
@@ -59,7 +59,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         View view = inflater.inflate(R.layout.fragment_coin_rate, container, false);
@@ -160,12 +160,6 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.main_menu, menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -191,20 +185,9 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
 
     @Override
     public void showDialogAbout() {
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         AboutDialog aboutDialog = new AboutDialog();
         aboutDialog.show(fragmentManager, "");
-    }
-
-
-    @Override
-    public void onDialogSettingsSelectedItem(String currency) {
-        App.getCoinRateListPresenter().setCurrency(currency);
-    }
-
-    @Override
-    public void onDialogSettingsNegativeClick(DialogFragment dialog) {
-
     }
 
     //endregion Menu
@@ -230,7 +213,7 @@ public class CoinRateListFragment extends Fragment implements CoinRateListIntera
     public void showCoinRateList(List<CoinRateUI> list) {
         _list.clear();
         _list.addAll(list);
-        _recyclerView.getAdapter().notifyDataSetChanged();
+        Objects.requireNonNull(_recyclerView.getAdapter()).notifyDataSetChanged();
 
     }
 

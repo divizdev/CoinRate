@@ -2,10 +2,10 @@ package ru.divizdev.coinrate;
 
 import android.app.Application;
 
-import ru.divizdev.coinrate.rates.CoinRateDetailInteraction;
-import ru.divizdev.coinrate.rates.CoinRateListInteraction;
-import ru.divizdev.coinrate.rates.IManagerSettings;
-import ru.divizdev.coinrate.rates.PreferenceManagerSettings;
+import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailInteraction;
+import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListInteraction;
+import ru.divizdev.coinrate.data.IManagerSettings;
+import ru.divizdev.coinrate.data.PreferenceManagerSettings;
 
 /**
  * Created by diviz on 29.01.2018.

@@ -26,7 +26,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.rates.PreferenceManagerSettings;
+import ru.divizdev.coinrate.presentation.main.CoinRateActivity;
+import ru.divizdev.coinrate.data.PreferenceManagerSettings;
 import ru.divizdev.coinrate.utils.EspressoIdlingResource;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;

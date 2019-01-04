@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.rates;
+package ru.divizdev.coinrate.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;

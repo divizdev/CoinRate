@@ -6,23 +6,24 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import ru.divizdev.coinrate.Entities.CoinRateUI;
+import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailInteraction;
 
 /**
  * Created by diviz on 25.03.2018.
  */
 public class CoinRateDetailInteractionTest {
 
-    CoinRateDetailInteraction _interaction;
-    StubView _view;
-    CoinRateUI _coinRateUI;
+    private CoinRateDetailInteraction _interaction;
+    private StubView _view;
+    private CoinRateUI _coinRateUI;
 
     private class StubView implements CoinRateDetailInteraction.ICoinRateDetailView{
 
-        public String _currencyFrom;
-        public String _currencyTo;
-        public String _value;
-        public String _error;
+        String _currencyFrom;
+        String _currencyTo;
+        String _value;
+        String _error;
 
 
         @Override

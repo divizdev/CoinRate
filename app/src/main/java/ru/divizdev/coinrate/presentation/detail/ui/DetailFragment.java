@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.ui;
+package ru.divizdev.coinrate.presentation.detail.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,10 +17,10 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import ru.divizdev.coinrate.App;
-import ru.divizdev.coinrate.Entities.CoinRateUI;
+import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.rates.CoinRateDetailInteraction;
-import ru.divizdev.coinrate.rates.ICoinRateDetailInteraction;
+import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailInteraction;
+import ru.divizdev.coinrate.presentation.detail.presenter.ICoinRateDetailInteraction;
 
 
 public class DetailFragment extends Fragment implements CoinRateDetailInteraction.ICoinRateDetailView {
@@ -106,31 +106,16 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _valueFrom = view.findViewById(R.id.value_from);
         _valueTo = view.findViewById(R.id.value_to);
 
-        _valueFrom.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(event.getAction() == KeyEvent.ACTION_UP){
-
-                    _interaction.convertCurrency(_valueFrom.getText().toString());
-                }
-                return false;
-            }
-        });
-
-        _buttonConvert.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
+        _valueFrom.setOnKeyListener((v, keyCode, event) -> {
+            if(event.getAction() == KeyEvent.ACTION_UP){
                 _interaction.convertCurrency(_valueFrom.getText().toString());
             }
+            return false;
         });
 
-        buttonChangeCurrency.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _interaction.changeCurrency();
-            }
-        });
+        _buttonConvert.setOnClickListener(v -> _interaction.convertCurrency(_valueFrom.getText().toString()));
+
+        buttonChangeCurrency.setOnClickListener(v -> _interaction.changeCurrency());
 
 
 
@@ -156,8 +141,6 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _detailMarketCap.setText(String.format("%s %s", coinRateUI.getUIMarketCap(), coinRateUI.getUICurrency()));
         _detailAvailableSupply.setText(String.format("%s %s", coinRateUI.getUIAvailableSupply(), coinRateUI.getSymbol()));
         _detailSymbolCoin.setText(coinRateUI.getSymbol());
-
-
 
         Picasso.with(view.getContext())
                 .load(coinRateUI.getURLImage())

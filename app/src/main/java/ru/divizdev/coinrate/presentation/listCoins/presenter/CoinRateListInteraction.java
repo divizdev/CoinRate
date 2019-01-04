@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.rates;
+package ru.divizdev.coinrate.presentation.listCoins.presenter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,8 +10,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.BuildConfig;
-import ru.divizdev.coinrate.Entities.CoinRateUI;
-import ru.divizdev.coinrate.Entities.api.ApiData;
+import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.entities.api.ApiData;
+import ru.divizdev.coinrate.data.ICoinRateApi;
+import ru.divizdev.coinrate.data.IManagerSettings;
 import ru.divizdev.coinrate.utils.EspressoIdlingResource;
 
 /**
@@ -21,7 +23,7 @@ import ru.divizdev.coinrate.utils.EspressoIdlingResource;
 public class CoinRateListInteraction {
 
     private ICoinRateListView _ICoinRateListView = NullRateListView.getInstance();
-    private String _curCurrency = "";
+    private String _curCurrency;
 
 
     private Map<String, List<CoinRateUI>> _coinRateModel = new HashMap<>();

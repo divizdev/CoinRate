@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.Entities;
+package ru.divizdev.coinrate.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.divizdev.coinrate.BuildConfig;
-import ru.divizdev.coinrate.Entities.api.ApiData;
-import ru.divizdev.coinrate.Entities.api.Datum;
-import ru.divizdev.coinrate.Entities.api.Price;
+import ru.divizdev.coinrate.entities.api.ApiData;
+import ru.divizdev.coinrate.entities.api.Datum;
+import ru.divizdev.coinrate.entities.api.Price;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.rates.LocaleUtils;
+import ru.divizdev.coinrate.utils.LocaleUtils;
 
 public class CoinRateUI implements Parcelable {
 

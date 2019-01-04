@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.ui;
+package ru.divizdev.coinrate.data;
 
 /**
  * Created by diviz on 04.03.2018.
