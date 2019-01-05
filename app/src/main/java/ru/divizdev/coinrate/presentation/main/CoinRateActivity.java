@@ -8,14 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import java.util.Locale;
 
-import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.utils.LocaleUtils;
 import ru.divizdev.coinrate.presentation.listCoins.ui.CoinRateListFragment;
-import ru.divizdev.coinrate.presentation.listCoins.ui.CoinRateListFragment.IFragmentInteractionListener;
-import ru.divizdev.coinrate.presentation.detail.ui.DetailFragment;
+import ru.divizdev.coinrate.utils.LocaleUtils;
 
-public class CoinRateActivity extends AppCompatActivity implements IFragmentInteractionListener {
+public class CoinRateActivity extends AppCompatActivity {
 
 
     @Override
@@ -48,18 +45,4 @@ public class CoinRateActivity extends AppCompatActivity implements IFragmentInte
         onBackPressed();
         return true;
     }
-
-
-    @Override
-    public void onClickItemCoinRate(CoinRateUI coinRateUI) {
-        FragmentManager fm = getSupportFragmentManager();
-
-        Fragment detailFragment = DetailFragment.newInstance(coinRateUI);
-
-        fm.beginTransaction().replace(R.id.fragment_container, detailFragment).addToBackStack(null).commit();
-
-
-    }
-
-
 }

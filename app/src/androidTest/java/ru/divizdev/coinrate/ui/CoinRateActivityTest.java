@@ -36,6 +36,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.contrib.DrawerMatchers.isOpen;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -65,6 +66,14 @@ public class CoinRateActivityTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    @Test
+    public void navToDetailTest(){
+        onView(withRecyclerView(R.id.coin_rate_list)
+                .atPositionOnView(1, R.id.currency_rate_coin)).perform(click());
+
+        onView(withId(R.id.detail_name_coin)).check(matches(isDisplayed()));
     }
 
     @Test

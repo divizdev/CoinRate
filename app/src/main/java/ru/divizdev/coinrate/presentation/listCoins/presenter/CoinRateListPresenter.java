@@ -106,4 +106,8 @@ public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
         }
 
     }
+
+    public void clickToItem(CoinRateUI coinRateUI) {
+        getViewState().navToDetail(coinRateUI);
+    }
 }

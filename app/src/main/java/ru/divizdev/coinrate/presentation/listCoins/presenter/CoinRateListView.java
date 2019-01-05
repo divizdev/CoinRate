@@ -21,4 +21,6 @@ public interface CoinRateListView extends MvpView {
     @StateStrategyType(OneExecutionStateStrategy.class)
     void showDialogAbout();
 
+    @StateStrategyType(OneExecutionStateStrategy.class)
+    void navToDetail(CoinRateUI coinRateUI);
 }

@@ -1,6 +1,5 @@
 package ru.divizdev.coinrate.presentation.listCoins.ui;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -35,9 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import ru.divizdev.coinrate.App;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.data.PreferenceManagerSettings;
+import ru.divizdev.coinrate.di.Factory;
 import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.presentation.about.AboutDialog;
 import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListPresenter;
@@ -50,7 +49,8 @@ import ru.divizdev.coinrate.utils.LocaleUtils;
 
 public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRateListView, SwipeRefreshLayout.OnRefreshListener {
 
-    private IFragmentInteractionListener _listener;
+    @InjectPresenter
+    CoinRateListPresenter _coinRateListPresenter;
     private RecyclerView _recyclerView;
     private List<CoinRateUI> _list = new ArrayList<>();
     private SwipeRefreshLayout _swipeRefreshLayout;
@@ -58,12 +58,9 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
     private DrawerLayout _drawerLayout;
     private NavigationView _navigationView;
 
-    @InjectPresenter
-    CoinRateListPresenter _coinRateListPresenter;
-
     @ProvidePresenter
     CoinRateListPresenter provideCoinRateListPresenter() {
-        return new CoinRateListPresenter(App.getManagerSettings());
+        return new CoinRateListPresenter(Factory.getFactory().getManagerSettings());
     }
     //region LifeCycle
 
@@ -75,7 +72,9 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
         _recyclerView = view.findViewById(R.id.coin_rate_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         _recyclerView.setLayoutManager(linearLayoutManager);
-        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(_listener, _list);
+        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(coinRateUI -> {
+            _coinRateListPresenter.clickToItem(coinRateUI);
+        }, _list);
         _recyclerView.setAdapter(coinRateAdapter);
         _recyclerView.addItemDecoration(new DividerItemDecoration(_recyclerView.getContext(), linearLayoutManager.getOrientation()));
 
@@ -111,7 +110,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
     private void setCheckedInitialItemMenu() {
         String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(PreferenceManagerSettings.KEY_NAME_PREF, PreferenceManagerSettings.DEFAULT_CURRENCY);
         int itemSelectMenu = R.id.menu_item_usd;
-        switch (currentValue){
+        switch (currentValue) {
             case "RUB":
                 itemSelectMenu = R.id.menu_item_rub;
                 break;
@@ -125,22 +124,9 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
         _navigationView.setCheckedItem(itemSelectMenu);
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof IFragmentInteractionListener) {
-            _listener = (IFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement IFragmentInteractionListener");
-        }
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
-        _listener = null;
     }
 
 
@@ -187,6 +173,13 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
         aboutDialog.show(fragmentManager, "");
     }
 
+    @Override
+    public void navToDetail(CoinRateUI coinRateUI) {
+        if (getActivity() != null) {
+            Factory.getFactory().getRouter().navToDetail((AppCompatActivity) getActivity(), coinRateUI);
+        }
+    }
+
     //endregion Menu
 
     //region CoinRateListView
@@ -225,7 +218,6 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
     public void onRefresh() {
         _coinRateListPresenter.refresh();
     }
-
 
     public interface IFragmentInteractionListener {
 

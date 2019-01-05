@@ -2,8 +2,7 @@ package ru.divizdev.coinrate;
 
 import android.app.Application;
 
-import ru.divizdev.coinrate.data.IManagerSettings;
-import ru.divizdev.coinrate.data.PreferenceManagerSettings;
+import ru.divizdev.coinrate.di.Factory;
 import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailInteraction;
 
 /**
@@ -14,7 +13,7 @@ public class App extends Application {
 
 
     private static CoinRateDetailInteraction _coinRateDetailInteraction = new CoinRateDetailInteraction();
-    private static IManagerSettings _managerSettings;
+
 
 
     public static CoinRateDetailInteraction getCoiCoinRateDetailInteraction() {
@@ -24,10 +23,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        _managerSettings = new PreferenceManagerSettings(getApplicationContext());
+        Factory.create(getApplicationContext());
     }
 
-    public static IManagerSettings getManagerSettings() {
-        return _managerSettings;
-    }
+
 }
