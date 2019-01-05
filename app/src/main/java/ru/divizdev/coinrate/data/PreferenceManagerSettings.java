@@ -8,7 +8,7 @@ import android.support.v7.preference.PreferenceManager;
  * Created by diviz on 03.03.2018.
  */
 
-public class PreferenceManagerSettings implements IManagerSettings {
+public class PreferenceManagerSettings implements ManagerSettings {
 
     public static final String KEY_NAME_PREF = "pref_currency";
 

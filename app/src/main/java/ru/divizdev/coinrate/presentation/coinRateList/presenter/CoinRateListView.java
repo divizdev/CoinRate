@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.presentation.listCoins.presenter;
+package ru.divizdev.coinrate.presentation.coinRateList.presenter;
 
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;

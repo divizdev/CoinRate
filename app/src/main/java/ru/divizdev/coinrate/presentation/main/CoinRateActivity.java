@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.Locale;
 
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.presentation.listCoins.ui.CoinRateListFragment;
+import ru.divizdev.coinrate.presentation.coinRateList.ui.CoinRateListFragment;
 import ru.divizdev.coinrate.utils.LocaleUtils;
 
 public class CoinRateActivity extends AppCompatActivity {

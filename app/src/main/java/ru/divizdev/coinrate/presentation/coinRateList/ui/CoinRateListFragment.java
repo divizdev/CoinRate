@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.presentation.listCoins.ui;
+package ru.divizdev.coinrate.presentation.coinRateList.ui;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -39,8 +39,8 @@ import ru.divizdev.coinrate.data.PreferenceManagerSettings;
 import ru.divizdev.coinrate.di.Factory;
 import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.presentation.about.AboutDialog;
-import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListPresenter;
-import ru.divizdev.coinrate.presentation.listCoins.presenter.CoinRateListView;
+import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListPresenter;
+import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListView;
 import ru.divizdev.coinrate.utils.LocaleUtils;
 
 /**
@@ -60,7 +60,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
 
     @ProvidePresenter
     CoinRateListPresenter provideCoinRateListPresenter() {
-        return new CoinRateListPresenter(Factory.getFactory().getManagerSettings());
+        return new CoinRateListPresenter(Factory.getFactory().getCoinRateRepository(), Factory.getFactory().getManagerSettings());
     }
     //region LifeCycle
 
@@ -72,9 +72,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
         _recyclerView = view.findViewById(R.id.coin_rate_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         _recyclerView.setLayoutManager(linearLayoutManager);
-        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(coinRateUI -> {
-            _coinRateListPresenter.clickToItem(coinRateUI);
-        }, _list);
+        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(coinRateUI -> _coinRateListPresenter.clickToItem(coinRateUI), _list);
         _recyclerView.setAdapter(coinRateAdapter);
         _recyclerView.addItemDecoration(new DividerItemDecoration(_recyclerView.getContext(), linearLayoutManager.getOrientation()));
 
