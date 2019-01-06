@@ -1,5 +1,8 @@
 package ru.divizdev.coinrate.presentation.detail.presenter;
 
+import com.arellomobile.mvp.InjectViewState;
+import com.arellomobile.mvp.MvpPresenter;
+
 import java.math.BigDecimal;
 
 import ru.divizdev.coinrate.entities.CoinRateUI;
@@ -8,65 +11,41 @@ import ru.divizdev.coinrate.utils.LocaleUtils;
 /**
  * Created by diviz on 22.03.2018.
  */
+@InjectViewState
+public class CoinRateDetailPresenter extends MvpPresenter<CoinRateDetailView> {
 
-public class CoinRateDetailInteraction implements ICoinRateDetailInteraction {
-
-    private ICoinRateDetailView _view;
     private CoinRateUI _coinRateUI;
     private boolean _direct = true; //Symbol => Currency
 
-
-    public interface ICoinRateDetailView {
-
-        void setCurrencyFrom(String currencyFrom);
-
-        void setCurrencyTo(String currencyTo);
-
-        void setValue(String value);
-
-        void clearAll();
-
-        void showError(String error);
-
+    public CoinRateDetailPresenter(CoinRateUI coinRateUI) {
+        _coinRateUI = coinRateUI;
     }
 
-
-
     @Override
-    public void attache(ICoinRateDetailView view, CoinRateUI coinRate) {
-        _view = view;
-        _coinRateUI = coinRate;
+    protected void onFirstViewAttach() {
+        super.onFirstViewAttach();
         _direct = true;
 
         setCurrency(_direct);
-
+        getViewState().setData(_coinRateUI);
     }
 
     private void setCurrency(boolean direct) {
         if (direct) {
-            _view.setCurrencyFrom(_coinRateUI.getSymbol());
-            _view.setCurrencyTo(_coinRateUI.getCurrency());
+            getViewState().setCurrencyFrom(_coinRateUI.getSymbol());
+            getViewState().setCurrencyTo(_coinRateUI.getCurrency());
         } else {
-            _view.setCurrencyFrom(_coinRateUI.getCurrency());
-            _view.setCurrencyTo(_coinRateUI.getSymbol());
+            getViewState().setCurrencyFrom(_coinRateUI.getCurrency());
+            getViewState().setCurrencyTo(_coinRateUI.getSymbol());
         }
     }
 
-    @Override
-    public void detache() {
-        _view = null;
-    }
-
-    @Override
     public void changeCurrency() {
-
         _direct = !_direct;
         setCurrency(_direct);
-        _view.clearAll();
-
+        getViewState().clearAll();
     }
 
-    @Override
     public void convertCurrency(String value) {
         try {
             float valueF = Float.parseFloat(value);
@@ -81,10 +60,10 @@ public class CoinRateDetailInteraction implements ICoinRateDetailInteraction {
 
             }
 
-            _view.setValue(LocaleUtils.formatBigDecimal(new BigDecimal(result)));
+            getViewState().setValueTo(LocaleUtils.formatBigDecimal(new BigDecimal(result)));
 
         } catch (Exception e) {
-            _view.showError("Error convert");
+            getViewState().showError("Error convert");
         }
     }
 
