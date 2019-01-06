@@ -6,11 +6,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.BuildConfig;
+import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.entities.api.ApiData;
 
 public class CoinRateApiRepository implements  CoinRateRepository {
     @Override
-    public void loadListCoinRate(String currency, LoadCoinRateCallback callback) {
+    public void loadListCoinRate(String currency, boolean isForced, LoadCoinRateCallback callback) {
         Retrofit retrofitV2 = new Retrofit.Builder()
                 .baseUrl(BuildConfig.API2_URL) //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
@@ -22,7 +23,7 @@ public class CoinRateApiRepository implements  CoinRateRepository {
             @Override
             public void onResponse(Call<ApiData> call, Response<ApiData> response) {
                 if (response.body() != null) {
-                    callback.onNotesLoaded(response.body());
+                    callback.onNotesLoaded(CoinRateUI.convertList(response.body(), currency));
                 }
             }
 

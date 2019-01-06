@@ -1,13 +1,15 @@
 package ru.divizdev.coinrate.data;
 
-import ru.divizdev.coinrate.entities.api.ApiData;
+import java.util.List;
+
+import ru.divizdev.coinrate.entities.CoinRateUI;
 
 public interface CoinRateRepository {
 
     interface LoadCoinRateCallback {
-        void onNotesLoaded(ApiData apiData);
+        void onNotesLoaded(List<CoinRateUI> list);
         void onErrorLoaded(String message);
     }
 
-    void loadListCoinRate(String currency, LoadCoinRateCallback callback);
+    void loadListCoinRate(String currency, boolean isForced, LoadCoinRateCallback callback);
 }
