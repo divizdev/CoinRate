@@ -1,4 +1,4 @@
-package ru.divizdev.coinrate.rates;
+package ru.divizdev.coinrate.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

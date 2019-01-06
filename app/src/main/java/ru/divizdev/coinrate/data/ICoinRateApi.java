@@ -1,11 +1,11 @@
-package ru.divizdev.coinrate.rates;
+package ru.divizdev.coinrate.data;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import ru.divizdev.coinrate.BuildConfig;
-import ru.divizdev.coinrate.Entities.api.ApiData;
+import ru.divizdev.coinrate.entities.api.ApiData;
 
 public interface ICoinRateApi {
 

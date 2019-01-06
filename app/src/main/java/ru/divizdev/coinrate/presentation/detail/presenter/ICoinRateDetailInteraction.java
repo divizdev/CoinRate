@@ -1,6 +1,6 @@
-package ru.divizdev.coinrate.rates;
+package ru.divizdev.coinrate.presentation.detail.presenter;
 
-import ru.divizdev.coinrate.Entities.CoinRateUI;
+import ru.divizdev.coinrate.entities.CoinRateUI;
 
 /**
  * Created by diviz on 24.03.2018.

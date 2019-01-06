@@ -1,8 +1,9 @@
-package ru.divizdev.coinrate.rates;
+package ru.divizdev.coinrate.presentation.detail.presenter;
 
 import java.math.BigDecimal;
 
-import ru.divizdev.coinrate.Entities.CoinRateUI;
+import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.utils.LocaleUtils;
 
 /**
  * Created by diviz on 22.03.2018.
@@ -69,7 +70,7 @@ public class CoinRateDetailInteraction implements ICoinRateDetailInteraction {
     public void convertCurrency(String value) {
         try {
             float valueF = Float.parseFloat(value);
-            float result = 0f;
+            float result;
             if (_direct) {
 
                 result = valueF * _coinRateUI.getPrice().floatValue();
