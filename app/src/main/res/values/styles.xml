@@ -8,14 +8,16 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
-    <style name="TextViewBase" parent="@android:style/Widget.TextView">
+    <style name="TextViewBase">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:fontFamily">sans-serif</item>
+
     </style>
 
     <style name="TextViewBase.Title">
-        <item name="android:textSize">12sp</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:textSize">15sp</item>
 
     </style>
 
@@ -23,33 +25,15 @@
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="TextViewBase.Value" >
-        <!--parent="@android:style/Widget.Holo.Light.TextView.ListSeparator">-->
-        <item name="android:textSize">17sp</item>
-        <item name="android:background">@drawable/list_section_divider_holo_light</item>
-        <item name="android:textAllCaps">true</item>
-
-        <!--<item name="android:textColor">?textColorSecondary</item>-->
-
+    <style name="TextViewBase.Value">
+        <item name="android:textSize">18sp</item>
+        <!--<item name="android:background">@drawable/list_section_divider_holo_light</item>-->
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingStart">8dip</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">4dp</item>
 
-        <!--<item name="textAppearance">?android:attr/textAppearanceSmall</item>-->
-        <!--<item name="textSelectHandleLeft">?android:attr/textSelectHandleLeft</item>-->
-        <!--<item name="textSelectHandleRight">?android:attr/textSelectHandleRight</item>-->
-        <!--<item name="textSelectHandle">?android:attr/textSelectHandle</item>-->
-        <!--<item name="textEditPasteWindowLayout">?android:attr/textEditPasteWindowLayout</item>-->
-        <!--<item name="textEditNoPasteWindowLayout">?android:attr/textEditNoPasteWindowLayout</item>-->
-        <!--<item name="textEditSidePasteWindowLayout">?android:attr/textEditSidePasteWindowLayout</item>-->
-        <!--<item name="textEditSideNoPasteWindowLayout">?android:attr/textEditSideNoPasteWindowLayout</item>-->
-        <!--<item name="textEditSuggestionItemLayout">?android:attr/textEditSuggestionItemLayout</item>-->
-        <!--<item name="textEditSuggestionContainerLayout">?android:attr/textEditSuggestionContainerLayout</item>-->
-        <!--<item name="textEditSuggestionHighlightStyle">?android:attr/textEditSuggestionHighlightStyle</item>-->
-        <!--<item name="textCursorDrawable">?android:attr/textCursorDrawable</item>-->
-        <!--<item name="breakStrategy">high_quality</item>-->
-        <!--<item name="hyphenationFrequency">normal</item>-->
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+
 
 
     </style>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:id="@+id/card_project"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_margin="2dp"--><!--android:padding="4dp">-->
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_coin_constraint"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/item_coin_padding">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/img_coin"
+        android:layout_width="@dimen/size_logo_list"
+        android:layout_height="@dimen/size_logo_list"
+
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/symbol_coin"
+        style="@style/TextViewBase.Big"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_coin"
+        app:layout_constraintTop_toBottomOf="@+id/name_coin"
+        tools:text="{symbol_coin}" />
+
+    <TextView
+        android:id="@+id/name_coin"
+        style="@style/TextViewBase.Small"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:visibility="visible"
+        app:layout_constraintStart_toEndOf="@+id/img_coin"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="{name_coin}" />
+
+
+    <TextView
+        android:id="@+id/rate_coin"
+        style="@style/TextViewBase.Big.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@+id/currency_rate_coin"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        tools:text="{10 000}" />
+
+    <TextView
+        android:id="@+id/currency_rate_coin"
+        style="@style/TextViewBase.Big.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rate_coin"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Р" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/TextViewBase.Small"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:gravity="start"
+        android:text="@string/name_percent_change_1h"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/percent_change_1h" />
+
+
+    <TextView
+        android:id="@+id/percent_change_1h"
+        style="@style/TextViewBase.Small"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:gravity="end"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="-99.99" />
+
+
+    <TextView
+        android:id="@+id/textView_24h"
+        style="@style/TextViewBase.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="@string/name_percent_change_24h"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/percent_change_24h" />
+
+    <TextView
+        android:id="@+id/percent_change_24h"
+        style="@style/TextViewBase.Small"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/percent_change_7d"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/percent_change_1h"
+        tools:text="+2" />
+
+
+    <TextView
+        android:id="@+id/textView_7d"
+        style="@style/TextViewBase.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="@string/name_percent_change_7d"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/percent_change_7d" />
+
+
+    <TextView
+        android:id="@+id/percent_change_7d"
+        style="@style/TextViewBase.Small"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:gravity="end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        tools:text="-1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.59" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="28dp" />
+
+
+</android.support.constraint.ConstraintLayout>
+
+
+
+
+
+
