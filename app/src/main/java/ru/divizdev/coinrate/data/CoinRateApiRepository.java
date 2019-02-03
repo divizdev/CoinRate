@@ -6,8 +6,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.divizdev.coinrate.BuildConfig;
-import ru.divizdev.coinrate.entities.CoinRateUI;
-import ru.divizdev.coinrate.entities.api.ApiData;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
+import ru.divizdev.coinrate.data.entities.ApiData;
 
 public class CoinRateApiRepository implements  CoinRateRepository {
     @Override
