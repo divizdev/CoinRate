@@ -40,7 +40,11 @@ android {
 ext {
     supportLibraryVersion = "28.0.0"
     espressoVersion = '3.0.2'
-    moxyVersion = "1.4.5"
+    moxyVersion = "1.5.3"
+    junitVersion = '4.12'
+    mockitoVersion = '2.2.24'
+    powerMockito = '1.7.4'
+    hamcrestVersion = '1.3'
 }
 
 dependencies {
@@ -60,7 +64,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.jrvansuita:MaterialAbout:0.2.3'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation "org.hamcrest:hamcrest-all:$hamcrestVersion"
+    testImplementation "org.powermock:powermock-module-junit4:$powerMockito"
+    testImplementation "org.powermock:powermock-api-mockito2:$powerMockito"
+
 
     androidTestImplementation "com.android.support.test:runner:1.0.2"
     androidTestImplementation "com.android.support.test:rules:1.0.2"
@@ -70,5 +80,5 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espressoVersion"
 
-    testImplementation 'junit:junit:4.12'
+
 }

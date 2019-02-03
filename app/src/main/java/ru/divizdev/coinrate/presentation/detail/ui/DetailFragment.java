@@ -19,7 +19,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.squareup.picasso.Picasso;
 
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailPresenter;
 import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailView;
 

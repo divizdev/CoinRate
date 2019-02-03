@@ -5,7 +5,7 @@ import com.arellomobile.mvp.MvpPresenter;
 
 import java.math.BigDecimal;
 
-import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.utils.LocaleUtils;
 
 /**
