@@ -37,7 +37,7 @@ import java.util.Objects;
 import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.data.PreferenceManagerSettings;
 import ru.divizdev.coinrate.di.Factory;
-import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.presentation.about.AboutDialog;
 import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListPresenter;
 import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListView;

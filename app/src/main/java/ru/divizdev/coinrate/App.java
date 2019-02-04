@@ -3,7 +3,8 @@ package ru.divizdev.coinrate;
 import android.app.Application;
 
 import ru.divizdev.coinrate.di.Factory;
-import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailInteraction;
+import timber.log.Timber;
+import timber.log.Timber.DebugTree;
 
 /**
  * Created by diviz on 29.01.2018.
@@ -11,19 +12,11 @@ import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailInteract
 
 public class App extends Application {
 
-
-    private static CoinRateDetailInteraction _coinRateDetailInteraction = new CoinRateDetailInteraction();
-
-
-
-    public static CoinRateDetailInteraction getCoiCoinRateDetailInteraction() {
-        return _coinRateDetailInteraction;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         Factory.create(getApplicationContext());
+        Timber.plant(new DebugTree());
     }
 
 

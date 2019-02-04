@@ -1,7 +1,6 @@
 package ru.divizdev.coinrate.presentation.detail.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,22 +13,24 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arellomobile.mvp.MvpAppCompatFragment;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.squareup.picasso.Picasso;
 
-import ru.divizdev.coinrate.App;
-import ru.divizdev.coinrate.entities.CoinRateUI;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailInteraction;
-import ru.divizdev.coinrate.presentation.detail.presenter.ICoinRateDetailInteraction;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailPresenter;
+import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailView;
 
 
-public class DetailFragment extends Fragment implements CoinRateDetailInteraction.ICoinRateDetailView {
+public class DetailFragment extends MvpAppCompatFragment implements CoinRateDetailView {
 
     private static final String ARG_COIN_RATE = "coin_rate";
 
-    private static ICoinRateDetailInteraction _interaction = App.getCoiCoinRateDetailInteraction();
+    @InjectPresenter
+    CoinRateDetailPresenter _interaction;
 
-    private CoinRateUI _coinRateUI;
     private TextView _detailNameCoin;
     private TextView _detailAvailableSupply;
     private TextView _detailMarketCap; //detail_max_supply
@@ -43,13 +44,10 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
     private EditText _valueFrom;
     private TextView _valueTo;
 
-    private Button _buttonConvert;
-
 
     public DetailFragment() {
         // Required empty public constructor
     }
-
 
     public static DetailFragment newInstance(CoinRateUI coinRateUI) {
         DetailFragment fragment = new DetailFragment();
@@ -60,20 +58,15 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            _coinRateUI = getArguments().getParcelable(ARG_COIN_RATE);
-        }
+    @ProvidePresenter
+    public CoinRateDetailPresenter getInteraction() {
+        return new CoinRateDetailPresenter(getArguments().getParcelable(ARG_COIN_RATE));//TODO: null
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View result =  inflater.inflate(R.layout.fragment_detail, container, false);
+        View result = inflater.inflate(R.layout.fragment_detail, container, false);
         bind(result);
         return result;
     }
@@ -86,7 +79,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
 
             ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
-            if(supportActionBar != null) {
+            if (supportActionBar != null) {
                 supportActionBar.setDisplayHomeAsUpEnabled(true);
                 supportActionBar.setDisplayShowHomeEnabled(true);
             }
@@ -102,47 +95,31 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
         _nameCurrencyFrom = view.findViewById(R.id.name_currency_from);
         _nameCurrencyTo = view.findViewById(R.id.name_currency_to);
         Button buttonChangeCurrency = view.findViewById(R.id.button_change_currency);
-        _buttonConvert = view.findViewById(R.id.button_convert);
+        Button buttonConvert = view.findViewById(R.id.button_convert);
         _valueFrom = view.findViewById(R.id.value_from);
         _valueTo = view.findViewById(R.id.value_to);
 
         _valueFrom.setOnKeyListener((v, keyCode, event) -> {
-            if(event.getAction() == KeyEvent.ACTION_UP){
+            if (event.getAction() == KeyEvent.ACTION_UP) {
                 _interaction.convertCurrency(_valueFrom.getText().toString());
             }
             return false;
         });
 
-        _buttonConvert.setOnClickListener(v -> _interaction.convertCurrency(_valueFrom.getText().toString()));
+        buttonConvert.setOnClickListener(v -> _interaction.convertCurrency(_valueFrom.getText().toString()));
 
         buttonChangeCurrency.setOnClickListener(v -> _interaction.changeCurrency());
-
-
-
-        setData(view, _coinRateUI);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        _interaction.attache(this, _coinRateUI);
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        _interaction.detache();
-    }
-
-    private void setData(View view, CoinRateUI coinRateUI) {
+    public void setData(CoinRateUI coinRateUI) {
         _detailNameCoin.setText(coinRateUI.getName());
-        _detail24hVolume.setText(String.format("%s %s",  coinRateUI.getUIVolume24(), coinRateUI.getUICurrency()));
+        _detail24hVolume.setText(String.format("%s %s", coinRateUI.getUIVolume24(), coinRateUI.getUICurrency()));
         _detailMarketCap.setText(String.format("%s %s", coinRateUI.getUIMarketCap(), coinRateUI.getUICurrency()));
         _detailAvailableSupply.setText(String.format("%s %s", coinRateUI.getUIAvailableSupply(), coinRateUI.getSymbol()));
         _detailSymbolCoin.setText(coinRateUI.getSymbol());
 
-        Picasso.with(view.getContext())
+        Picasso.with(getContext())
                 .load(coinRateUI.getURLImage())
                 .into(_logo);
     }
@@ -159,7 +136,7 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
     }
 
     @Override
-    public void setValue(String value) {
+    public void setValueTo(String value) {
         _valueTo.setText(value);
     }
 
@@ -167,7 +144,6 @@ public class DetailFragment extends Fragment implements CoinRateDetailInteractio
     public void clearAll() {
         _valueFrom.setText("");
         _valueTo.setText("");
-
     }
 
     @Override

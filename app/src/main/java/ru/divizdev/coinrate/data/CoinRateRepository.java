@@ -2,7 +2,7 @@ package ru.divizdev.coinrate.data;
 
 import java.util.List;
 
-import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 
 public interface CoinRateRepository {
 

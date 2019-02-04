@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 
 public class CoinRateInMemoryRepository implements CoinRateRepository {
 

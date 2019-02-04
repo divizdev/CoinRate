@@ -8,8 +8,9 @@ import java.util.List;
 import ru.divizdev.coinrate.data.CoinRateRepository;
 import ru.divizdev.coinrate.data.CoinRateRepository.LoadCoinRateCallback;
 import ru.divizdev.coinrate.data.ManagerSettings;
-import ru.divizdev.coinrate.entities.CoinRateUI;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.utils.EspressoIdlingResource;
+import timber.log.Timber;
 
 /**
  * Created by diviz on 29.01.2018.
@@ -47,6 +48,7 @@ public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
     }
 
     private void loadCoinRate(final String currency, boolean isForce) {
+        Timber.d("start load coin rate");
 
         EspressoIdlingResource.increment();
         getViewState().showLoadingProgress(true);
@@ -54,6 +56,7 @@ public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
         _repository.loadListCoinRate(currency, isForce, new LoadCoinRateCallback() {
             @Override
             public void onNotesLoaded(List<CoinRateUI> coinRateUI) {
+                Timber.d("finish load coin rate");
                 getViewState().showLoadingProgress(false);
                 getViewState().showCoinRateList(coinRateUI);
                 _managerSettings.setCurCurrency(currency);
@@ -63,6 +66,7 @@ public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
 
             @Override
             public void onErrorLoaded(String message) {
+                Timber.e("Error load coin rate");
                 getViewState().showLoadingProgress(false);
                 getViewState().showErrorLoading();
                 EspressoIdlingResource.decrement();
