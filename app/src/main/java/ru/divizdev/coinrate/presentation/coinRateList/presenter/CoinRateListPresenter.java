@@ -3,11 +3,9 @@ package ru.divizdev.coinrate.presentation.coinRateList.presenter;
 import com.arellomobile.mvp.InjectViewState;
 import com.arellomobile.mvp.MvpPresenter;
 
-import java.util.List;
-
-import ru.divizdev.coinrate.data.CoinRateRepository;
-import ru.divizdev.coinrate.data.CoinRateRepository.LoadCoinRateCallback;
+import io.reactivex.disposables.CompositeDisposable;
 import ru.divizdev.coinrate.data.ManagerSettings;
+import ru.divizdev.coinrate.data.RxRepository;
 import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.utils.EspressoIdlingResource;
 import timber.log.Timber;
@@ -19,13 +17,14 @@ import timber.log.Timber;
 public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
 
     private final ManagerSettings _managerSettings;
+    private RxRepository _rxRepository;
     private String _curCurrency;
-    private CoinRateRepository _repository;
+    private CompositeDisposable _disposable = new CompositeDisposable();
 
-    public CoinRateListPresenter(CoinRateRepository repository, ManagerSettings managerSettings) {
+    public CoinRateListPresenter(ManagerSettings managerSettings, RxRepository rxRepository) {
         _managerSettings = managerSettings;
+        _rxRepository = rxRepository;
         _curCurrency = getCurrencySettings();
-        _repository = repository;
     }
 
     private String getCurrencySettings() {
@@ -53,25 +52,18 @@ public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
         EspressoIdlingResource.increment();
         getViewState().showLoadingProgress(true);
 
-        _repository.loadListCoinRate(currency, isForce, new LoadCoinRateCallback() {
-            @Override
-            public void onNotesLoaded(List<CoinRateUI> coinRateUI) {
-                Timber.d("finish load coin rate");
-                getViewState().showLoadingProgress(false);
-                getViewState().showCoinRateList(coinRateUI);
-                _managerSettings.setCurCurrency(currency);
-                _curCurrency = currency;
-                EspressoIdlingResource.decrement();
-            }
-
-            @Override
-            public void onErrorLoaded(String message) {
-                Timber.e("Error load coin rate");
-                getViewState().showLoadingProgress(false);
-                getViewState().showErrorLoading();
-                EspressoIdlingResource.decrement();
-            }
-        });
+        _disposable.add(_rxRepository.getData(currency, isForce).subscribe(list -> {
+            Timber.d("finish load coin rate");
+            getViewState().showLoadingProgress(false);
+            getViewState().showCoinRateList(list);
+            _managerSettings.setCurCurrency(currency);
+            _curCurrency = currency;
+        }, throwable -> {
+            Timber.e("Error load coin rate");
+            getViewState().showLoadingProgress(false);
+            getViewState().showErrorLoading();
+            EspressoIdlingResource.decrement();
+        }, EspressoIdlingResource::decrement));
     }
 
     public void setCurrency(String currency) {
@@ -83,5 +75,11 @@ public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
 
     public void clickToItem(CoinRateUI coinRateUI) {
         getViewState().navToDetail(coinRateUI);
+    }
+
+    @Override
+    public void onDestroy() {
+        _disposable.dispose();
+        super.onDestroy();
     }
 }

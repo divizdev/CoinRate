@@ -1,13 +1,13 @@
 package ru.divizdev.coinrate.data;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;
 import ru.divizdev.coinrate.BuildConfig;
 import ru.divizdev.coinrate.data.entities.ApiData;
 
-public interface ICoinRateApi {
+public interface RestClient {
 
 
     /**
@@ -26,14 +26,6 @@ public interface ICoinRateApi {
      */
     @Headers("X-CMC_PRO_API_KEY: " + BuildConfig.API2_KEY)
     @GET("v1/cryptocurrency/listings/latest")
-    Call<ApiData> getRate(@Query("start") int start, @Query("limit") int limit, @Query("convert") String convert);
-
-    @Headers("X-CMC_PRO_API_KEY: " + BuildConfig.API2_KEY)
-    @GET("v1/cryptocurrency/listings/latest")
-    Call<ApiData> getRate(@Query("start") int start, @Query("limit") int limit);
-
-    @Headers("X-CMC_PRO_API_KEY: " + BuildConfig.API2_KEY)
-    @GET("v1/cryptocurrency/listings/latest")
-    Call<ApiData> getRate();
+    Observable<ApiData> getRxRate(@Query("start") int start, @Query("limit") int limit, @Query("convert") String convert);
 
 }
