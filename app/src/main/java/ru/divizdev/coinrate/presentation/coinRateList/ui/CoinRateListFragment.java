@@ -60,7 +60,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
 
     @ProvidePresenter
     CoinRateListPresenter provideCoinRateListPresenter() {
-        return new CoinRateListPresenter(Factory.getFactory().getCoinRateRepository(), Factory.getFactory().getManagerSettings());
+        return new CoinRateListPresenter(Factory.getFactory().getManagerSettings(), Factory.getFactory().getRxRepository());
     }
     //region LifeCycle
 
