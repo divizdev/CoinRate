@@ -60,6 +60,7 @@ public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
             _curCurrency = currency;
         }, throwable -> {
             Timber.e("Error load coin rate");
+            Timber.e(throwable);
             getViewState().showLoadingProgress(false);
             getViewState().showErrorLoading();
             EspressoIdlingResource.decrement();
