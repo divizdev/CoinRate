@@ -17,6 +17,7 @@ import ru.divizdev.coinrate.data.RxRepository;
 import ru.divizdev.coinrate.data.RxRepositoryApi;
 import ru.divizdev.coinrate.data.RxRepositoryCache;
 import ru.divizdev.coinrate.presentation.Router;
+import ru.divizdev.coinrate.utils.Config;
 import timber.log.Timber;
 
 public class Factory {
@@ -26,7 +27,14 @@ public class Factory {
     private Router _router;
     private RxRepositoryCache _rxRepositoryCache;
 
+    public Config getConfig() {
+        return _config;
+    }
+
+    private Config _config;
+
     private Factory(Context context) {
+        _config = new Config();
         _managerSettings = new PreferenceManagerSettings(context);
         _router = new Router();
         _rxRepositoryCache = new RxRepositoryCache();
@@ -66,7 +74,7 @@ public class Factory {
 
         Retrofit retrofitV2 = new Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(BuildConfig.API2_URL) //Базовая часть адреса
+                .baseUrl(_config.getBaseUrl()) //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
