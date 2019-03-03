@@ -68,6 +68,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:3.13.1"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.jrvansuita:MaterialAbout:0.2.3'
@@ -84,9 +85,11 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules:1.0.2"
 
     implementation "com.android.support.test.espresso:espresso-idling-resource:$espressoVersion"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:3.13.1"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation "com.jakewharton.espresso:okhttp3-idling-resource:1.0.0"
 
 
 }
