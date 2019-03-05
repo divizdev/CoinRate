@@ -36,8 +36,6 @@ public class CoinRateActivity extends AppCompatActivity {
         }
 
         LocaleUtils.setCurrentLocale(locale);
-
-
     }
 
     @Override
