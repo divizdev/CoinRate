@@ -1,4 +1,3 @@
-
 package ru.divizdev.coinrate.data.entities;
 
 import com.google.gson.annotations.Expose;
@@ -31,6 +30,23 @@ public class Price {
     @Expose
     private String lastUpdated;
 
+    public Price(BigDecimal price, BigDecimal volume24h, BigDecimal percentChange1h, BigDecimal percentChange24h, BigDecimal percentChange7d, BigDecimal marketCap, String lastUpdated) {
+        this.price = price;
+        this.volume24h = volume24h;
+        this.percentChange1h = percentChange1h;
+        this.percentChange24h = percentChange24h;
+        this.percentChange7d = percentChange7d;
+        this.marketCap = marketCap;
+        this.lastUpdated = lastUpdated;
+    }
+
+    public Price() {
+    }
+
+    public static Price getEmpety() {
+        return new Price(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, "");
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -48,6 +64,9 @@ public class Price {
     }
 
     public BigDecimal getPercentChange1h() {
+        if (percentChange1h == null) {
+            return BigDecimal.ZERO;
+        }
         return percentChange1h;
     }
 
@@ -56,6 +75,9 @@ public class Price {
     }
 
     public BigDecimal getPercentChange24h() {
+        if (percentChange24h == null) {
+            return BigDecimal.ZERO;
+        }
         return percentChange24h;
     }
 
@@ -64,6 +86,9 @@ public class Price {
     }
 
     public BigDecimal getPercentChange7d() {
+        if (percentChange7d == null) {
+            return BigDecimal.ZERO;
+        }
         return percentChange7d;
     }
 
@@ -85,23 +110,6 @@ public class Price {
 
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
-    }
-
-    public Price(BigDecimal price, BigDecimal volume24h, BigDecimal percentChange1h, BigDecimal percentChange24h, BigDecimal percentChange7d, BigDecimal marketCap, String lastUpdated) {
-        this.price = price;
-        this.volume24h = volume24h;
-        this.percentChange1h = percentChange1h;
-        this.percentChange24h = percentChange24h;
-        this.percentChange7d = percentChange7d;
-        this.marketCap = marketCap;
-        this.lastUpdated = lastUpdated;
-    }
-
-    public Price() {
-    }
-
-    public static Price getEmpety(){
-        return new Price(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO, "" );
     }
 
 }

@@ -31,7 +31,8 @@ public class RxRepositoryApi implements RxRepository {
     }
 
     private Observable<List<CoinRateUI>> getListApi(String currency) {
-        return _client.getRxRate(1, 100, currency).map(apiData -> CoinRateUI.convertList(apiData, currency))
+        return _client.getRxRate(1, 100, currency)
+                .map(apiData -> CoinRateUI.convertList(apiData, currency))
                 .doOnNext(list -> _rxRepositoryCache.setCache(currency, list))
                 ;
     }
