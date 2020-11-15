@@ -6,6 +6,7 @@ jobs:
       - image: circleci/android:api-28
     environment:
       JVM_OPTS: -Xmx3200m
+      CODECOV_TOKEN: "718047d3-0187-4460-80b5-94a7b4b4aca8"
     steps:
       - checkout
       - restore_cache:

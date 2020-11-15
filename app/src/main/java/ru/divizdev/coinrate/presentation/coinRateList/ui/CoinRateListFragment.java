@@ -2,13 +2,10 @@ package ru.divizdev.coinrate.presentation.coinRateList.ui;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,28 +34,27 @@ import java.util.List;
 import java.util.Objects;
 
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.data.PreferenceManagerSettings;
 import ru.divizdev.coinrate.di.Factory;
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.presentation.about.AboutDialog;
 import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListPresenter;
 import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListView;
+import ru.divizdev.coinrate.presentation.coinRateList.ui.SettingsDialog.INoticeDialogListener;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.utils.LocaleUtils;
 
 /**
  * Created by diviz on 26.01.2018.
  */
 
-public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRateListView, SwipeRefreshLayout.OnRefreshListener {
+public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRateListView, SwipeRefreshLayout.OnRefreshListener, INoticeDialogListener {
 
     @InjectPresenter
-    CoinRateListPresenter _coinRateListPresenter;
+    CoinRateListPresenter _presenter;
     private RecyclerView _recyclerView;
     private List<CoinRateUI> _list = new ArrayList<>();
     private SwipeRefreshLayout _swipeRefreshLayout;
     private ProgressBar _progressBar;
-    private DrawerLayout _drawerLayout;
-    private NavigationView _navigationView;
+
 
     @ProvidePresenter
     CoinRateListPresenter provideCoinRateListPresenter() {
@@ -72,7 +70,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
         _recyclerView = view.findViewById(R.id.coin_rate_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         _recyclerView.setLayoutManager(linearLayoutManager);
-        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(coinRateUI -> _coinRateListPresenter.clickToItem(coinRateUI), _list);
+        CoinRateAdapter coinRateAdapter = new CoinRateAdapter(coinRateUI -> _presenter.clickToItem(coinRateUI), _list);
         _recyclerView.setAdapter(coinRateAdapter);
         _recyclerView.addItemDecoration(new DividerItemDecoration(_recyclerView.getContext(), linearLayoutManager.getOrientation()));
 
@@ -81,8 +79,6 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
 
         _progressBar = view.findViewById(R.id.progress_bar);
 
-        _drawerLayout = view.findViewById(R.id.drawer_layout);
-        _navigationView = view.findViewById(R.id.nav_view);
 
         Toolbar toolbar = view.findViewById(R.id.my_toolbar);
         if (getActivity() != null) {
@@ -90,36 +86,18 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
             ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
             if (supportActionBar != null) {
-                supportActionBar.setDisplayHomeAsUpEnabled(true);
-                supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu_24dp);
-            }
+                supportActionBar.setDisplayHomeAsUpEnabled(false);
+                supportActionBar.setDisplayShowHomeEnabled(false);
+              }
         }
-
-        _navigationView.setNavigationItemSelectedListener(menuItem -> {
-            _drawerLayout.closeDrawers();
-            return onOptionsItemSelected(menuItem);
-        });
-
-        setCheckedInitialItemMenu();
-
         return view;
     }
 
-    private void setCheckedInitialItemMenu() {
-        String currentValue = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(PreferenceManagerSettings.KEY_NAME_PREF, PreferenceManagerSettings.DEFAULT_CURRENCY);
-        int itemSelectMenu = R.id.menu_item_usd;
-        switch (currentValue) {
-            case "RUB":
-                itemSelectMenu = R.id.menu_item_rub;
-                break;
-            case "USD":
-                itemSelectMenu = R.id.menu_item_usd;
-                break;
-            case "EUR":
-                itemSelectMenu = R.id.menu_item_eur;
-                break;
-        }
-        _navigationView.setCheckedItem(itemSelectMenu);
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_menu, menu);
     }
 
     @Override
@@ -143,17 +121,8 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                _drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-            case R.id.menu_item_rub:
-                _coinRateListPresenter.setCurrency("RUB");
-                break;
-            case R.id.menu_item_usd:
-                _coinRateListPresenter.setCurrency("USD");
-                break;
-            case R.id.menu_item_eur:
-                _coinRateListPresenter.setCurrency("EUR");
+            case R.id.action_settings:
+                showDialogSettings();
                 break;
             case R.id.about:
                 showDialogAbout();
@@ -162,6 +131,14 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+
+    public void showDialogSettings() {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        SettingsDialog settingsDialog = new SettingsDialog();
+        settingsDialog.setTargetFragment(this, 0);
+        settingsDialog.show(fragmentManager, "");
     }
 
     @Override
@@ -214,7 +191,17 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
 
     @Override
     public void onRefresh() {
-        _coinRateListPresenter.refresh();
+        _presenter.refresh();
+    }
+
+    @Override
+    public void onDialogSettingsSelectedItem(String currency) {
+            _presenter.setCurrency(currency);
+    }
+
+    @Override
+    public void onDialogSettingsNegativeClick(DialogFragment dialog) {
+
     }
 
     public interface IFragmentInteractionListener {
