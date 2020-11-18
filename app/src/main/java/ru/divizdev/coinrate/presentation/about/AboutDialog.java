@@ -2,9 +2,9 @@ package ru.divizdev.coinrate.presentation.about;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.app.AlertDialog;
 
 import com.vansuita.materialabout.builder.AboutBuilder;
 import com.vansuita.materialabout.views.AboutView;
@@ -39,7 +39,7 @@ public class AboutDialog extends DialogFragment {
                 .build();
 
 
-        return new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+        return new AlertDialog.Builder(requireActivity())
                 .setView(aboutPage)
                 .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
                 .create();

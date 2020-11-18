@@ -1,9 +1,9 @@
 package ru.divizdev.coinrate.presentation.coinRateList.presenter;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 
 import io.reactivex.disposables.CompositeDisposable;
+import moxy.InjectViewState;
+import moxy.MvpPresenter;
 import ru.divizdev.coinrate.data.ManagerSettings;
 import ru.divizdev.coinrate.data.RxRepository;
 import ru.divizdev.coinrate.presentation.entities.CoinRateUI;

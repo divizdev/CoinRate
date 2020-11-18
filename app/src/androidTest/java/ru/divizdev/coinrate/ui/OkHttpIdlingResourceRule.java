@@ -1,7 +1,7 @@
 package ru.divizdev.coinrate.ui;
 
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.IdlingResource;
 
 import com.jakewharton.espresso.OkHttp3IdlingResource;
 

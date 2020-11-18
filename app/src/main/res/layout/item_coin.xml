@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_coin"
                 android:layout_width="@dimen/size_logo_list"
                 android:layout_height="@dimen/size_logo_list"

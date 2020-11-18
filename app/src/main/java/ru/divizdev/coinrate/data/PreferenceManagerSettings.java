@@ -2,7 +2,7 @@ package ru.divizdev.coinrate.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 /**
  * Created by diviz on 03.03.2018.

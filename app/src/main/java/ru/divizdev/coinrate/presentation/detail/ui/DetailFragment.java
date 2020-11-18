@@ -1,9 +1,6 @@
 package ru.divizdev.coinrate.presentation.detail.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +10,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.arellomobile.mvp.MvpAppCompatFragment;
-import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.arellomobile.mvp.presenter.ProvidePresenter;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.squareup.picasso.Picasso;
 
+import moxy.MvpAppCompatFragment;
+import moxy.presenter.InjectPresenter;
+import moxy.presenter.ProvidePresenter;
 import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailPresenter;
 import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailView;
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 
 
 public class DetailFragment extends MvpAppCompatFragment implements CoinRateDetailView {

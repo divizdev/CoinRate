@@ -1,10 +1,10 @@
 package ru.divizdev.coinrate.presentation.detail.presenter;
 
-import com.arellomobile.mvp.InjectViewState;
-import com.arellomobile.mvp.MvpPresenter;
 
 import java.math.BigDecimal;
 
+import moxy.InjectViewState;
+import moxy.MvpPresenter;
 import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
 import ru.divizdev.coinrate.utils.LocaleUtils;
 
