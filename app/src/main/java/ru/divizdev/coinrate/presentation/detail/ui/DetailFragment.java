@@ -120,7 +120,7 @@ public class DetailFragment extends MvpAppCompatFragment implements CoinRateDeta
         _detailAvailableSupply.setText(String.format("%s %s", coinRateUI.getUIAvailableSupply(), coinRateUI.getSymbol()));
         _detailSymbolCoin.setText(coinRateUI.getSymbol());
 
-        Picasso.with(getContext())
+        Picasso.get()
                 .load(coinRateUI.getURLImage())
                 .into(_logo);
     }

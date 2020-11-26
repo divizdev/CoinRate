@@ -89,7 +89,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
             if (supportActionBar != null) {
                 supportActionBar.setDisplayHomeAsUpEnabled(false);
                 supportActionBar.setDisplayShowHomeEnabled(false);
-              }
+            }
         }
         return view;
     }
@@ -197,7 +197,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
 
     @Override
     public void onDialogSettingsSelectedItem(String currency) {
-            _presenter.setCurrency(currency);
+        _presenter.setCurrency(currency);
     }
 
     @Override
@@ -292,8 +292,8 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
                 _currencyRateCoin.setText(coinRateUI.getUICurrency());
 
 
-                Picasso loader = Picasso.with(this.itemView.getContext());
-                loader.load(coinRateUI.getURLImage())
+                Picasso.get()
+                        .load(coinRateUI.getURLImage())
                         .into(_logo);
 
 
