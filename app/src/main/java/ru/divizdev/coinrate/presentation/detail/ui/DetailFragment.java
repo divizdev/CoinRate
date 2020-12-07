@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.squareup.picasso.Picasso;
 
 import moxy.MvpAppCompatFragment;
@@ -70,6 +71,15 @@ public class DetailFragment extends MvpAppCompatFragment implements CoinRateDeta
         View result = inflater.inflate(R.layout.fragment_detail, container, false);
         bind(result);
         return result;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "Detail");
+        bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "DetailFragment");
+        FirebaseAnalytics.getInstance(requireContext()).logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle);
     }
 
     private void bind(View view) {

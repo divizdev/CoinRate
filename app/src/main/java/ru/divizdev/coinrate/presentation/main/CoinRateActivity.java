@@ -2,9 +2,13 @@ package ru.divizdev.coinrate.presentation.main;
 
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
 
 import java.util.Locale;
 
@@ -36,6 +40,9 @@ public class CoinRateActivity extends AppCompatActivity {
         }
 
         LocaleUtils.setCurrentLocale(locale);
+
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.logEvent(Event.APP_OPEN, null);
 
 
     }
