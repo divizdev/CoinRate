@@ -1,8 +1,10 @@
 package ru.divizdev.coinrate.ui;
 
 import android.content.res.Resources;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -48,7 +50,9 @@ public class RecyclerViewMatcher {
                     RecyclerView recyclerView =
                             (RecyclerView) view.getRootView().findViewById(recyclerViewId);
                     if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
-                        childView = recyclerView.findViewHolderForAdapterPosition(position).itemView;
+                        ViewHolder viewHolder =  recyclerView.findViewHolderForAdapterPosition(position);
+                        if(viewHolder == null) return false;
+                        childView = viewHolder.itemView;
                     }
                     else {
                         return false;
