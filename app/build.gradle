@@ -10,8 +10,8 @@ android {
         applicationId "ru.divizdev.coinrate"
         minSdkVersion 17
         targetSdkVersion 30
-        versionCode 10
-        versionName "2.10.0"
+        versionCode 11
+        versionName "2.11.0"
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -21,16 +21,17 @@ android {
             it.buildConfigField 'String', 'API2_KEY', API2Key
             it.buildConfigField 'String', 'API2_URL', API2Url
             it.buildConfigField 'String', 'IMG_URL', IMGUrl
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug{
             it.buildConfigField 'String', 'API_URL', APIUrl
-            it.buildConfigField 'String', 'API2_KEY', APIdebugKey
-            it.buildConfigField 'String', 'API2_URL', APIdebugUrl
+            it.buildConfigField 'String', 'API2_KEY', API2Key
+            it.buildConfigField 'String', 'API2_URL', API2Url
             it.buildConfigField 'String', 'IMG_URL', IMGUrl
             minifyEnabled false
             testCoverageEnabled = true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
