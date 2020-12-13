@@ -26,8 +26,8 @@ android {
         }
         debug{
             it.buildConfigField 'String', 'API_URL', APIUrl
-            it.buildConfigField 'String', 'API2_KEY', API2Key
-            it.buildConfigField 'String', 'API2_URL', API2Url
+            it.buildConfigField 'String', 'API2_KEY', APIdebugKey
+            it.buildConfigField 'String', 'API2_URL', APIdebugUrl
             it.buildConfigField 'String', 'IMG_URL', IMGUrl
             minifyEnabled false
             testCoverageEnabled = true
