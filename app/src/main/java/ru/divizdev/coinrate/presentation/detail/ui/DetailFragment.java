@@ -132,6 +132,7 @@ public class DetailFragment extends MvpAppCompatFragment implements CoinRateDeta
 
         Picasso.get()
                 .load(coinRateUI.getURLImage())
+                .error(R.drawable.unknown_currency)
                 .into(_logo);
     }
 

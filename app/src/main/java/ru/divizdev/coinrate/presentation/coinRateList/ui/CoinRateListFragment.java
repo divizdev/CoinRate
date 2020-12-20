@@ -303,6 +303,7 @@ public class CoinRateListFragment extends MvpAppCompatFragment implements CoinRa
 
                 Picasso.get()
                         .load(coinRateUI.getURLImage())
+                        .error(R.drawable.unknown_currency)
                         .into(_logo);
 
 
