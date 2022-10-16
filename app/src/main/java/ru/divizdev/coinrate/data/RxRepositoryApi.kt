@@ -1,39 +1,34 @@
-package ru.divizdev.coinrate.data;
+package ru.divizdev.coinrate.data
 
-import java.util.List;
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import ru.divizdev.coinrate.data.entities.ApiData
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
-
-public class RxRepositoryApi implements RxRepository {
-
-    private RestClient _client;
-    private RxRepositoryCache _rxRepositoryCache;
-
-    public RxRepositoryApi(RestClient client, RxRepositoryCache rxRepositoryCache) {
-        _client = client;
-        _rxRepositoryCache = rxRepositoryCache;
-    }
-
-    @Override
-    public Observable<List<CoinRateUI>> getData(String currency, boolean isForced) {
-        if (isForced) {
-            return getListApi(currency)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+class RxRepositoryApi(private val _client: RestClient, private val _rxRepositoryCache: RxRepositoryCache) : RxRepository {
+    override fun getData(currency: String, isForced: Boolean): Observable<List<CoinRateUI>> {
+        return if (isForced) {
+            getListApi(currency)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
         } else {
-            return Observable.concat(_rxRepositoryCache.getData(currency, false), getListApi(currency))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+            Observable.concat(
+                _rxRepositoryCache.getData(currency, false),
+                getListApi(currency)
+            )
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
         }
     }
 
-    private Observable<List<CoinRateUI>> getListApi(String currency) {
+    private fun getListApi(currency: String): Observable<List<CoinRateUI>> {
         return _client.getRxRate(1, 100, currency)
-                .map(apiData -> CoinRateUI.convertList(apiData, currency))
-                .doOnNext(list -> _rxRepositoryCache.setCache(currency, list))
-                ;
+            .map { apiData: ApiData ->
+                CoinRateUI.convertList(
+                    apiData, currency
+                )
+            }
+            .doOnNext { list: List<CoinRateUI> -> _rxRepositoryCache.setCache(currency, list) }
     }
 }

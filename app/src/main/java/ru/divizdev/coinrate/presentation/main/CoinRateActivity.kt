@@ -1,55 +1,40 @@
-package ru.divizdev.coinrate.presentation.main;
+package ru.divizdev.coinrate.presentation.main
 
-import android.os.Build;
-import android.os.Bundle;
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import ru.divizdev.coinrate.R
+import ru.divizdev.coinrate.presentation.coinRateList.ui.CoinRateListFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import ru.divizdev.coinrate.utils.LocaleUtils
+import java.util.*
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.analytics.FirebaseAnalytics.Event;
-
-import java.util.Locale;
-
-import ru.divizdev.coinrate.R;
-import ru.divizdev.coinrate.presentation.coinRateList.ui.CoinRateListFragment;
-import ru.divizdev.coinrate.utils.LocaleUtils;
-
-public class CoinRateActivity extends AppCompatActivity {
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coin_rate);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
+class CoinRateActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_coin_rate)
+        val fragmentManager = supportFragmentManager
         if (savedInstanceState == null) {
-            Fragment fragment = new CoinRateListFragment();
+            val fragment: Fragment = CoinRateListFragment()
             fragmentManager
-                    .beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
+                .beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit()
         }
-        Locale locale;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            locale = getResources().getConfiguration().getLocales().get(0);
+        val locale: Locale
+        locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            resources.configuration.locales[0]
         } else {
-            locale = getResources().getConfiguration().locale;
+            resources.configuration.locale
         }
-
-        LocaleUtils.setCurrentLocale(locale);
-
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        firebaseAnalytics.logEvent(Event.APP_OPEN, null);
-
-
+        LocaleUtils.currentLocale = locale
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null)
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }

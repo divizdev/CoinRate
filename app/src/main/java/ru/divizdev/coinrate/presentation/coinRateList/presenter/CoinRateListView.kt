@@ -1,26 +1,22 @@
-package ru.divizdev.coinrate.presentation.coinRateList.presenter;
+package ru.divizdev.coinrate.presentation.coinRateList.presenter
 
+import moxy.viewstate.strategy.StateStrategyType
+import moxy.viewstate.strategy.AddToEndSingleStrategy
+import moxy.MvpView
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI
+import moxy.viewstate.strategy.OneExecutionStateStrategy
 
-import java.util.List;
+@StateStrategyType(AddToEndSingleStrategy::class)
+interface CoinRateListView : MvpView {
+    fun showLoadingProgress(isView: Boolean?)
+    fun showCoinRateList(list: List<CoinRateUI?>?)
 
-import moxy.MvpView;
-import moxy.viewstate.strategy.AddToEndSingleStrategy;
-import moxy.viewstate.strategy.OneExecutionStateStrategy;
-import moxy.viewstate.strategy.StateStrategyType;
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showErrorLoading()
 
-@StateStrategyType(AddToEndSingleStrategy.class)
-public interface CoinRateListView extends MvpView {
-    void showLoadingProgress(Boolean isView);
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showDialogAbout()
 
-    void showCoinRateList(List<CoinRateUI> list);
-
-    @StateStrategyType(OneExecutionStateStrategy.class)
-    void showErrorLoading();
-
-    @StateStrategyType(OneExecutionStateStrategy.class)
-    void showDialogAbout();
-
-    @StateStrategyType(OneExecutionStateStrategy.class)
-    void navToDetail(CoinRateUI coinRateUI);
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun navToDetail(coinRateUI: CoinRateUI?)
 }

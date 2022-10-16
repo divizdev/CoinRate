@@ -1,30 +1,23 @@
-package ru.divizdev.coinrate.data;
+package ru.divizdev.coinrate.data
 
+import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import io.reactivex.Observable;
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
-
-public class RxRepositoryCache implements RxRepository {
-
-    private Map<String, List<CoinRateUI>> _cache = new HashMap<>();
-
-    public void setCache(String currency, List<CoinRateUI> list) {
-        _cache.put(currency, list);
+class RxRepositoryCache : RxRepository {
+    private val _cache: MutableMap<String, List<CoinRateUI>> = HashMap()
+    fun setCache(currency: String, list: List<CoinRateUI>) {
+        _cache[currency] = list
     }
 
-    @Override
-    public Observable<List<CoinRateUI>> getData(String currency, boolean isForced) {
-        return Observable.create(emitter -> {
-            if(_cache.containsKey(currency)) {
-                emitter.onNext(_cache.get(currency));
-                emitter.onComplete();
-            }else{
-                emitter.onComplete();
+    override fun getData(currency: String, isForced: Boolean): Observable<List<CoinRateUI>> {
+        return Observable.create { emitter: ObservableEmitter<List<CoinRateUI>> ->
+            if (_cache.containsKey(currency)) {
+                emitter.onNext(_cache[currency]!!)
+                emitter.onComplete()
+            } else {
+                emitter.onComplete()
             }
-        });
+        }
     }
 }

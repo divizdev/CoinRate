@@ -1,86 +1,76 @@
-package ru.divizdev.coinrate.presentation.coinRateList.presenter;
+package ru.divizdev.coinrate.presentation.coinRateList.presenter
 
-
-import io.reactivex.disposables.CompositeDisposable;
-import moxy.InjectViewState;
-import moxy.MvpPresenter;
-import ru.divizdev.coinrate.data.ManagerSettings;
-import ru.divizdev.coinrate.data.RxRepository;
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
-import ru.divizdev.coinrate.utils.EspressoIdlingResource;
-import timber.log.Timber;
+import moxy.InjectViewState
+import ru.divizdev.coinrate.data.ManagerSettings
+import ru.divizdev.coinrate.data.RxRepository
+import moxy.MvpPresenter
+import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListView
+import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
+import ru.divizdev.coinrate.utils.EspressoIdlingResource
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI
 
 /**
  * Created by diviz on 29.01.2018.
  */
 @InjectViewState
-public class CoinRateListPresenter extends MvpPresenter<CoinRateListView> {
+class CoinRateListPresenter(private val _managerSettings: ManagerSettings, private val _rxRepository: RxRepository) :
+    MvpPresenter<CoinRateListView?>() {
+    private var _curCurrency: String
+    private val _disposable = CompositeDisposable()
 
-    private final ManagerSettings _managerSettings;
-    private RxRepository _rxRepository;
-    private String _curCurrency;
-    private CompositeDisposable _disposable = new CompositeDisposable();
-
-    public CoinRateListPresenter(ManagerSettings managerSettings, RxRepository rxRepository) {
-        _managerSettings = managerSettings;
-        _rxRepository = rxRepository;
-        _curCurrency = getCurrencySettings();
+    init {
+        _curCurrency = currencySettings
     }
 
-    private String getCurrencySettings() {
-        return _managerSettings.getCurCurrency();
+    private val currencySettings: String
+        private get() = _managerSettings.curCurrency
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        _curCurrency = currencySettings
+        showList(_curCurrency)
     }
 
-    @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-        _curCurrency = getCurrencySettings();
-        showList(_curCurrency);
+    private fun showList(curCurrency: String) {
+        loadCoinRate(curCurrency, false)
     }
 
-    private void showList(String curCurrency) {
-        loadCoinRate(curCurrency, false);
+    fun refresh() {
+        loadCoinRate(_curCurrency, true)
     }
 
-    public void refresh() {
-        loadCoinRate(_curCurrency, true);
+    private fun loadCoinRate(currency: String, isForce: Boolean) {
+        Timber.d("start load coin rate")
+        EspressoIdlingResource.increment()
+        viewState!!.showLoadingProgress(true)
+        _disposable.add(_rxRepository.getData(currency, isForce).subscribe({ list: List<CoinRateUI?>? ->
+            Timber.d("finish load coin rate")
+            viewState!!.showLoadingProgress(false)
+            viewState!!.showCoinRateList(list)
+            _managerSettings.curCurrency = currency
+            _curCurrency = currency
+        }, { throwable: Throwable? ->
+            Timber.e("Error load coin rate")
+            Timber.e(throwable)
+            viewState!!.showLoadingProgress(false)
+            viewState!!.showErrorLoading()
+            EspressoIdlingResource.decrement()
+        }) { EspressoIdlingResource.decrement() })
     }
 
-    private void loadCoinRate(final String currency, boolean isForce) {
-        Timber.d("start load coin rate");
-
-        EspressoIdlingResource.increment();
-        getViewState().showLoadingProgress(true);
-
-        _disposable.add(_rxRepository.getData(currency, isForce).subscribe(list -> {
-            Timber.d("finish load coin rate");
-            getViewState().showLoadingProgress(false);
-            getViewState().showCoinRateList(list);
-            _managerSettings.setCurCurrency(currency);
-            _curCurrency = currency;
-        }, throwable -> {
-            Timber.e("Error load coin rate");
-            Timber.e(throwable);
-            getViewState().showLoadingProgress(false);
-            getViewState().showErrorLoading();
-            EspressoIdlingResource.decrement();
-        }, EspressoIdlingResource::decrement));
-    }
-
-    public void setCurrency(String currency) {
+    fun setCurrency(currency: String) {
         if (_curCurrency.compareTo(currency) != 0) {
-            showList(currency);
+            showList(currency)
         }
-
     }
 
-    public void clickToItem(CoinRateUI coinRateUI) {
-        getViewState().navToDetail(coinRateUI);
+    fun clickToItem(coinRateUI: CoinRateUI?) {
+        viewState!!.navToDetail(coinRateUI)
     }
 
-    @Override
-    public void onDestroy() {
-        _disposable.dispose();
-        super.onDestroy();
+    override fun onDestroy() {
+        _disposable.dispose()
+        super.onDestroy()
     }
 }

@@ -1,84 +1,71 @@
-package ru.divizdev.coinrate.di;
+package ru.divizdev.coinrate.di
 
-import android.content.Context;
+import android.content.Context
+import ru.divizdev.coinrate.data.ManagerSettings
+import ru.divizdev.coinrate.presentation.Router
+import ru.divizdev.coinrate.data.RxRepositoryCache
+import ru.divizdev.coinrate.data.PreferenceManagerSettings
+import ru.divizdev.coinrate.data.RxRepository
+import ru.divizdev.coinrate.data.RxRepositoryApi
+import ru.divizdev.coinrate.data.RestClient
+import okhttp3.logging.HttpLoggingInterceptor
+import timber.log.Timber
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import ru.divizdev.coinrate.BuildConfig
+import ru.divizdev.coinrate.utils.Config
 
-import okhttp3.OkHttpClient;
-import okhttp3.OkHttpClient.Builder;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
-import ru.divizdev.coinrate.BuildConfig;
-import ru.divizdev.coinrate.data.ManagerSettings;
-import ru.divizdev.coinrate.data.PreferenceManagerSettings;
-import ru.divizdev.coinrate.data.RestClient;
-import ru.divizdev.coinrate.data.RxRepository;
-import ru.divizdev.coinrate.data.RxRepositoryApi;
-import ru.divizdev.coinrate.data.RxRepositoryCache;
-import ru.divizdev.coinrate.presentation.Router;
-import ru.divizdev.coinrate.utils.Config;
-import timber.log.Timber;
+class Factory private constructor(context: Context) {
+    val managerSettings: ManagerSettings
+    val router: Router
+    private val _rxRepositoryCache: RxRepositoryCache
+    val config: Config
 
-public class Factory {
-    private static Factory INSTANCE;
-
-    private ManagerSettings _managerSettings;
-    private Router _router;
-    private RxRepositoryCache _rxRepositoryCache;
-
-    public Config getConfig() {
-        return _config;
+    init {
+        config = Config()
+        managerSettings = PreferenceManagerSettings(context)
+        router = Router()
+        _rxRepositoryCache = RxRepositoryCache()
     }
 
-    private Config _config;
+    val rxRepository: RxRepository
+        get() = RxRepositoryApi(client, _rxRepositoryCache)
 
-    private Factory(Context context) {
-        _config = new Config();
-        _managerSettings = new PreferenceManagerSettings(context);
-        _router = new Router();
-        _rxRepositoryCache = new RxRepositoryCache();
-    }
-
-    public static Factory getFactory() {
-        return INSTANCE;
-    }
-
-    public static void create(Context context) {
-        INSTANCE = new Factory(context);
-    }
-
-    public Router getRouter() {
-        return _router;
-    }
-
-    public ManagerSettings getManagerSettings() {
-        return _managerSettings;
-    }
-
-    public RxRepository getRxRepository() {
-        return new RxRepositoryApi(getClient(), _rxRepositoryCache);
-    }
-
-    public RestClient getClient() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(message -> Timber.tag("OkHttp").d(message));
-        if (BuildConfig.DEBUG) {
-            logging.setLevel(Level.BODY);
-        } else {
-            logging.setLevel(Level.BASIC);
-        }
-
-        OkHttpClient okHttpClient = new Builder()
+    //Базовая часть адреса
+    //Конвертер, необходимый для преобразования JSON'а в объекты
+    val client: RestClient
+        get() {
+            val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+                override fun log(message: String) {
+                     Timber.tag("OkHttp").d(message)
+                }
+            })
+            if (BuildConfig.DEBUG) {
+                logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+            } else {
+                logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
+            }
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(logging)
-                .build();
-
-        Retrofit retrofitV2 = new Retrofit.Builder()
+                .build()
+            val retrofitV2 = Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(_config.getBaseUrl()) //Базовая часть адреса
+                .baseUrl(config.baseUrl) //Базовая часть адреса
                 .addConverterFactory(GsonConverterFactory.create()) //Конвертер, необходимый для преобразования JSON'а в объекты
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+                .build()
+            return retrofitV2.create(RestClient::class.java)
+        }
 
-        return retrofitV2.create(RestClient.class);
+    companion object {
+        var factory: Factory? = null
+            private set
+
+        @JvmStatic
+        fun create(context: Context) {
+            factory = Factory(context)
+        }
     }
 }

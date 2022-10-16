@@ -1,21 +1,17 @@
-package ru.divizdev.coinrate.utils;
+package ru.divizdev.coinrate.utils
 
-import ru.divizdev.coinrate.BuildConfig;
+import ru.divizdev.coinrate.BuildConfig
 
-public class Config {
-
-    private String _baseURL = null;
-
-    public void setBaseURL(String baseURL) {
-        _baseURL = baseURL;
+class Config {
+    private var _baseURL: String? = null
+    fun setBaseURL(baseURL: String?) {
+        _baseURL = baseURL
     }
 
-    public String getBaseUrl() {
-        if (_baseURL == null) {
-            return BuildConfig.API2_URL;
+    val baseUrl: String
+        get() = if (_baseURL == null) {
+            BuildConfig.API2_URL
         } else {
-            return _baseURL;
+            _baseURL!!
         }
-    }
-
 }

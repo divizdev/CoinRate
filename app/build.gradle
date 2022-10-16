@@ -2,14 +2,15 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "ru.divizdev.coinrate"
         minSdkVersion 17
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 12
         versionName "2.12.0"
         multiDexEnabled true
@@ -44,7 +45,7 @@ android {
 ext {
     supportLibraryVersion = "28.0.0"
     espressoVersion = '3.0.2'
-    moxyVersion = "2.2.0"
+    moxyVersion = "2.2.2"
     junitVersion = '4.12'
     mockitoVersion = '2.24.5'
     powerMockito = '2.0.0'
@@ -58,7 +59,10 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.preference:preference:1.2.0'
+    implementation('androidx.preference:preference:1.2.0'){
+        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel'
+        exclude group: 'androidx.lifecycle', module:'lifecycle-viewmodel-ktx'
+    }
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.cardview:cardview:1.0.0'

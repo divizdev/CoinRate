@@ -1,17 +1,26 @@
 package ru.divizdev.coinrate.ui;
 
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static ru.divizdev.coinrate.ui.Utils.withRecyclerView;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import androidx.test.espresso.IdlingRegistry;
-import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -29,14 +38,6 @@ import ru.divizdev.coinrate.R;
 import ru.divizdev.coinrate.data.PreferenceManagerSettings;
 import ru.divizdev.coinrate.presentation.main.CoinRateActivity;
 import ru.divizdev.coinrate.utils.EspressoIdlingResource;
-
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static ru.divizdev.coinrate.ui.Utils.withRecyclerView;
 
 @LargeTest
 
@@ -219,7 +220,7 @@ public class CoinRateActivityTest {
 
 
         Context targetContext = getInstrumentation().getTargetContext();
-        ru.divizdev.coinrate.di.Factory.getFactory().getConfig().setBaseURL(mockWebServerRule.server.url("/").toString());
+        ru.divizdev.coinrate.di.Factory.Companion.getFactory().getConfig().setBaseURL(mockWebServerRule.server.url("/").toString());
         mockWebServerRule.server.enqueue(new MockResponse().setBody(BODY_USD));
 
 

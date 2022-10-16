@@ -1,34 +1,14 @@
+package ru.divizdev.coinrate.data.entities
 
-package ru.divizdev.coinrate.data.entities;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
-public class ApiData {
-
+class ApiData {
     @SerializedName("data")
     @Expose
-    private List<Datum> data = null;
+    var data: List<Datum>? = null
+
     @SerializedName("status")
     @Expose
-    private Status status;
-
-    public List<Datum> getData() {
-        return data;
-    }
-
-    public void setData(List<Datum> data) {
-        this.data = data;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
+    var status: Status? = null
 }

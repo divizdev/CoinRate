@@ -1,35 +1,26 @@
-package ru.divizdev.coinrate.data;
+package ru.divizdev.coinrate.data
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
+import android.content.Context
+import androidx.preference.PreferenceManager
 
 /**
  * Created by diviz on 03.03.2018.
  */
+class PreferenceManagerSettings(private val _context: Context) : ManagerSettings {
 
-public class PreferenceManagerSettings implements ManagerSettings {
 
-    public static final String KEY_NAME_PREF = "pref_currency";
-
-    public static final String DEFAULT_CURRENCY = "USD";
-
-    private final Context _context;
-
-    public PreferenceManagerSettings(Context context){
-        _context = context;
-
-    }
-    @Override
-    public String getCurCurrency() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(_context);
-        return preferences.getString(PreferenceManagerSettings.KEY_NAME_PREF, "USD");
+    companion object {
+        const val KEY_NAME_PREF = "pref_currency"
+        const val DEFAULT_CURRENCY = "USD"
     }
 
-    @Override
-    public void setCurCurrency(String currency) {
-        android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(PreferenceManagerSettings.KEY_NAME_PREF, currency).apply();
+    override var curCurrency: String
+        get() {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(_context)
+            return preferences.getString(KEY_NAME_PREF, "USD") ?: "USD"
+        }
+        set(value) {
+            android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(KEY_NAME_PREF, value).apply()
 
-    }
-
+        }
 }

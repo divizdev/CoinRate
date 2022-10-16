@@ -1,65 +1,26 @@
+package ru.divizdev.coinrate.data.entities
 
-package ru.divizdev.coinrate.data.entities;
+import com.google.gson.annotations.SerializedName
+import com.google.gson.annotations.Expose
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class Status {
-
+class Status {
     @SerializedName("timestamp")
     @Expose
-    private String timestamp;
+    var timestamp: String? = null
+
     @SerializedName("error_code")
     @Expose
-    private Integer errorCode;
+    var errorCode: Int? = null
+
     @SerializedName("error_message")
     @Expose
-    private String errorMessage;
+    var errorMessage: String? = null
+
     @SerializedName("elapsed")
     @Expose
-    private Integer elapsed;
+    var elapsed: Int? = null
+
     @SerializedName("credit_count")
     @Expose
-    private Integer creditCount;
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Integer getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(Integer errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    public Integer getElapsed() {
-        return elapsed;
-    }
-
-    public void setElapsed(Integer elapsed) {
-        this.elapsed = elapsed;
-    }
-
-    public Integer getCreditCount() {
-        return creditCount;
-    }
-
-    public void setCreditCount(Integer creditCount) {
-        this.creditCount = creditCount;
-    }
-
+    var creditCount: Int? = null
 }

@@ -1,71 +1,54 @@
-package ru.divizdev.coinrate.presentation.detail.presenter;
+package ru.divizdev.coinrate.presentation.detail.presenter
 
-
-import java.math.BigDecimal;
-
-import moxy.InjectViewState;
-import moxy.MvpPresenter;
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
-import ru.divizdev.coinrate.utils.LocaleUtils;
+import moxy.InjectViewState
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI
+import moxy.MvpPresenter
+import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailView
+import ru.divizdev.coinrate.utils.LocaleUtils
+import java.lang.Exception
+import java.math.BigDecimal
 
 /**
  * Created by diviz on 22.03.2018.
  */
 @InjectViewState
-public class CoinRateDetailPresenter extends MvpPresenter<CoinRateDetailView> {
-
-    private CoinRateUI _coinRateUI;
-    private boolean _direct = true; //Symbol => Currency
-
-    public CoinRateDetailPresenter(CoinRateUI coinRateUI) {
-        _coinRateUI = coinRateUI;
+class CoinRateDetailPresenter(private val _coinRateUI: CoinRateUI) : MvpPresenter<CoinRateDetailView?>() {
+    private var _direct = true //Symbol => Currency
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        _direct = true
+        setCurrency(_direct)
+        viewState!!.setData(_coinRateUI)
     }
 
-    @Override
-    protected void onFirstViewAttach() {
-        super.onFirstViewAttach();
-        _direct = true;
-
-        setCurrency(_direct);
-        getViewState().setData(_coinRateUI);
-    }
-
-    private void setCurrency(boolean direct) {
+    private fun setCurrency(direct: Boolean) {
         if (direct) {
-            getViewState().setCurrencyFrom(_coinRateUI.getSymbol());
-            getViewState().setCurrencyTo(_coinRateUI.getCurrency());
+            viewState!!.setCurrencyFrom(_coinRateUI.symbol)
+            viewState!!.setCurrencyTo(_coinRateUI.currency)
         } else {
-            getViewState().setCurrencyFrom(_coinRateUI.getCurrency());
-            getViewState().setCurrencyTo(_coinRateUI.getSymbol());
+            viewState!!.setCurrencyFrom(_coinRateUI.currency)
+            viewState!!.setCurrencyTo(_coinRateUI.symbol)
         }
     }
 
-    public void changeCurrency() {
-        _direct = !_direct;
-        setCurrency(_direct);
-        getViewState().clearAll();
+    fun changeCurrency() {
+        _direct = !_direct
+        setCurrency(_direct)
+        viewState!!.clearAll()
     }
 
-    public void convertCurrency(String value) {
+    fun convertCurrency(value: String) {
         try {
-            float valueF = Float.parseFloat(value);
-            float result;
-            if (_direct) {
-
-                result = valueF * _coinRateUI.getPrice().floatValue();
-
+            val valueF = value.toFloat()
+            val result: Float
+            result = if (_direct) {
+                valueF * (_coinRateUI.price?.toFloat() ?: 1f)
             } else {
-
-                result = valueF / _coinRateUI.getPrice().floatValue();
-
+                valueF / (_coinRateUI.price?.toFloat() ?: 1f)
             }
-
-            getViewState().setValueTo(LocaleUtils.formatBigDecimal(new BigDecimal(result)));
-
-        } catch (Exception e) {
-            getViewState().showError("Error convert");
+            viewState!!.setValueTo(LocaleUtils.formatBigDecimal(BigDecimal(result.toDouble())))
+        } catch (e: Exception) {
+            viewState!!.showError("Error convert")
         }
     }
-
-
 }
