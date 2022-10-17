@@ -1,21 +1,23 @@
 package ru.divizdev.coinrate.presentation.coinRateList.presenter
 
+import io.reactivex.disposables.CompositeDisposable
 import moxy.InjectViewState
+import moxy.MvpPresenter
 import ru.divizdev.coinrate.data.ManagerSettings
 import ru.divizdev.coinrate.data.RxRepository
-import moxy.MvpPresenter
-import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListView
-import io.reactivex.disposables.CompositeDisposable
-import timber.log.Timber
-import ru.divizdev.coinrate.utils.EspressoIdlingResource
 import ru.divizdev.coinrate.presentation.entities.CoinRateUI
+import ru.divizdev.coinrate.utils.EspressoIdlingResource
+import timber.log.Timber
 
 /**
  * Created by diviz on 29.01.2018.
  */
 @InjectViewState
-class CoinRateListPresenter(private val _managerSettings: ManagerSettings, private val _rxRepository: RxRepository) :
-    MvpPresenter<CoinRateListView?>() {
+class CoinRateListPresenter(
+    private val _managerSettings: ManagerSettings,
+    private val _rxRepository: RxRepository
+) : MvpPresenter<CoinRateListView?>() {
+
     private var _curCurrency: String
     private val _disposable = CompositeDisposable()
 
