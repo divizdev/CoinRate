@@ -4,56 +4,56 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import java.math.BigDecimal
 
-class Datum {
+data class Data(
     @SerializedName("id")
     @Expose
-    var id: Int? = null
+    var id: Int? = null,
 
     @SerializedName("name")
     @Expose
-    var name: String? = null
+    var name: String? = null,
 
     @SerializedName("symbol")
     @Expose
-    var symbol: String? = null
+    var symbol: String? = null,
 
     @SerializedName("slug")
     @Expose
-    var slug: String? = null
+    var slug: String? = null,
 
     @SerializedName("cmc_rank")
     @Expose
-    var cmcRank: Int? = null
+    var cmcRank: Int? = null,
 
     @SerializedName("num_market_pairs")
     @Expose
-    var numMarketPairs: BigDecimal? = null
+    var numMarketPairs: BigDecimal? = null,
 
     @SerializedName("circulating_supply")
     @Expose
-    var circulatingSupply: BigDecimal? = null
+    var circulatingSupply: BigDecimal? = null,
 
     @SerializedName("total_supply")
     @Expose
-    var totalSupply: BigDecimal? = null
+    var totalSupply: BigDecimal? = null,
 
     @SerializedName("max_supply")
     @Expose
-    var maxSupply: BigDecimal? = null
+    var maxSupply: BigDecimal? = null,
 
     @SerializedName("last_updated")
     @Expose
-    var lastUpdated: String? = null
+    var lastUpdated: String? = null,
 
     @SerializedName("date_added")
     @Expose
-    var dateAdded: String? = null
+    var dateAdded: String? = null,
 
     @SerializedName("tags")
     @Expose
-    var tags: List<String>? = null
+    var tags: List<String>? = null,
 
     @SerializedName("quote")
     @Expose
-    var quote: Map<String, Price> = mutableMapOf()
-}
+    var quote: Map<String, Price> = mutableMapOf(),
+)
