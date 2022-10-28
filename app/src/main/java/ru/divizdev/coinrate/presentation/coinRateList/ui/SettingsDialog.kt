@@ -5,7 +5,7 @@ import android.os.Bundle
 import ru.divizdev.coinrate.R
 import ru.divizdev.coinrate.data.PreferenceManagerSettings
 import android.content.DialogInterface
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import java.lang.RuntimeException
@@ -19,7 +19,7 @@ class SettingsDialog : DialogFragment() {
         val cancel = requireContext().getString(R.string.cancel)
         val currencyDefaultValue = requireContext().getString(R.string.pref_currency_default_value)
         val stringArray = requireContext().resources.getStringArray(R.array.pref_currency_array)
-        val currentValue = PreferenceManager.getDefaultSharedPreferences(context).getString(
+        val currentValue = PreferenceManager.getDefaultSharedPreferences(requireContext()).getString(
             PreferenceManagerSettings.KEY_NAME_PREF,
             currencyDefaultValue
         )
