@@ -20,7 +20,7 @@ class PreferenceManagerSettings(private val _context: Context) : ManagerSettings
             return preferences.getString(KEY_NAME_PREF, "USD") ?: "USD"
         }
         set(value) {
-            android.preference.PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(KEY_NAME_PREF, value).apply()
+            PreferenceManager.getDefaultSharedPreferences(_context).edit().putString(KEY_NAME_PREF, value).apply()
 
         }
 }
