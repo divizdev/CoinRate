@@ -220,7 +220,7 @@ public class CoinRateActivityTest {
 
 
         Context targetContext = getInstrumentation().getTargetContext();
-        ru.divizdev.coinrate.di.Factory.Companion.getFactory().getConfig().setBaseURL(mockWebServerRule.server.url("/").toString());
+        ru.divizdev.coinrate.di.Factory.getConfig().setBaseURL(mockWebServerRule.server.url("/").toString());
         mockWebServerRule.server.enqueue(new MockResponse().setBody(BODY_USD));
 
 

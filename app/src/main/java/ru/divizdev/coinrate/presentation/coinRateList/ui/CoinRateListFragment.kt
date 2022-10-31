@@ -21,8 +21,11 @@ import com.squareup.picasso.Picasso
 import moxy.MvpAppCompatFragment
 import moxy.presenter.InjectPresenter
 import moxy.presenter.ProvidePresenter
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
 import ru.divizdev.coinrate.R
-import ru.divizdev.coinrate.di.Factory.Companion.factory
+import ru.divizdev.coinrate.di.Factory
+import ru.divizdev.coinrate.presentation.Router
 import ru.divizdev.coinrate.presentation.about.AboutDialog
 import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListPresenter
 import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListView
@@ -42,10 +45,11 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
     private val _list: MutableList<CoinRateUI?> = ArrayList()
     private var _swipeRefreshLayout: SwipeRefreshLayout? = null
     private var _progressBar: ProgressBar? = null
+    private val router by inject<Router>()
 
     @ProvidePresenter
     fun provideCoinRateListPresenter(): CoinRateListPresenter {
-        return CoinRateListPresenter(factory!!.managerSettings, factory!!.rxRepository)
+        return CoinRateListPresenter(get(), get())
     }
 
     //region LifeCycle
@@ -60,7 +64,8 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
                     override fun onClickItemCoinRate(coinRateUI: CoinRateUI?) {
                         _presenter!!.clickToItem(coinRateUI)
                     }
-                }, _list)
+                }, _list
+            )
         _recyclerView?.adapter = coinRateAdapter
         _recyclerView?.addItemDecoration(DividerItemDecoration(_recyclerView?.context, linearLayoutManager.orientation))
         _swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout)
@@ -122,7 +127,7 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
 
     override fun navToDetail(coinRateUI: CoinRateUI?) {
         if (activity != null) {
-            factory!!.router.navToDetail((activity as AppCompatActivity?)!!, coinRateUI)
+            router.navToDetail((activity as AppCompatActivity?)!!, coinRateUI)
         }
     }
 

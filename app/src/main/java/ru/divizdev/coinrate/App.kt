@@ -1,7 +1,10 @@
 package ru.divizdev.coinrate
 
 import android.app.Application
-import ru.divizdev.coinrate.di.Factory.Companion.create
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import ru.divizdev.coinrate.di.appModule
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -11,7 +14,12 @@ import timber.log.Timber.DebugTree
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        create(applicationContext)
         Timber.plant(DebugTree())
+
+        startKoin {
+            androidLogger()
+            androidContext(applicationContext)
+            modules(appModule)
+        }
     }
 }
