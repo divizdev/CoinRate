@@ -33,8 +33,9 @@ android {
             it.buildConfigField 'String', 'API2_URL', APIdebugUrl
             it.buildConfigField 'String', 'IMG_URL', IMGUrl
             minifyEnabled false
-            testCoverageEnabled = true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            enableUnitTestCoverage true
+            enableAndroidTestCoverage true
         }
     }
     compileOptions {
