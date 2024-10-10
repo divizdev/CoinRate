@@ -13,8 +13,8 @@ android {
         applicationId "ru.divizdev.coinrate"
         minSdkVersion 21
         targetSdkVersion 35
-        versionCode 12
-        versionName "2.12.0"
+        versionCode 14
+        versionName "2.14.0"
         multiDexEnabled true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
