@@ -24,7 +24,7 @@ android {
             it.buildConfigField 'String', 'API2_KEY', API2Key
             it.buildConfigField 'String', 'API2_URL', API2Url
             it.buildConfigField 'String', 'IMG_URL', IMGUrl
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug{
