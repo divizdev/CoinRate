@@ -1,40 +1,42 @@
-package ru.divizdev.coinrate.presentation.coinRateList.presenter
+package ru.divizdev.coinrate.presentation.coinRateList.viewModel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
-import moxy.InjectViewState
-import moxy.MvpPresenter
 import ru.divizdev.coinrate.data.ManagerSettings
 import ru.divizdev.coinrate.data.RxRepository
+import ru.divizdev.coinrate.presentation.Router
 import ru.divizdev.coinrate.presentation.entities.CoinRateUI
+import ru.divizdev.coinrate.presentation.entities.Event
 import ru.divizdev.coinrate.utils.EspressoIdlingResource
 import timber.log.Timber
 
-/**
- * Created by diviz on 29.01.2018.
- */
-@InjectViewState
-class CoinRateListPresenter(
+class ListViewModel(
     private val _managerSettings: ManagerSettings,
-    private val _rxRepository: RxRepository
-) : MvpPresenter<CoinRateListView?>() {
+    private val _rxRepository: RxRepository,
+) : ViewModel() {
 
     private var _curCurrency: String
     private val _disposable = CompositeDisposable()
 
+    private val _viewState = MutableLiveData<ViewState>()
+    val viewState: LiveData<ViewState>
+        get() = _viewState
+
+    private val _event = MutableLiveData<Event<Router.Screens>>()
+    val event: LiveData<Event<Router.Screens>>
+        get() = _event
+
     init {
         _curCurrency = currencySettings
+        refresh()
     }
 
     private val currencySettings: String
         private get() = _managerSettings.curCurrency
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        _curCurrency = currencySettings
-        showList(_curCurrency)
-    }
-
-    private fun showList(curCurrency: String) {
+    private fun showList(curCurrency: String = _curCurrency) {
         loadCoinRate(curCurrency, false)
     }
 
@@ -45,18 +47,20 @@ class CoinRateListPresenter(
     private fun loadCoinRate(currency: String, isForce: Boolean) {
         Timber.d("start load coin rate")
         EspressoIdlingResource.increment()
-        viewState!!.showLoadingProgress(true)
+        _viewState.value = ViewState.LoadingProgress
         _disposable.add(_rxRepository.getData(currency, isForce).subscribe({ list: List<CoinRateUI?>? ->
             Timber.d("finish load coin rate")
-            viewState!!.showLoadingProgress(false)
-            viewState!!.showCoinRateList(list)
+            if (list == null) {
+                _viewState.value = ViewState.ShowCoinRateList(emptyList())
+            } else {
+                _viewState.value = ViewState.ShowCoinRateList(list.filterNotNull())
+            }
             _managerSettings.curCurrency = currency
             _curCurrency = currency
         }, { throwable: Throwable? ->
             Timber.e("Error load coin rate")
             Timber.e(throwable)
-            viewState!!.showLoadingProgress(false)
-            viewState!!.showErrorLoading()
+            _viewState.value = ViewState.ErrorLoading
             EspressoIdlingResource.decrement()
         }) { EspressoIdlingResource.decrement() })
     }
@@ -67,12 +71,21 @@ class CoinRateListPresenter(
         }
     }
 
-    fun clickToItem(coinRateUI: CoinRateUI?) {
-        viewState!!.navToDetail(coinRateUI)
+    fun clickToItem(coinRateUI: CoinRateUI) {
+        _event.value = Event(Router.Screens.Detail(coinRateUI))
     }
 
-    override fun onDestroy() {
+    override fun onCleared() {
+        super.onCleared()
         _disposable.dispose()
-        super.onDestroy()
     }
+}
+
+
+sealed interface ViewState {
+
+    data class ShowCoinRateList(val list: List<CoinRateUI>) : ViewState
+    data object LoadingProgress : ViewState
+    data object ErrorLoading : ViewState
+
 }

@@ -3,7 +3,12 @@ package ru.divizdev.coinrate.presentation.coinRateList.ui
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,39 +24,30 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.squareup.picasso.Picasso
-import moxy.MvpAppCompatFragment
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
-import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.divizdev.coinrate.R
-import ru.divizdev.coinrate.di.Factory
 import ru.divizdev.coinrate.presentation.Router
 import ru.divizdev.coinrate.presentation.about.AboutDialog
-import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListPresenter
-import ru.divizdev.coinrate.presentation.coinRateList.presenter.CoinRateListView
 import ru.divizdev.coinrate.presentation.coinRateList.ui.SettingsDialog.INoticeDialogListener
+import ru.divizdev.coinrate.presentation.coinRateList.viewModel.ListViewModel
+import ru.divizdev.coinrate.presentation.coinRateList.viewModel.ViewState
 import ru.divizdev.coinrate.presentation.entities.CoinRateUI
+import ru.divizdev.coinrate.presentation.entities.EventObserver
 import ru.divizdev.coinrate.utils.LocaleUtils
-import java.util.*
 
 /**
  * Created by diviz on 26.01.2018.
  */
-class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefreshListener, INoticeDialogListener {
-    @JvmField
-    @InjectPresenter
-    var _presenter: CoinRateListPresenter? = null
+class CoinRateListFragment : Fragment(), OnRefreshListener, INoticeDialogListener {
+
+    private val viewModel: ListViewModel by viewModel()
+
     private var _recyclerView: RecyclerView? = null
     private val _list: MutableList<CoinRateUI?> = ArrayList()
     private var _swipeRefreshLayout: SwipeRefreshLayout? = null
     private var _progressBar: ProgressBar? = null
     private val router by inject<Router>()
-
-    @ProvidePresenter
-    fun provideCoinRateListPresenter(): CoinRateListPresenter {
-        return CoinRateListPresenter(get(), get())
-    }
 
     //region LifeCycle
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,7 +59,9 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
             CoinRateAdapter(
                 object : IFragmentInteractionListener {
                     override fun onClickItemCoinRate(coinRateUI: CoinRateUI?) {
-                        _presenter!!.clickToItem(coinRateUI)
+                        if (coinRateUI != null) {
+                            viewModel.clickToItem(coinRateUI)
+                        }
                     }
                 }, _list
             )
@@ -80,6 +79,31 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
                 supportActionBar.setDisplayShowHomeEnabled(false)
             }
         }
+
+        viewModel.event.observe(viewLifecycleOwner, EventObserver { screen ->
+            when (screen) {
+                is Router.Screens.Detail -> navToDetail(screen.coinRateUI)
+            }
+        })
+
+        viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
+            when (viewState) {
+                ViewState.ErrorLoading -> {
+                    showLoadingProgress(false)
+                    showErrorLoading()
+                }
+
+                ViewState.LoadingProgress -> {
+                    showLoadingProgress(true)
+                }
+
+                is ViewState.ShowCoinRateList -> {
+                    showLoadingProgress(false)
+                    showCoinRateList(viewState.list)
+                }
+            }
+        }
+
         return view
     }
 
@@ -112,20 +136,20 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
         return true
     }
 
-    fun showDialogSettings() {
+    private fun showDialogSettings() {
         val fragmentManager = requireActivity().supportFragmentManager
         val settingsDialog = SettingsDialog()
         settingsDialog.setTargetFragment(this, 0)
         settingsDialog.show(fragmentManager, "")
     }
 
-    override fun showDialogAbout() {
+    private fun showDialogAbout() {
         val fragmentManager = requireActivity().supportFragmentManager
         val aboutDialog = AboutDialog()
         aboutDialog.show(fragmentManager, "")
     }
 
-    override fun navToDetail(coinRateUI: CoinRateUI?) {
+    private fun navToDetail(coinRateUI: CoinRateUI) {
         if (activity != null) {
             router.navToDetail((activity as AppCompatActivity?)!!, coinRateUI)
         }
@@ -133,7 +157,7 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
 
     //endregion Menu
     //region CoinRateListView
-    override fun showLoadingProgress(isView: Boolean?) {
+    fun showLoadingProgress(isView: Boolean?) {
         if (isView!!) {
             if (!_swipeRefreshLayout!!.isRefreshing) {
                 _progressBar!!.visibility = View.VISIBLE
@@ -145,23 +169,23 @@ class CoinRateListFragment : MvpAppCompatFragment(), CoinRateListView, OnRefresh
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun showCoinRateList(list: List<CoinRateUI?>?) {
+    fun showCoinRateList(list: List<CoinRateUI?>?) {
         _list.clear()
         _list.addAll(list!!)
         _recyclerView?.adapter?.notifyDataSetChanged()
     }
 
-    override fun showErrorLoading() {
+    fun showErrorLoading() {
         Toast.makeText(context, "ErrorLoad", Toast.LENGTH_SHORT).show()
     }
 
     //endregion
     override fun onRefresh() {
-        _presenter?.refresh()
+        viewModel.refresh()
     }
 
     override fun onDialogSettingsSelectedItem(currency: String) {
-        _presenter?.setCurrency(currency)
+        viewModel.setCurrency(currency)
     }
 
     override fun onDialogSettingsNegativeClick(dialog: DialogFragment) {}
