@@ -11,20 +11,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.squareup.picasso.Picasso
-import moxy.MvpAppCompatFragment
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.divizdev.coinrate.R
-import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailPresenter
-import ru.divizdev.coinrate.presentation.detail.presenter.CoinRateDetailView
+import ru.divizdev.coinrate.presentation.detail.viewModel.DetailViewModel
 import ru.divizdev.coinrate.presentation.entities.CoinRateUI
 
-class DetailFragment : MvpAppCompatFragment(), CoinRateDetailView {
-    @JvmField
-    @InjectPresenter
-    var _interaction: CoinRateDetailPresenter? = null
+class DetailFragment : Fragment() {
+
+    private val viewModel: DetailViewModel by viewModel()
+
     private var _detailNameCoin: TextView? = null
     private var _detailAvailableSupply: TextView? = null
     private var _detailMarketCap //detail_max_supply
@@ -38,17 +37,29 @@ class DetailFragment : MvpAppCompatFragment(), CoinRateDetailView {
     private var _valueFrom: EditText? = null
     private var _valueTo: TextView? = null
 
-    //TODO: null
-    @get:ProvidePresenter
-    val interaction: CoinRateDetailPresenter
-        get() = CoinRateDetailPresenter(requireArguments().getParcelable(ARG_COIN_RATE)!!) //TODO: null
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val result = inflater.inflate(R.layout.fragment_detail, container, false)
         bind(result)
+
+        val coinRateUI = arguments?.getParcelable<CoinRateUI>(ARG_COIN_RATE)
+        if (coinRateUI != null) {
+            setData(coinRateUI)
+        }
+        
+        viewModel.viewState.observe(viewLifecycleOwner) { state ->
+            setCurrencyTo(state.to)
+            setCurrencyFrom(state.from)
+            setValueTo(state.value)
+            if (state.value.isBlank()) {
+                clearAll()
+            }
+            if (state.isError) {
+                showError("")
+            }
+        }
         return result
     }
 
@@ -84,16 +95,16 @@ class DetailFragment : MvpAppCompatFragment(), CoinRateDetailView {
         _valueTo = view.findViewById(R.id.value_to)
         _valueFrom?.setOnKeyListener { _: View?, _: Int, event: KeyEvent ->
             if (event.action == KeyEvent.ACTION_UP) {
-                _interaction!!.convertCurrency(_valueFrom?.getText().toString())
+                viewModel.convertCurrency(_valueFrom?.getText().toString())
             }
             false
         }
-        buttonConvert.setOnClickListener { v: View? -> _interaction!!.convertCurrency(_valueFrom?.text.toString()) }
-        buttonChangeCurrency.setOnClickListener { v: View? -> _interaction!!.changeCurrency() }
+        buttonConvert.setOnClickListener { v: View? -> viewModel.convertCurrency(_valueFrom?.text.toString()) }
+        buttonChangeCurrency.setOnClickListener { v: View? -> viewModel.changeCurrency() }
     }
 
-    override fun setData(coinRateUI: CoinRateUI?) {
-        _detailNameCoin!!.text = coinRateUI!!.name
+    fun setData(coinRateUI: CoinRateUI) {
+        _detailNameCoin!!.text = coinRateUI.name
         _detail24hVolume!!.text = String.format("%s %s", coinRateUI.uiVolume24, coinRateUI.uiCurrency)
         _detailMarketCap!!.text = String.format("%s %s", coinRateUI.uiMarketCap, coinRateUI.uiCurrency)
         _detailAvailableSupply!!.text = String.format("%s %s", coinRateUI.uiAvailableSupply, coinRateUI.symbol)
@@ -104,34 +115,35 @@ class DetailFragment : MvpAppCompatFragment(), CoinRateDetailView {
             .into(_logo)
     }
 
-    override fun setCurrencyFrom(currencyFrom: String?) {
+    private fun setCurrencyFrom(currencyFrom: String?) {
         _nameCurrencyFrom!!.text = currencyFrom
     }
 
-    override fun setCurrencyTo(currencyTo: String?) {
+    private fun setCurrencyTo(currencyTo: String?) {
         _nameCurrencyTo!!.text = currencyTo
     }
 
-    override fun setValueTo(value: String?) {
+    private fun setValueTo(value: String?) {
         _valueTo!!.text = value
     }
 
-    override fun clearAll() {
+    private fun clearAll() {
         _valueFrom!!.setText("")
         _valueTo!!.text = ""
     }
 
-    override fun showError(error: String?) {}
+    private fun showError(error: String?) {}
 
     companion object {
-        private const val ARG_COIN_RATE = "coin_rate"
+        const val ARG_COIN_RATE = "coin_rate"
 
         @JvmStatic
         fun newInstance(coinRateUI: CoinRateUI?): DetailFragment {
-            val fragment = DetailFragment()
-            val args = Bundle()
-            args.putParcelable(ARG_COIN_RATE, coinRateUI)
-            fragment.arguments = args
+            val fragment = DetailFragment().apply {
+                arguments = bundleOf(
+                    ARG_COIN_RATE to coinRateUI
+                )
+            }
             return fragment
         }
     }
