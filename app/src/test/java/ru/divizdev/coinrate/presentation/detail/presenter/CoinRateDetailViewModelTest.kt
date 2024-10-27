@@ -1,60 +1,54 @@
-package ru.divizdev.coinrate.presentation.detail.presenter;
+package ru.divizdev.coinrate.presentation.detail.presenter
 
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.SavedStateHandle
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.rules.TestRule
+import ru.divizdev.coinrate.presentation.detail.ui.DetailFragment.Companion.ARG_COIN_RATE
+import ru.divizdev.coinrate.presentation.detail.viewModel.DetailViewModel
+import ru.divizdev.coinrate.presentation.entities.CoinRateUI
+import java.math.BigDecimal
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+class CoinRateDetailViewModelTest {
 
-import java.math.BigDecimal;
+    @get:Rule
+    val rule: TestRule = InstantTaskExecutorRule()
 
-import ru.divizdev.coinrate.presentation.entities.CoinRateUI;
+    var _coinRateUI: CoinRateUI = CoinRateUI(
+        "RUB", "BTC", "BTC", "BTC",
+        10, BigDecimal.valueOf(100), BigDecimal.ZERO, 0.0, 0.0, 0.0,
+        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+        10, BigDecimal.ZERO
+    )
 
-public class CoinRateDetailPresenterTest {
-
-
-    CoinRateUI _coinRateUI = new CoinRateUI(
-            "RUB", "BTC", "BTC", "BTC",
-            10, BigDecimal.valueOf(100), BigDecimal.ZERO, 0, 0, 0,
-            BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-            10, BigDecimal.ZERO);
-
-
-    @Mock
-    CoinRateDetailView _detailView;
-
-    @Mock
-    CoinRateDetailView$$State _view$$State;
-
-    CoinRateDetailPresenter _presenter;
+    private lateinit var _detailViewModel: DetailViewModel
 
     @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        _presenter = new CoinRateDetailPresenter(_coinRateUI);
-        _presenter.attachView(_detailView);
-        _presenter.setViewState(_view$$State);
-//        when(_coinRateUI.getPrice()).thenReturn(BigDecimal.valueOf(100));
-//        when(_coinRateUI.getSymbol()).thenReturn("BTC");
-//        when(_coinRateUI.getCurrency()).thenReturn("RUB");
+    fun setUp() {
+        val savedStateHandle = SavedStateHandle().apply {
+            set(ARG_COIN_RATE, _coinRateUI)
+        }
+        _detailViewModel = DetailViewModel(savedStateHandle)
     }
 
     @Test
-    public void convertSimpleCurrency() {
-        _presenter.convertCurrency("1");
-        verify(_view$$State).setValueTo(argThat(argument -> argument.contains("100")));
+    fun convertSimpleCurrency() {
+        _detailViewModel.convertCurrency("1")
+        val result = _detailViewModel.viewState.value?.value ?: ""
+        assertEquals("100,00", result)
     }
 
     @Test
-    public void convertUndersideCurrency() {
-        _presenter.changeCurrency();
-        verify(_view$$State).setCurrencyFrom("RUB");
-        verify(_view$$State).setCurrencyTo("BTC");
-        _presenter.convertCurrency("100");
+    fun convertUndersideCurrency() {
+        _detailViewModel.changeCurrency()
+        val resultTo = _detailViewModel.viewState.value?.to
+        assertEquals("BTC", resultTo)
 
-        verify(_view$$State).setValueTo(argThat(argument -> argument.contains("1")));
-
+        _detailViewModel.convertCurrency("100")
+        val resultValue = _detailViewModel.viewState.value?.value
+        assertEquals("1,00", resultValue)
     }
 }

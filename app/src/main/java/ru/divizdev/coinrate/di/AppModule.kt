@@ -3,6 +3,7 @@ package ru.divizdev.coinrate.di
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -57,7 +58,6 @@ val appModule = module {
         retrofitV2.create(RestClient::class.java)
     }
 
-    single<RxRepository> { RxRepositoryApi(get(), get()) }
-
+    singleOf(::RxRepositoryApi)
 
 }
