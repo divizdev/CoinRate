@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -31,9 +32,6 @@ val appModule = module {
         Router()
     }
 
-    viewModelOf(::ListViewModel)
-    viewModelOf(::DetailViewModel)
-
     factory<RestClient> {
         val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
@@ -58,6 +56,8 @@ val appModule = module {
         retrofitV2.create(RestClient::class.java)
     }
 
-    singleOf(::RxRepositoryApi)
-
+    singleOf(::RxRepositoryApi).bind(RxRepository::class)
+    viewModelOf(::ListViewModel)
+    viewModelOf(::DetailViewModel)
+    
 }
